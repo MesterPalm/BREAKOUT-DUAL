@@ -1,0 +1,52 @@
+# //  ModelSim SE 6.5c Aug 27 2009 Linux 2.6.32-696.20.1.el6.x86_64
+# //
+# //  Copyright 1991-2009 Mentor Graphics Corporation
+# //              All Rights Reserved.
+# //
+# //  THIS WORK CONTAINS TRADE SECRET AND 
+# //  PROPRIETARY INFORMATION WHICH IS THE PROPERTY
+# //  OF MENTOR GRAPHICS CORPORATION OR ITS LICENSORS
+# //  AND IS SUBJECT TO LICENSE TERMS.
+# //
+# vsim breakout_tb 
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Note: (vopt-143) Recognized '2' FSM/s in design unit 'ultra.ultra_behavior'.
+# Loading std.standard
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.breakout_tb(behavior)#1
+# Loading work.breakout(behavioral)#1
+# Loading work.umem(behavioral)#1
+# Loading work.ultra(ultra_behavior)#1
+do breakout.do
+# Model Technology ModelSim SE vcom 6.5c Compiler 2009.08 Aug 27 2009
+# -- Loading package standard
+# -- Loading package std_logic_1164
+# -- Loading package numeric_std
+# -- Compiling entity breakout
+# -- Compiling architecture behavioral of breakout
+# -- Compiling entity umem
+# -- Compiling architecture behavioral of umem
+# -- Compiling entity pmem
+# -- Compiling architecture behavioral of pmem
+# vsim breakout_tb 
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Note: (vopt-143) Recognized '2' FSM/s in design unit 'ultra.ultra_behavior'.
+# Loading std.standard
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.breakout_tb(behavior)#1
+# Loading work.breakout(behavioral)#1
+# Loading work.ultra(ultra_behavior)#1
+# ** Warning: NUMERIC_STD."=": metavalue detected, returning FALSE
+#    Time: 0 ns  Iteration: 0  Instance: /breakout_tb/uut
+# ** Warning: NUMERIC_STD."=": metavalue detected, returning FALSE
+#    Time: 0 ns  Iteration: 0  Instance: /breakout_tb/uut
+# ** Warning: NUMERIC_STD."=": metavalue detected, returning FALSE
+#    Time: 0 ns  Iteration: 0  Instance: /breakout_tb/uut
+# ** Warning: NUMERIC_STD."=": metavalue detected, returning FALSE
+#    Time: 0 ns  Iteration: 0  Instance: /breakout_tb/uut
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /breakout_tb/uut/u0
+# ** Warning: NUMERIC_STD.">": metavalue detected, returning FALSE
+#    Time: 0 ns  Iteration: 0  Instance: /breakout_tb/uut

@@ -1,0 +1,180 @@
+m255
+K3
+13
+cModel Technology
+Z0 d/edu/wilst118/TSEA83/cpu_embryo/breakout-simdir
+T_opt
+V0OKTSRjWbiIY3Joeo0?>?0
+04 11 8 work breakout_tb behavior 1
+Z1 =1-c4346b771d75-5aafc6aa-e55d-2c1b
+Z2 o-quiet -auto_acc_if_foreign -work work
+Z3 n@_opt
+Z4 OE;O;6.5c;42
+Ebreakout
+Z5 w1521467118
+Z6 DPx4 ieee 11 numeric_std 0 22 =NSdli^?T5OD8;4F<blj<3
+Z7 DPx4 ieee 14 std_logic_1164 0 22 GH1=`jDDBJ=`LM;:Ak`kf2
+Z8 d/edu/vikpa137/Downloads/cpu_embryo/breakout-simdir
+Z9 8../breakout.vhd
+Z10 F../breakout.vhd
+l0
+L6
+Z11 Vm;?m>[9`eHN7I0ejln3I<3
+Z12 OE;C;6.5c;42
+32
+Z13 tExplicit 1
+Z14 !s100 <iBiIiYISKFeSQb]^06^Q3
+Abehavioral
+R6
+R7
+Z15 DEx4 work 8 breakout 0 22 m;?m>[9`eHN7I0ejln3I<3
+l57
+L15
+Z16 VDJcIJ]YR;7M>fC28WQ<kX0
+R12
+32
+Z17 Mx2 4 ieee 14 std_logic_1164
+Z18 Mx1 4 ieee 11 numeric_std
+R13
+Z19 !s100 GVKa5U45A_9?eMok7o_TX1
+Ebreakout_tb
+Z20 w1521468301
+R6
+R7
+R8
+Z21 8../breakout_tb.vhd
+Z22 F../breakout_tb.vhd
+l0
+L5
+Z23 VJbNJQ[@CQ;FWWV9cKMhWk0
+R12
+32
+o+acc
+R13
+Z24 !s100 :n<Mo8zec:IN;mXW>L<791
+Abehavior
+R6
+R7
+Z25 DEx4 work 11 breakout_tb 0 22 JbNJQ[@CQ;FWWV9cKMhWk0
+l29
+L8
+Z26 V>cPXb68R4D`TkdmVJ;4j:3
+R12
+32
+R17
+R18
+o+acc
+R13
+Z27 !s100 ^O=kV79<lagOEYVHDkZA21
+Epmem
+Z28 w1487080167
+R6
+R7
+R8
+Z29 8../pMem.vhd
+Z30 F../pMem.vhd
+l0
+L6
+Z31 Vz3YR3Ig?c?b>Afl^ij8bN3
+R12
+32
+R13
+Z32 !s100 j2EMHGoVDbXP2[aif7DSI2
+Abehavioral
+R6
+R7
+Z33 DEx4 work 4 pmem 0 22 z3YR3Ig?c?b>Afl^ij8bN3
+l37
+L12
+Z34 VgHDR<ML[h92ifNLRo:05@1
+R12
+32
+R17
+R18
+R13
+Z35 !s100 L3U83QcLR<GBbg`Q46?zA3
+Eproj_tb
+Z36 w1487079109
+R6
+R7
+R8
+R21
+R22
+l0
+L5
+Z37 VRVG^6Bk2D_KeVGblATld51
+R12
+32
+o+acc
+R13
+Z38 !s100 LhD@EX<PgiEEfC[=KH^4l3
+Abehavior
+R6
+R7
+Z39 DEx4 work 7 proj_tb 0 22 RVG^6Bk2D_KeVGblATld51
+l23
+L8
+Z40 VL>0bW>o=g@:Gh7B^n<7Hk0
+R12
+32
+R17
+R18
+o+acc
+R13
+Z41 !s100 EVzoInAeMn]dlMPzfXj9U1
+Eultra
+Z42 w1521469084
+R6
+R7
+R8
+Z43 8../ultra.vhd
+Z44 F../ultra.vhd
+l0
+L5
+Z45 VMc=Z1:<R2SM4:FS1o9kUe1
+R12
+32
+o+acc
+R13
+Z46 !s100 @Le7DFHZZ;T]RYI?1fLLo1
+Aultra_behavior
+R6
+R7
+Z47 DEx4 work 5 ultra 0 22 Mc=Z1:<R2SM4:FS1o9kUe1
+l27
+L18
+Z48 VHe2BbW3Q^W<:gQ=QDh9Q50
+R12
+32
+R17
+R18
+o+acc
+R13
+Z49 !s100 bPFLLK7W`A6f02zMZWYnj3
+Eumem
+Z50 w1487079557
+R6
+R7
+R8
+Z51 8../uMem.vhd
+Z52 F../uMem.vhd
+l0
+L6
+Z53 VDY3LDNfM:Gf=HQND8:0l<3
+R12
+32
+R13
+Z54 !s100 hn47dQ63QV0aT=aEEP[XN3
+Abehavioral
+R6
+R7
+Z55 DEx4 work 4 umem 0 22 DY3LDNfM:Gf=HQND8:0l<3
+l37
+L12
+Z56 V0mi?OYc;mJ]@R6WHUO28B0
+R12
+32
+R17
+R18
+R13
+Z57 !s100 ]=QbnY]6R3POoHe35Gn5V1
