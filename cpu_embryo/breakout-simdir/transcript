@@ -17,6 +17,7 @@
 # Loading work.breakout_tb(behavior)#1
 # Loading work.breakout(behavioral)#1
 # Loading work.umem(behavioral)#1
+# Loading work.pmem(behavioral)#1
 # Loading work.ultra(ultra_behavior)#1
 do breakout.do
 # Model Technology ModelSim SE vcom 6.5c Compiler 2009.08 Aug 27 2009
@@ -47,6 +48,16 @@ do breakout.do
 # ** Warning: NUMERIC_STD."=": metavalue detected, returning FALSE
 #    Time: 0 ns  Iteration: 0  Instance: /breakout_tb/uut
 # ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ns  Iteration: 0  Instance: /breakout_tb/uut/u1
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
 #    Time: 0 ns  Iteration: 0  Instance: /breakout_tb/uut/u0
 # ** Warning: NUMERIC_STD.">": metavalue detected, returning FALSE
 #    Time: 0 ns  Iteration: 0  Instance: /breakout_tb/uut
+# ** Warning: NUMERIC_STD."=": metavalue detected, returning FALSE
+#    Time: 0 ns  Iteration: 1  Instance: /breakout_tb/uut
+# ** Warning: NUMERIC_STD."=": metavalue detected, returning FALSE
+#    Time: 0 ns  Iteration: 1  Instance: /breakout_tb/uut
+# ** Warning: NUMERIC_STD."=": metavalue detected, returning FALSE
+#    Time: 0 ns  Iteration: 1  Instance: /breakout_tb/uut
+# ** Warning: NUMERIC_STD."=": metavalue detected, returning FALSE
+#    Time: 0 ns  Iteration: 1  Instance: /breakout_tb/uut

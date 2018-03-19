@@ -79,7 +79,9 @@ begin
       elsif (FB = "011") then
         PC <= DATA_BUS;
       elsif (PCsig = '1') then
-        PC <= PC + 1;
+        if PC < 15  then
+          PC <= PC + 1;
+        end if;
       end if;
     end if;
   end process;
@@ -114,7 +116,7 @@ begin
   U0 : uMem port map(uAddr=>uPC, uData=>uM);
 
   -- program memory component connection
-  --U1 : pMem port map(pAddr=>ASR, pData=>PM);
+  U1 : pMem port map(pAddr=>ASR, pData=>PM);
 
   UL : ultra port map(clk, JA, JB, us_time, rst);
   -- micro memory signal assignments
