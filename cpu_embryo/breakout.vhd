@@ -8,7 +8,8 @@ entity breakout is
        rst: in std_logic;
        JA: out unsigned(1 downto 0); -- trigger
        JB: in unsigned(1 downto 0); -- echo
-       Led : out unsigned(1 downto 0)
+       Led : out unsigned(1 downto 0);
+       seg : out unsigned (7 downto 0)
        );
 end breakout ;
 
@@ -26,7 +27,8 @@ architecture Behavioral of breakout is
     port(pAddr : in unsigned(15 downto 0);
          pData : out unsigned(15 downto 0));
   end component;
-  
+
+  -- Ultra module component
   component ultra
     port(clk : in std_logic;
 	 JA: out unsigned(1 downto 0); -- vcc, trigger, gnd
@@ -34,6 +36,13 @@ architecture Behavioral of breakout is
 	 us_time : buffer unsigned(15 downto 0);
          rst : in std_logic
     );
+  end component;
+
+  -- Led driver for debugging
+  component leddriver
+    Port ( clk,rst : in  STD_LOGIC;
+           seg : out  UNSIGNED(7 downto 0);
+           value : in  UNSIGNED (3 downto 0));
   end component;
 
   -- micro memory signals
@@ -51,7 +60,8 @@ architecture Behavioral of breakout is
   signal ASR : unsigned(15 downto 0); -- Address Register
   signal IR : unsigned(15 downto 0); -- Instruction Register
   signal DATA_BUS : unsigned(15 downto 0); -- Data Bus
-  
+
+  signal HEX : unsigned (3 downto 0);
   -- ultra beahvior signals
   signal us_time : unsigned (15 downto 0);
 begin
@@ -108,6 +118,17 @@ begin
     end if;
   end process;
 
+  process (clk)
+  begin
+    if rising_edge(clk) then
+      if (rst = '1') then
+        HEX <= "0000";
+      elsif (FB = "110")
+        HEX <= DATA_BUS;
+      end if;
+    end if;
+  end process;
+
   Led(0) <= '1' when (us_time > 20) else '0';
 	
   -- micro memory component connection
@@ -117,6 +138,10 @@ begin
   --U1 : pMem port map(pAddr=>ASR, pData=>PM);
 
   UL : ultra port map(clk, JA, JB, us_time, rst);
+
+  -- Plug in the led driver
+  led: leddriver port map (clk, rst, seg, B"0010");
+  
   -- micro memory signal assignments
   uAddr <= uM(5 downto 0);
   uPCsig <= uM(6);
@@ -129,6 +154,7 @@ begin
     PM when (TB = "010") else
     PC when (TB = "011") else
     ASR when (TB = "100") else
+    us_time when (TB = "101") else
    (others => '0');
 
 end Behavioral;
