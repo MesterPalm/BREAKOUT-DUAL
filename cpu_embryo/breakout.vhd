@@ -39,11 +39,11 @@ architecture Behavioral of breakout is
   end component;
 
   -- Led driver for debugging
-  component leddriver
-    Port ( clk,rst : in  STD_LOGIC;
-           seg : out  UNSIGNED(7 downto 0);
-           value : in  UNSIGNED (3 downto 0));
-  end component;
+  --component leddriver
+  --  Port ( clk,rst : in  STD_LOGIC;
+  --         seg : out  UNSIGNED(7 downto 0);
+  --         value : in  UNSIGNED (3 downto 0));
+  --end component;
 
   -- micro memory signals
   signal uM : unsigned(15 downto 0); -- micro Memory output
@@ -95,7 +95,7 @@ begin
       end if;
     end if;
   end process;
-	
+  
   -- IR : Instruction Register
   process(clk)
   begin
@@ -125,13 +125,13 @@ begin
     if rising_edge(clk) then
       if (rst = '1') then
         HEX <= "0000";
-      elsif (FB = "110")
-        HEX <= DATA_BUS;
+      elsif (FB = "110") then
+        HEX <= DATA_BUS(3 downto 0);
       end if;
     end if;
   end process;
 
-  Led(0) <= '1' when (us_time > 20) else '0';
+  Led(0) <= '1' when (us_time > 750) else '0';
 	
   -- micro memory component connection
   U0 : uMem port map(uAddr=>uPC, uData=>uM);
@@ -142,7 +142,7 @@ begin
   UL : ultra port map(clk, JA, JB, us_time, rst);
 
   -- Plug in the led driver
-  led: leddriver port map (clk, rst, seg, B"0010");
+  --led: leddriver port map (clk, rst, seg, B"0010");
   
   -- micro memory signal assignments
   uAddr <= uM(5 downto 0);

@@ -1,0 +1,25 @@
+//! **************************************************************************
+// Written by: Map M.81d on Fri Mar 23 14:57:15 2018
+//! **************************************************************************
+
+SCHEMATIC START;
+COMP "clk" LOCATE = SITE "V10" LEVEL 1;
+COMP "JA<0>" LOCATE = SITE "T12" LEVEL 1;
+COMP "JB<0>" LOCATE = SITE "K2" LEVEL 1;
+COMP "Led<0>" LOCATE = SITE "U16" LEVEL 1;
+TIMEGRP sys_clk_pin = BEL "UL/us_15" BEL "UL/us_14" BEL "UL/us_12" BEL
+        "UL/us_11" BEL "UL/us_13" BEL "UL/us_9" BEL "UL/us_8" BEL "UL/us_10"
+        BEL "UL/us_6" BEL "UL/us_5" BEL "UL/us_7" BEL "UL/us_4" BEL "UL/us_3"
+        BEL "UL/us_1" BEL "UL/us_0" BEL "UL/us_2" BEL "UL/q_FSM_FFd1" BEL
+        "UL/q_FSM_FFd2" BEL "UL/us_counter_6" BEL "UL/us_counter_5" BEL
+        "UL/us_counter_4" BEL "UL/us_counter_3" BEL "UL/us_counter_2" BEL
+        "UL/us_counter_1" BEL "UL/us_counter_0" BEL "UL/us_time_15" BEL
+        "UL/us_time_14" BEL "UL/us_time_13" BEL "UL/us_time_12" BEL
+        "UL/us_time_11" BEL "UL/us_time_10" BEL "UL/us_time_9" BEL
+        "UL/us_time_8" BEL "UL/us_time_7" BEL "UL/us_time_6" BEL
+        "UL/us_time_5" BEL "UL/us_time_4" BEL "UL/us_time_3" BEL
+        "UL/us_time_2" BEL "UL/us_time_1" BEL "UL/us_time_0" BEL "UL/trigger"
+        BEL "UL/us_rst" BEL "clk_BUFGP/BUFG";
+TS_sys_clk_pin = PERIOD TIMEGRP "sys_clk_pin" 100 MHz HIGH 50%;
+SCHEMATIC END;
+

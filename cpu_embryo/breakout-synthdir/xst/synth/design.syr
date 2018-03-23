@@ -1,0 +1,412 @@
+Release 12.4 - xst M.81d (lin64)
+Copyright (c) 1995-2010 Xilinx, Inc.  All rights reserved.
+--> 
+Parameter TMPDIR set to tmpdir
+
+
+Total REAL time to Xst completion: 3.00 secs
+Total CPU time to Xst completion: 0.13 secs
+ 
+--> 
+
+TABLE OF CONTENTS
+  1) Synthesis Options Summary
+  2) HDL Parsing
+  3) HDL Elaboration
+  4) HDL Synthesis
+       4.1) HDL Synthesis Report
+  5) Advanced HDL Synthesis
+       5.1) Advanced HDL Synthesis Report
+  6) Low Level Synthesis
+  7) Partition Report
+  8) Design Summary
+       8.1) Primitive and Black Box Usage
+       8.2) Device utilization summary
+       8.3) Partition Resource Summary
+       8.4) Timing Report
+            8.4.1) Clock Information
+            8.4.2) Asynchronous Control Signals Information
+            8.4.3) Timing Summary
+            8.4.4) Timing Details
+            8.4.5) Cross Clock Domains Report
+
+
+=========================================================================
+*                      Synthesis Options Summary                        *
+=========================================================================
+---- Source Parameters
+Input File Name                    : "design.prj"
+
+---- Target Parameters
+Output File Name                   : "design.ngc"
+Target Device                      : xc6slx16-3-csg324
+
+---- Source Options
+Top Module Name                    : breakout
+
+=========================================================================
+
+WARNING:Xst:29 - Optimization Effort not specified
+The following parameters have been added:
+Optimization Goal                  : SPEED
+
+=========================================================================
+
+=========================================================================
+*                          HDL Parsing                                  *
+=========================================================================
+Parsing VHDL file "/edu/vikpa137/BREAKOUT-DUAL/cpu_embryo/breakout-synthdir/xst/synth/../../../breakout.vhd" into library work
+Parsing entity <breakout>.
+Parsing architecture <Behavioral> of entity <breakout>.
+Parsing VHDL file "/edu/vikpa137/BREAKOUT-DUAL/cpu_embryo/breakout-synthdir/xst/synth/../../../uMem.vhd" into library work
+Parsing entity <uMem>.
+Parsing architecture <Behavioral> of entity <umem>.
+Parsing VHDL file "/edu/vikpa137/BREAKOUT-DUAL/cpu_embryo/breakout-synthdir/xst/synth/../../../pMem.vhd" into library work
+Parsing entity <pMem>.
+Parsing architecture <Behavioral> of entity <pmem>.
+Parsing VHDL file "/edu/vikpa137/BREAKOUT-DUAL/cpu_embryo/breakout-synthdir/xst/synth/../../../ultra.vhd" into library work
+Parsing entity <ultra>.
+Parsing architecture <ultra_behavior> of entity <ultra>.
+
+=========================================================================
+*                            HDL Elaboration                            *
+=========================================================================
+
+Elaborating entity <breakout> (architecture <Behavioral>) from library <work>.
+WARNING:HDLCompiler:1127 - "/edu/vikpa137/BREAKOUT-DUAL/cpu_embryo/breakout-synthdir/xst/synth/../../../breakout.vhd" Line 123: Assignment to hex ignored, since the identifier is never used
+
+Elaborating entity <uMem> (architecture <Behavioral>) from library <work>.
+
+Elaborating entity <pMem> (architecture <Behavioral>) from library <work>.
+
+Elaborating entity <ultra> (architecture <ultra_behavior>) from library <work>.
+WARNING:Xst:2972 - "/edu/vikpa137/BREAKOUT-DUAL/cpu_embryo/breakout.vhd" line 137. All outputs of instance <U0> of block <uMem> are unconnected in block <breakout>. Underlying logic will be removed.
+WARNING:Xst:2972 - "/edu/vikpa137/BREAKOUT-DUAL/cpu_embryo/breakout.vhd" line 140. All outputs of instance <U1> of block <pMem> are unconnected in block <breakout>. Underlying logic will be removed.
+
+=========================================================================
+*                           HDL Synthesis                               *
+=========================================================================
+
+Synthesizing Unit <breakout>.
+    Related source file is "/edu/vikpa137/BREAKOUT-DUAL/cpu_embryo/breakout.vhd".
+    Found 16-bit comparator greater for signal <Led<0>> created at line 134
+    Summary:
+	inferred   1 Comparator(s).
+Unit <breakout> synthesized.
+
+Synthesizing Unit <ultra>.
+    Related source file is "/edu/vikpa137/BREAKOUT-DUAL/cpu_embryo/ultra.vhd".
+WARNING:Xst:647 - Input <JB<1:1>> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+    Found 16-bit register for signal <us>.
+    Found 1-bit register for signal <trigger>.
+    Found 2-bit register for signal <q>.
+    Found 16-bit register for signal <us_time>.
+    Found 1-bit register for signal <us_rst>.
+    Found 7-bit register for signal <us_counter>.
+    Found finite state machine <FSM_0> for signal <q>.
+    -----------------------------------------------------------------------
+    | States             | 4                                              |
+    | Transitions        | 8                                              |
+    | Inputs             | 3                                              |
+    | Outputs            | 6                                              |
+    | Clock              | clk (rising_edge)                              |
+    | Reset              | rst (positive)                                 |
+    | Reset type         | synchronous                                    |
+    | Reset State        | q_trig                                         |
+    | Power Up State     | q_trig                                         |
+    | Encoding           | auto                                           |
+    | Implementation     | LUT                                            |
+    -----------------------------------------------------------------------
+    Found 16-bit adder for signal <us[15]_GND_7_o_add_1_OUT> created at line 1241.
+    Found 7-bit adder for signal <us_counter[6]_GND_7_o_add_2_OUT> created at line 1241.
+    Summary:
+	inferred   2 Adder/Subtractor(s).
+	inferred  41 D-type flip-flop(s).
+	inferred   2 Multiplexer(s).
+	inferred   1 Finite State Machine(s).
+Unit <ultra> synthesized.
+RTL-Simplification CPUSTAT: 0.02 
+RTL-BasicInf CPUSTAT: 0.15 
+RTL-BasicOpt CPUSTAT: 0.00 
+RTL-Remain-Bus CPUSTAT: 0.00 
+
+=========================================================================
+HDL Synthesis Report
+
+Macro Statistics
+# Adders/Subtractors                                   : 2
+ 16-bit adder                                          : 1
+ 7-bit adder                                           : 1
+# Registers                                            : 5
+ 1-bit register                                        : 2
+ 16-bit register                                       : 2
+ 7-bit register                                        : 1
+# Comparators                                          : 1
+ 16-bit comparator greater                             : 1
+# Multiplexers                                         : 2
+ 7-bit 2-to-1 multiplexer                              : 2
+# FSMs                                                 : 1
+
+=========================================================================
+
+=========================================================================
+*                       Advanced HDL Synthesis                          *
+=========================================================================
+
+
+Synthesizing (advanced) Unit <ultra>.
+The following registers are absorbed into counter <us>: 1 register on signal <us>.
+Unit <ultra> synthesized (advanced).
+
+=========================================================================
+Advanced HDL Synthesis Report
+
+Macro Statistics
+# Adders/Subtractors                                   : 1
+ 7-bit adder                                           : 1
+# Counters                                             : 1
+ 16-bit up counter                                     : 1
+# Registers                                            : 25
+ Flip-Flops                                            : 25
+# Comparators                                          : 1
+ 16-bit comparator greater                             : 1
+# Multiplexers                                         : 2
+ 7-bit 2-to-1 multiplexer                              : 2
+# FSMs                                                 : 1
+
+=========================================================================
+
+=========================================================================
+*                         Low Level Synthesis                           *
+=========================================================================
+Analyzing FSM <MFsm> for best encoding.
+Optimizing FSM <UL/FSM_0> on signal <q[1:2]> with gray encoding.
+---------------------
+ State   | Encoding
+---------------------
+ q_trig  | 00
+ q_wait1 | 01
+ q_echo  | 11
+ q_wait2 | 10
+---------------------
+
+Optimizing unit <breakout> ...
+
+Optimizing unit <ultra> ...
+
+Mapping all equations...
+Building and optimizing final netlist ...
+Found area constraint ratio of 100 (+ 0) on block breakout, actual ratio is 0.
+
+Final Macro Processing ...
+
+=========================================================================
+Final Register Report
+
+Macro Statistics
+# Registers                                            : 43
+ Flip-Flops                                            : 43
+
+=========================================================================
+
+=========================================================================
+*                           Partition Report                            *
+=========================================================================
+
+Partition Implementation Status
+-------------------------------
+
+  No Partitions were found in this design.
+
+-------------------------------
+
+=========================================================================
+*                            Design Summary                             *
+=========================================================================
+
+Top Level Output File Name         : design.ngc
+
+Primitive and Black Box Usage:
+------------------------------
+# BELS                             : 95
+#      GND                         : 1
+#      INV                         : 2
+#      LUT1                        : 15
+#      LUT2                        : 3
+#      LUT3                        : 16
+#      LUT4                        : 5
+#      LUT5                        : 2
+#      LUT6                        : 19
+#      MUXCY                       : 15
+#      VCC                         : 1
+#      XORCY                       : 16
+# FlipFlops/Latches                : 43
+#      FDE                         : 16
+#      FDR                         : 10
+#      FDRE                        : 16
+#      FDSE                        : 1
+# Clock Buffers                    : 1
+#      BUFGP                       : 1
+# IO Buffers                       : 4
+#      IBUF                        : 2
+#      OBUF                        : 2
+
+Device utilization summary:
+---------------------------
+
+Selected Device : 6slx16csg324-3 
+
+
+Slice Logic Utilization: 
+ Number of Slice Registers:              43  out of  18224     0%  
+ Number of Slice LUTs:                   62  out of   9112     0%  
+    Number used as Logic:                62  out of   9112     0%  
+
+Slice Logic Distribution: 
+ Number of LUT Flip Flop pairs used:     74
+   Number with an unused Flip Flop:      31  out of     74    41%  
+   Number with an unused LUT:            12  out of     74    16%  
+   Number of fully used LUT-FF pairs:    31  out of     74    41%  
+   Number of unique control sets:         5
+
+IO Utilization: 
+ Number of IOs:                          16
+ Number of bonded IOBs:                   5  out of    232     2%  
+
+Specific Feature Utilization:
+ Number of BUFG/BUFGCTRLs:                1  out of     16     6%  
+
+---------------------------
+Partition Resource Summary:
+---------------------------
+
+  No Partitions were found in this design.
+
+---------------------------
+
+
+=========================================================================
+Timing Report
+
+NOTE: THESE TIMING NUMBERS ARE ONLY A SYNTHESIS ESTIMATE.
+      FOR ACCURATE TIMING INFORMATION PLEASE REFER TO THE TRACE REPORT
+      GENERATED AFTER PLACE-and-ROUTE.
+
+Clock Information:
+------------------
+-----------------------------------+------------------------+-------+
+Clock Signal                       | Clock buffer(FF name)  | Load  |
+-----------------------------------+------------------------+-------+
+clk                                | BUFGP                  | 43    |
+-----------------------------------+------------------------+-------+
+
+Asynchronous Control Signals Information:
+----------------------------------------
+No asynchronous control signals found in this design
+
+Timing Summary:
+---------------
+Speed Grade: -3
+
+   Minimum period: 3.622ns (Maximum Frequency: 276.083MHz)
+   Minimum input arrival time before clock: 3.914ns
+   Maximum output required time after clock: 5.631ns
+   Maximum combinational path delay: No path found
+
+Timing Details:
+---------------
+All values displayed in nanoseconds (ns)
+
+=========================================================================
+Timing constraint: Default period analysis for Clock 'clk'
+  Clock period: 3.622ns (frequency: 276.083MHz)
+  Total number of paths / destination ports: 468 / 92
+-------------------------------------------------------------------------
+Delay:               3.622ns (Levels of Logic = 3)
+  Source:            UL/us_5 (FF)
+  Destination:       UL/trigger (FF)
+  Source Clock:      clk rising
+  Destination Clock: clk rising
+
+  Data Path: UL/us_5 to UL/trigger
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     FDRE:C->Q             5   0.447   1.059  UL/us_5 (UL/us_5)
+     LUT6:I1->O            2   0.203   0.721  UL/us[15]_GND_7_o_equal_13_o<15>1 (UL/us[15]_GND_7_o_equal_13_o<15>)
+     LUT6:I4->O            1   0.203   0.684  UL/us[15]_GND_7_o_equal_13_o<15>3 (UL/us[15]_GND_7_o_equal_13_o)
+     LUT4:I2->O            1   0.203   0.000  UL/trigger_dpot (UL/trigger_dpot)
+     FDSE:D                    0.102          UL/trigger
+    ----------------------------------------
+    Total                      3.622ns (1.158ns logic, 2.464ns route)
+                                       (32.0% logic, 68.0% route)
+
+=========================================================================
+Timing constraint: Default OFFSET IN BEFORE for Clock 'clk'
+  Total number of paths / destination ports: 63 / 46
+-------------------------------------------------------------------------
+Offset:              3.914ns (Levels of Logic = 2)
+  Source:            rst (PAD)
+  Destination:       UL/us_time_15 (FF)
+  Destination Clock: clk rising
+
+  Data Path: rst to UL/us_time_15
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     IBUF:I->O            13   1.222   1.161  rst_IBUF (rst_IBUF)
+     LUT4:I1->O           16   0.205   1.004  UL/_n0102_inv1 (UL/_n0102_inv)
+     FDE:CE                    0.322          UL/us_time_0
+    ----------------------------------------
+    Total                      3.914ns (1.749ns logic, 2.165ns route)
+                                       (44.7% logic, 55.3% route)
+
+=========================================================================
+Timing constraint: Default OFFSET OUT AFTER for Clock 'clk'
+  Total number of paths / destination ports: 17 / 2
+-------------------------------------------------------------------------
+Offset:              5.631ns (Levels of Logic = 3)
+  Source:            UL/us_time_7 (FF)
+  Destination:       Led<0> (PAD)
+  Source Clock:      clk rising
+
+  Data Path: UL/us_time_7 to Led<0>
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     FDE:C->Q              1   0.447   0.944  UL/us_time_7 (UL/us_time_7)
+     LUT6:I0->O            1   0.203   0.684  Led<0>24_SW0 (N34)
+     LUT6:I4->O            1   0.203   0.579  Led<0>24 (Led_0_OBUF)
+     OBUF:I->O                 2.571          Led_0_OBUF (Led<0>)
+    ----------------------------------------
+    Total                      5.631ns (3.424ns logic, 2.207ns route)
+                                       (60.8% logic, 39.2% route)
+
+=========================================================================
+
+Cross Clock Domains Report:
+--------------------------
+
+Clock to Setup on destination clock clk
+---------------+---------+---------+---------+---------+
+               | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
+Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
+---------------+---------+---------+---------+---------+
+clk            |    3.622|         |         |         |
+---------------+---------+---------+---------+---------+
+
+=========================================================================
+
+
+Total REAL time to Xst completion: 8.00 secs
+Total CPU time to Xst completion: 3.95 secs
+ 
+--> 
+
+
+Total memory usage is 459380 kilobytes
+
+Number of errors   :    0 (   0 filtered)
+Number of warnings :    5 (   0 filtered)
+Number of infos    :    0 (   0 filtered)
+
