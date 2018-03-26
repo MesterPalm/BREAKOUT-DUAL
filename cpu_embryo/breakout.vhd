@@ -5,11 +5,12 @@ use IEEE.NUMERIC_STD.ALL;
 --CPU interface
 entity breakout is
   port(clk: in std_logic;
-       rst: in std_logic;
+       btns: in std_logic;             --rst
        JA: out unsigned(1 downto 0); -- trigger
        JB: in unsigned(1 downto 0); -- echo
-       Led : out unsigned(1 downto 0);
-       seg : out unsigned (7 downto 0)
+       Led : out unsigned(7 downto 0);
+       seg : out unsigned (7 downto 0);
+       an : out unsigned (3 downto 0)
        );
 end breakout ;
 
@@ -45,6 +46,14 @@ architecture Behavioral of breakout is
   --         value : in  UNSIGNED (3 downto 0));
   --end component;
 
+  component leddriver
+    Port ( clk,rst : in  STD_LOGIC;
+           seg : out  UNSIGNED(7 downto 0);
+           an : out  UNSIGNED (3 downto 0);
+           value : in  UNSIGNED (15 downto 0)
+           );
+  end component;
+
   -- micro memory signals
   signal uM : unsigned(15 downto 0); -- micro Memory output
   signal uPC : unsigned(5 downto 0); -- micro Program Counter
@@ -61,11 +70,21 @@ architecture Behavioral of breakout is
   signal IR : unsigned(15 downto 0); -- Instruction Register
   signal DATA_BUS : unsigned(15 downto 0); -- Data Bus
 
+  --code for the hexdisplay
   signal HEX : unsigned (3 downto 0);
+--  signal hex_mux : unsigned (1 downto 0);
+--  signal seg : unsigned (6 downto 0);
+--  signal an : unsigned (3 downto 0);
   -- ultra beahvior signals
+  signal us_time_temp  : unsigned(15 downto 0);
+  signal counter_temp : unsigned(23 downto 0);
+  
   signal us_time : unsigned (15 downto 0);
+  signal rst : std_logic;
 begin
-
+  rst <= btns;
+  Led(1) <= btns;
+  
   -- mPC : micro Program Counter
   process(clk)
   begin
@@ -119,17 +138,18 @@ begin
       end if;
     end if;
   end process;
-
-  process (clk)
-  begin
-    if rising_edge(clk) then
-      if (rst = '1') then
-        HEX <= "0000";
-      elsif (FB = "110") then
-        HEX <= DATA_BUS(3 downto 0);
-      end if;
-    end if;
-  end process;
+ -- processorn inte redo för att ta in saker på bussen såhär
+ -- interupts behövs.
+ -- process (clk)
+--  begin
+    --if rising_edge(clk) then
+     -- if (rst = '1') then
+      --  HEX <= "0000";
+     -- elsif (FB = "110") then
+      --  HEX <= DATA_BUS(3 downto 0);
+    --  end if;
+  --  end if;
+--  end process;
 
   Led(0) <= '1' when (us_time > 750) else '0';
 	
@@ -141,8 +161,37 @@ begin
 
   UL : ultra port map(clk, JA, JB, us_time, rst);
 
+
+  process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        counter_temp <= X"000000";
+        led(2) <= '1';
+        led(3) <= '0';
+        led(4) <= '0';
+      else
+        if counter_temp = X"000000" then
+          us_time_temp <= us_time;
+          counter_temp <= counter_temp + 1;
+          led(2) <= '0';
+          led(3) <= '1';
+          led(4) <= '0';
+        else
+          --us_time_temp <= X"DEF3";
+          counter_temp <= counter_temp + 1;
+          led(2) <= '0';
+          led(3) <= '0';
+          led(4) <= '1';
+        end if;
+      end if;
+     
+    end if;
+  end process;
   -- Plug in the led driver
-  --led: leddriver port map (clk, rst, seg, B"0010");
+  HD: leddriver port map (clk, rst, seg, an, value=>us_time_temp);
+
+  
   
   -- micro memory signal assignments
   uAddr <= uM(5 downto 0);

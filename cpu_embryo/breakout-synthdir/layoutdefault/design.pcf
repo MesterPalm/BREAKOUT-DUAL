@@ -1,25 +1,65 @@
 //! **************************************************************************
-// Written by: Map M.81d on Fri Mar 23 14:57:15 2018
+// Written by: Map M.81d on Mon Mar 26 16:23:27 2018
 //! **************************************************************************
 
 SCHEMATIC START;
+COMP "Led<3>" LOCATE = SITE "V15" LEVEL 1;
+COMP "an<0>" LOCATE = SITE "N16" LEVEL 1;
+COMP "Led<4>" LOCATE = SITE "M11" LEVEL 1;
+COMP "an<1>" LOCATE = SITE "N15" LEVEL 1;
+COMP "an<2>" LOCATE = SITE "P18" LEVEL 1;
+COMP "an<3>" LOCATE = SITE "P17" LEVEL 1;
 COMP "clk" LOCATE = SITE "V10" LEVEL 1;
+COMP "seg<0>" LOCATE = SITE "T17" LEVEL 1;
+COMP "seg<1>" LOCATE = SITE "T18" LEVEL 1;
+COMP "seg<2>" LOCATE = SITE "U17" LEVEL 1;
+COMP "seg<3>" LOCATE = SITE "U18" LEVEL 1;
+COMP "seg<4>" LOCATE = SITE "M14" LEVEL 1;
+COMP "seg<5>" LOCATE = SITE "N14" LEVEL 1;
+COMP "seg<6>" LOCATE = SITE "L14" LEVEL 1;
+COMP "seg<7>" LOCATE = SITE "M13" LEVEL 1;
+COMP "btns" LOCATE = SITE "B8" LEVEL 1;
 COMP "JA<0>" LOCATE = SITE "T12" LEVEL 1;
 COMP "JB<0>" LOCATE = SITE "K2" LEVEL 1;
 COMP "Led<0>" LOCATE = SITE "U16" LEVEL 1;
-TIMEGRP sys_clk_pin = BEL "UL/us_15" BEL "UL/us_14" BEL "UL/us_12" BEL
-        "UL/us_11" BEL "UL/us_13" BEL "UL/us_9" BEL "UL/us_8" BEL "UL/us_10"
-        BEL "UL/us_6" BEL "UL/us_5" BEL "UL/us_7" BEL "UL/us_4" BEL "UL/us_3"
-        BEL "UL/us_1" BEL "UL/us_0" BEL "UL/us_2" BEL "UL/q_FSM_FFd1" BEL
-        "UL/q_FSM_FFd2" BEL "UL/us_counter_6" BEL "UL/us_counter_5" BEL
-        "UL/us_counter_4" BEL "UL/us_counter_3" BEL "UL/us_counter_2" BEL
-        "UL/us_counter_1" BEL "UL/us_counter_0" BEL "UL/us_time_15" BEL
-        "UL/us_time_14" BEL "UL/us_time_13" BEL "UL/us_time_12" BEL
-        "UL/us_time_11" BEL "UL/us_time_10" BEL "UL/us_time_9" BEL
-        "UL/us_time_8" BEL "UL/us_time_7" BEL "UL/us_time_6" BEL
-        "UL/us_time_5" BEL "UL/us_time_4" BEL "UL/us_time_3" BEL
-        "UL/us_time_2" BEL "UL/us_time_1" BEL "UL/us_time_0" BEL "UL/trigger"
-        BEL "UL/us_rst" BEL "clk_BUFGP/BUFG";
+COMP "Led<1>" LOCATE = SITE "V16" LEVEL 1;
+COMP "Led<2>" LOCATE = SITE "U15" LEVEL 1;
+TIMEGRP sys_clk_pin = BEL "Led_2" BEL "Led_4" BEL "Led_3" BEL "us_time_temp_0"
+        BEL "us_time_temp_1" BEL "us_time_temp_2" BEL "us_time_temp_3" BEL
+        "us_time_temp_4" BEL "us_time_temp_5" BEL "us_time_temp_6" BEL
+        "us_time_temp_7" BEL "us_time_temp_8" BEL "us_time_temp_9" BEL
+        "us_time_temp_10" BEL "us_time_temp_11" BEL "us_time_temp_12" BEL
+        "us_time_temp_13" BEL "us_time_temp_14" BEL "us_time_temp_15" BEL
+        "counter_temp_0" BEL "counter_temp_1" BEL "counter_temp_2" BEL
+        "counter_temp_3" BEL "counter_temp_4" BEL "counter_temp_5" BEL
+        "counter_temp_6" BEL "counter_temp_7" BEL "counter_temp_8" BEL
+        "counter_temp_9" BEL "counter_temp_10" BEL "counter_temp_11" BEL
+        "counter_temp_12" BEL "counter_temp_13" BEL "counter_temp_14" BEL
+        "counter_temp_15" BEL "counter_temp_16" BEL "counter_temp_17" BEL
+        "counter_temp_18" BEL "counter_temp_19" BEL "counter_temp_20" BEL
+        "counter_temp_21" BEL "counter_temp_22" BEL "counter_temp_23" BEL
+        "UL/us_15" BEL "UL/us_14" BEL "UL/us_12" BEL "UL/us_11" BEL "UL/us_13"
+        BEL "UL/us_9" BEL "UL/us_8" BEL "UL/us_10" BEL "UL/us_6" BEL "UL/us_5"
+        BEL "UL/us_7" BEL "UL/us_4" BEL "UL/us_3" BEL "UL/us_1" BEL "UL/us_0"
+        BEL "UL/us_2" BEL "UL/q_FSM_FFd1" BEL "UL/q_FSM_FFd2" BEL
+        "UL/us_counter_6" BEL "UL/us_counter_5" BEL "UL/us_counter_4" BEL
+        "UL/us_counter_3" BEL "UL/us_counter_2" BEL "UL/us_counter_1" BEL
+        "UL/us_counter_0" BEL "UL/us_time_15" BEL "UL/us_time_14" BEL
+        "UL/us_time_13" BEL "UL/us_time_12" BEL "UL/us_time_11" BEL
+        "UL/us_time_10" BEL "UL/us_time_9" BEL "UL/us_time_8" BEL
+        "UL/us_time_7" BEL "UL/us_time_6" BEL "UL/us_time_5" BEL
+        "UL/us_time_4" BEL "UL/us_time_3" BEL "UL/us_time_2" BEL
+        "UL/us_time_1" BEL "UL/us_time_0" BEL "UL/trigger" BEL
+        "HD/counter_r_17" BEL "HD/counter_r_16" BEL "HD/counter_r_15" BEL
+        "HD/counter_r_14" BEL "HD/counter_r_13" BEL "HD/counter_r_12" BEL
+        "HD/counter_r_11" BEL "HD/counter_r_10" BEL "HD/counter_r_9" BEL
+        "HD/counter_r_8" BEL "HD/counter_r_7" BEL "HD/counter_r_6" BEL
+        "HD/counter_r_5" BEL "HD/counter_r_4" BEL "HD/counter_r_3" BEL
+        "HD/counter_r_2" BEL "HD/counter_r_1" BEL "HD/counter_r_0" BEL
+        "HD/segments_6" BEL "HD/segments_5" BEL "HD/segments_4" BEL
+        "HD/segments_3" BEL "HD/segments_2" BEL "HD/segments_1" BEL
+        "HD/segments_0" BEL "HD/an_3" BEL "HD/an_2" BEL "HD/an_1" BEL
+        "HD/an_0" BEL "UL/us_rst" BEL "clk_BUFGP/BUFG";
 TS_sys_clk_pin = PERIOD TIMEGRP "sys_clk_pin" 100 MHz HIGH 50%;
 SCHEMATIC END;
 
