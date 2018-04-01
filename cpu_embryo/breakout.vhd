@@ -29,6 +29,16 @@ architecture Behavioral of breakout is
          pData : out unsigned(15 downto 0));
   end component;
 
+  -- ALU component
+  component alu
+    port(clk : in std_logic;
+         alu_data : in unsigned(15 downto 0);
+         alu_opcode : in unsigned (3 downto 0);
+         ar : buffer unsigned ( 15 downto 0);
+         status : out unsigned (7 downto 0)
+         );
+  end component;
+
   -- Ultra module component
   component ultra
     port(clk : in std_logic;
@@ -38,13 +48,6 @@ architecture Behavioral of breakout is
          rst : in std_logic
     );
   end component;
-
-  -- Led driver for debugging
-  --component leddriver
-  --  Port ( clk,rst : in  STD_LOGIC;
-  --         seg : out  UNSIGNED(7 downto 0);
-  --         value : in  UNSIGNED (3 downto 0));
-  --end component;
 
   component leddriver
     Port ( clk,rst : in  STD_LOGIC;
@@ -61,7 +64,13 @@ architecture Behavioral of breakout is
   signal uAddr : unsigned(5 downto 0); -- micro Address
   signal TB : unsigned(2 downto 0); -- To Bus field
   signal FB : unsigned(2 downto 0); -- From Bus field
-	
+
+  -- ALU signals
+  signal ALU_op : unsigned(3 downto 0);   -- ALU opcode
+  signal ALUd : unsigned( 15 downto 0);
+  signal AR : unsigned(15 downto 0);      -- Accumulator register
+  signal SR : unsigned(7 downto 0);       -- Status register
+  
   -- program memory signals
   signal PM : unsigned(15 downto 0); -- Program Memory output
   signal PC : unsigned(15 downto 0); -- Program Counter
@@ -138,18 +147,30 @@ begin
       end if;
     end if;
   end process;
- -- processorn inte redo för att ta in saker på bussen såhär
- -- interupts behövs.
- -- process (clk)
---  begin
-    --if rising_edge(clk) then
-     -- if (rst = '1') then
-      --  HEX <= "0000";
-     -- elsif (FB = "110") then
-      --  HEX <= DATA_BUS(3 downto 0);
-    --  end if;
-  --  end if;
---  end process;
+
+  -- AX : Accumulator register
+  process (clk)
+  begin
+    if rising_edge(clk) then
+      if (rst = '1') then
+        AR <= (others => '0');
+      elsif (FB = "010") then
+        AR <= DATA_BUS;
+      end if;
+    end if;
+  end process;
+
+    -- ALU
+  process (clk)
+  begin
+    if rising_edge(clk) then
+      if (rst = '1') then
+        ALUd <= (others =>'0');
+      elsif (FB = "101") then
+        ALUd <= DATA_BUS;
+      end if;
+    end if;
+  end process;
 
   Led(0) <= '1' when (us_time > 750) else '0';
 	
@@ -161,6 +182,7 @@ begin
 
   UL : ultra port map(clk, JA, JB, us_time, rst);
 
+  AL : alu port map(clk, alu_data=>ALUd, alu_opcode=>ALU_op, ar=>AR, status=>SR);
 
   process(clk)
   begin
@@ -191,8 +213,7 @@ begin
   -- Plug in the led driver
   HD: leddriver port map (clk, rst, seg, an, value=>us_time_temp);
 
-  
-  
+  ALU_op <= IR(15 downto 12);
   -- micro memory signal assignments
   uAddr <= uM(5 downto 0);
   uPCsig <= uM(6);
@@ -206,6 +227,7 @@ begin
     PC when (TB = "011") else
     ASR when (TB = "100") else
     us_time when (TB = "101") else
+    AR when (TB = "110") else
    (others => '0');
 
 end Behavioral;
