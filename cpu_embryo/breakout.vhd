@@ -52,7 +52,7 @@ architecture Behavioral of breakout is
   -- micro memory signals
   signal uM : unsigned(22 downto 0); -- micro Memory output
   signal uPC : unsigned(5 downto 0); -- micro Program Counter
-  signal uPCsig : std_logic; -- (0:uPC++, 1:uPC=uAddr)
+  signal uPCsig : unsigned(2 downto 0); -- (0:uPC++, 1:uPC=uAddr)
   signal uAddr : unsigned(6 downto 0); -- micro Address
   signal TB : unsigned(3 downto 0); -- To Bus field
   signal FB : unsigned(3 downto 0); -- From Bus field
@@ -60,7 +60,7 @@ architecture Behavioral of breakout is
   -- program memory signals
   signal PM : unsigned(15 downto 0); -- Program Memory output
   signal PC : unsigned(15 downto 0); -- Program Counter
-  signal Pcsig : unsigned(2 downto 0); -- 0:PC=PC, 1:PC++
+  signal Pcsig : std_logic; -- 0:PC=PC, 1:PC++
   signal ASR : unsigned(15 downto 0); -- Address Register
   signal IR : unsigned(15 downto 0); -- Instruction Register
   signal DATA_BUS : unsigned(15 downto 0); -- Data Bus
@@ -90,7 +90,7 @@ begin
     if rising_edge(clk) then
       if (rst = '1') then
         uPC <= (others => '0');
-      elsif (uPCsig = '001') then
+      elsif (uPCsig = "001") then
         uPC <= uAddr;
       else
         uPC <= uPC + 1;
