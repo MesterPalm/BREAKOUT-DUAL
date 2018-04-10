@@ -71,6 +71,7 @@ begin
 
   -- general registers
   process(clk)
+  begin
     if rising_edge(clk) then
       if (rst = '1') then
         grxDataIn <= (others => '0');
