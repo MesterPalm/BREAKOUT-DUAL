@@ -12,7 +12,7 @@ end uMem;
 architecture Behavioral of uMem is
 
 -- micro Memory
-type u_mem_t is array (0 to 15) of unsigned(23 downto 0);
+type u_mem_t is array (0 to 15) of unsigned(22 downto 0);
 constant u_mem_c : u_mem_t :=
    --OP_TB_FB_PC_uPC_uAddr
    --4__4__4__1__3___7

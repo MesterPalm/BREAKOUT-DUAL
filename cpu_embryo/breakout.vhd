@@ -16,11 +16,11 @@ architecture Behavioral of breakout is
 
   -- general register component
   component grx
-  port (grxAddr : in unsigned(6 downto 0);
-        grxDataIn : in unsigned(15 downto 0);
-        grxDataOut : out unsigned(15 downto 0);
-        grxRW : in std_logic; --the read/write bit, in read mode when high else write
-        clk : in std_logic);
+    port (grxAddr : in unsigned(6 downto 0);
+          grxDataIn : in unsigned(15 downto 0);
+          grxDataOut : out unsigned(15 downto 0);
+          grxRW : in std_logic; --the read/write bit, in read mode when high else write
+          clk : in std_logic);
   end component;
 
   -- micro Memory component
@@ -46,12 +46,12 @@ architecture Behavioral of breakout is
   --general register
   signal grxDataIn : unsigned(15 downto 0);
   signal grxDataOut : unsigned(15 downto 0);
-  signal grxAddr : unsigned (3 downto 0);
+  signal grxAddr : unsigned (6 downto 0);
   signal grxRW : std_logic;
 
   -- micro memory signals
   signal uM : unsigned(22 downto 0); -- micro Memory output
-  signal uPC : unsigned(5 downto 0); -- micro Program Counter
+  signal uPC : unsigned(6 downto 0); -- micro Program Counter
   signal uPCsig : unsigned(2 downto 0); -- (0:uPC++, 1:uPC=uAddr)
   signal uAddr : unsigned(6 downto 0); -- micro Address
   signal TB : unsigned(3 downto 0); -- To Bus field
@@ -144,7 +144,7 @@ begin
   U0 : uMem port map(uAddr=>uPC, uData=>uM);
 
   -- program memory component connection
-  --U1 : pMem port map(pAddr=>ASR, pData=>PM);
+  U1 : pMem port map(pAddr=>ASR, pData=>PM);
 
   UL : ultra port map(clk, JA, JB, us_time, rst);
   -- micro memory signal assignments
@@ -153,6 +153,7 @@ begin
   PCsig <= uM(10);
   FB <= uM(14 downto 11);
   TB <= uM(18 downto 15);
+  grxAddr <= "0000000";
 
   -- data bus assignment
   DATA_BUS <= IR when (TB = "0001") else

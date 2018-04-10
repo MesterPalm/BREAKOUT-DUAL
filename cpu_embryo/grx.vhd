@@ -8,7 +8,7 @@ entity grx is
     grxAddr : in unsigned(6 downto 0);
     grxDataIn : in unsigned(15 downto 0);
     grxDataOut : out unsigned(15 downto 0);
-    grxRW : in std_logic --the read/write bit, in read mode when high else write
+    grxRW : in std_logic; --the read/write bit, in read mode when high else write
     clk : in std_logic);
 end grx;
 
@@ -45,5 +45,5 @@ begin  -- Behavioral
         grx_c(to_integer(grxAddr)) <= grxDataIn;
       end if;
     end if;
-  process end;
+  end process;
 end Behavioral;
