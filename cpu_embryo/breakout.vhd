@@ -14,6 +14,14 @@ end breakout ;
 
 architecture Behavioral of breakout is
 
+  -- general register component
+  component grx
+  port (grxAddr : in unsigned(6 downto 0);
+        grxDataIn : in unsigned(15 downto 0);
+        grxDataOut : out unsigned(15 downto 0);
+        grxRW : in std_logic --the read/write bit, in read mode when high else write
+        clk : in std_logic);
+  end component;
 
   -- micro Memory component
   component uMem
@@ -35,6 +43,11 @@ architecture Behavioral of breakout is
          rst : in std_logic
     );
   end component;
+  --general register
+  signal grxDataIn : unsigned(15 downto 0);
+  signal grxDataOut : unsigned(15 downto 0);
+  signal grxAddr : unsigned (3 downto 0);
+  signal grxRW : std_logic;
 
   -- micro memory signals
   signal uM : unsigned(22 downto 0); -- micro Memory output
@@ -55,6 +68,20 @@ architecture Behavioral of breakout is
   -- ultra beahvior signals
   signal us_time : unsigned (15 downto 0);
 begin
+
+  -- general registers
+  process(clk)
+    if rising_edge(clk) then
+      if (rst = '1') then
+        grxDataIn <= (others => '0');
+      elsif (FB = "0101") then
+        grxDataIn <= DATA_BUS;
+        grxRW <= '0';
+      else
+        grxRW <= '1';
+      end if;
+    end if;
+  end process;
 
   -- mPC : micro Program Counter
   process(clk)
@@ -110,6 +137,8 @@ begin
 
   Led(0) <= '1' when (us_time > 20) else '0';
 
+  -- general register
+  GR : grx port map(grxAddr, grxDataIn, grxDataOut, grxRW, clk);
   -- micro memory component connection
   U0 : uMem port map(uAddr=>uPC, uData=>uM);
 
@@ -129,6 +158,7 @@ begin
     PM when (TB = "0010") else
     PC when (TB = "0011") else
     ASR when (TB = "0100") else
+    grxDataOut when (TB = "0101") else
    (others => '0');
 
 end Behavioral;
