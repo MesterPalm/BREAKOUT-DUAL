@@ -14,6 +14,15 @@ end breakout ;
 
 architecture Behavioral of breakout is
 
+  --instruction decoder component
+  component instrDec
+    port (
+      instruction : in unsigned(15 downto 0);
+      uAddr : out unsigned(6 downto 0);
+      grA : out unsigned(6 downto 0);
+      grB : out unsigned(6 downto 0));
+  end component;
+  
   -- general register component
   component grx
     port (grxAddr : in unsigned(6 downto 0);
@@ -43,6 +52,10 @@ architecture Behavioral of breakout is
          rst : in std_logic
     );
   end component;
+  --instruction decoder signal
+  signal uProg : unsigned(6 downto 0);
+  signal grA : unsigned(6 downto 0);
+  signal grB : unsigned(6 downto 0);
   --general register
   signal grxDataIn : unsigned(15 downto 0);
   signal grxDataOut : unsigned(15 downto 0);
@@ -92,6 +105,8 @@ begin
         uPC <= (others => '0');
       elsif (uPCsig = "001") then
         uPC <= uAddr;
+      elsif uPCsig = "010" then
+        uPC <= uProg;
       else
         uPC <= uPC + 1;
       end if;
@@ -137,8 +152,9 @@ begin
   end process;
 
   Led(0) <= '1' when (us_time > 20) else '0';
-
-  -- general register
+  --instruction decoder connection
+  ID : instrDec port map (instruction =>IR, uAddr=>uProg, grA=>grA, grB=>grB);
+  -- general register connection
   GR : grx port map(grxAddr, grxDataIn, grxDataOut, grxRW, clk);
   -- micro memory component connection
   U0 : uMem port map(uAddr=>uPC, uData=>uM);
@@ -153,10 +169,10 @@ begin
   PCsig <= uM(10);
   FB <= uM(14 downto 11);
   TB <= uM(18 downto 15);
-  grxAddr <= "0000000";
+  grxAddr <= grA;
 
   -- data bus assignment
-  DATA_BUS <= IR when (TB = "0001") else
+  DB : DATA_BUS <= IR when (TB = "0001") else
     PM when (TB = "0010") else
     PC when (TB = "0011") else
     ASR when (TB = "0100") else
