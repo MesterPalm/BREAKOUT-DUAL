@@ -14,13 +14,13 @@ end instrDec;
 architecture Behavioral of instrDec is
 
 begin  -- Behavioral
-  uAddr <= b"000_000_0" when (instruction = X"0042") else
-           b"000_000_0" when (instruction = X"00A0") else
-           b"000_000_0" when (instruction = X"70FF") else
-           b"000_001_1" when (instruction = X"1337") else
+  uAddr <= b"000_000_0" when (instruction(15 downto 12) = X"0") else
+           b"000_001_1" when (instruction(15 downto 12) = X"1") else
+           b"000_010_0" when (instruction(15 downto 12) = X"2") else
+           b"000_000_0" when (instruction(15 downto 12) = X"3") else
            (others => '0');
 
-  grA <= b"000_000_0";
-  grB <= b"000_000_1";
+  grA <= instruction(11 downto 5);
+  grB <= instruction(11 downto 5);
 
 end Behavioral;

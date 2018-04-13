@@ -169,7 +169,9 @@ begin
   PCsig <= uM(10);
   FB <= uM(14 downto 11);
   TB <= uM(18 downto 15);
-  grxAddr <= grA;
+  grxAddr <= grA when (TB = "0101") else
+             grB when (FB = "0101") else
+             (others => '0');
 
   -- data bus assignment
   DB : DATA_BUS <= IR when (TB = "0001") else
