@@ -6,7 +6,8 @@ Command Line: /sw/xilinx/ise_12.4i/ISE_DS/ISE/bin/lin64/unwrapped/ngdbuild -sd .
 ../synth/design.ngc design.ngd
 
 Reading NGO file
-"/edu/vikpa137/BREAKOUT-DUAL/cpu_embryo/breakout-synthdir/synth/design.ngc" ...
+"/edu/andry954/TSEA83/BREAKOUT-DUAL/cpu_embryo/breakout-synthdir/synth/design.ng
+c" ...
 Gathering constraint information from source properties...
 Done.
 
@@ -28,7 +29,7 @@ NGDBUILD Design Results Summary:
   Number of errors:     0
   Number of warnings:   0
 
-Total memory usage is 350324 kilobytes
+Total memory usage is 351192 kilobytes
 
 Writing NGD file "design.ngd" ...
 Total REAL time to NGDBUILD completion:  2 sec

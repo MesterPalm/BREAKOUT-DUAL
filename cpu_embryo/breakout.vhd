@@ -10,8 +10,14 @@ entity breakout is
        JB: in unsigned(1 downto 0); -- echo
        Led : out unsigned(7 downto 0);
        seg : out unsigned (7 downto 0);
-       an : out unsigned (3 downto 0)
-       );
+       an : out unsigned (3 downto 0);
+       Hsync : out std_logic;                        -- horizontal sync
+       Vsync : out std_logic;                        -- vertical sync
+       vgaRed : out	std_logic_vector(2 downto 0);   -- VGA red
+       vgaGreen : out std_logic_vector(2 downto 0);     -- VGA green
+       vgaBlue : out std_logic_vector(2 downto 1);     -- VGA blue
+       PS2KeyboardCLK	        : in std_logic;                         -- PS2 clock
+       PS2KeyboardData        : in std_logic);                        -- PS2 data
 end breakout ;
 
 architecture Behavioral of breakout is
@@ -37,6 +43,45 @@ architecture Behavioral of breakout is
 	 us_time : buffer unsigned(15 downto 0);
          rst : in std_logic
     );
+  end component;
+
+   -- PS2 keyboard encoder component
+  component KBD_ENC
+    port ( clk		        : in std_logic;				-- system clock
+	   rst		        : in std_logic;				-- reset signal
+	   PS2KeyboardCLK       : in std_logic;				-- PS2 clock
+	   PS2KeyboardData      : in std_logic;				-- PS2 data
+	   data		        : out std_logic_vector(7 downto 0);	-- tile data
+	   addr			: out unsigned(10 downto 0);	        -- tile address
+	   we			: out std_logic);	                -- write enable
+  end component;
+  
+  -- picture memory component
+  component PICT_MEM
+    port ( clk			: in std_logic;                         -- system clock
+	 -- port 1
+           we1		        : in std_logic;                         -- write enable
+           data_in1	        : in std_logic_vector(7 downto 0);      -- data in
+           data_out1	        : out std_logic_vector(7 downto 0);     -- data out
+           addr1	        : in unsigned(10 downto 0);             -- address
+	 -- port 2
+           we2			: in std_logic;                         -- write enable
+           data_in2	        : in std_logic_vector(7 downto 0);      -- data in
+           data_out2	        : out std_logic_vector(7 downto 0);     -- data out
+           addr2		: in unsigned(10 downto 0));            -- address
+  end component;
+	
+  -- VGA motor component
+  component VGA_MOTOR
+    port ( clk			: in std_logic;                         -- system clock
+           rst			: in std_logic;                         -- reset
+           data			: in std_logic_vector(7 downto 0);      -- data
+           addr			: out unsigned(10 downto 0);            -- address
+           vgaRed		: out std_logic_vector(2 downto 0);     -- VGA red
+           vgaGreen	        : out std_logic_vector(2 downto 0);     -- VGA green
+           vgaBlue		: out std_logic_vector(2 downto 1);     -- VGA blue
+           Hsync		: out std_logic;                        -- horizontal sync
+           Vsync		: out std_logic);                       -- vertical sync
   end component;
 
   -- Led driver for debugging
@@ -81,6 +126,18 @@ architecture Behavioral of breakout is
   
   signal us_time : unsigned (15 downto 0);
   signal rst : std_logic;
+
+
+  --VGA_MOTOR
+  -- intermediate signals between KBD_ENC and PICT_MEM
+  signal        data_s	        : std_logic_vector(7 downto 0);         -- data
+  signal	addr_s	        : unsigned(10 downto 0);                -- address
+  signal	we_s		: std_logic;                            -- write enable
+	
+  -- intermediate signals between PICT_MEM and VGA_MOTOR
+  signal	data_out2_s     : std_logic_vector(7 downto 0);         -- data
+  signal	addr2_s		: unsigned(10 downto 0);                -- address
+  
 begin
   rst <= btns;
   Led(1) <= btns;
@@ -161,6 +218,14 @@ begin
 
   UL : ultra port map(clk, JA, JB, us_time, rst);
 
+   -- picture memory component connection
+  U3 : PICT_MEM port map(clk=>clk, we1=>we_s, data_in1=>data_s, addr1=>addr_s, we2=>'0', data_in2=>"00000000", data_out2=>data_out2_s, addr2=>addr2_s);
+	
+  -- VGA motor component connection
+  U4 : VGA_MOTOR port map(clk=>clk, rst=>rst, data=>data_out2_s, addr=>addr2_s, vgaRed=>vgaRed, vgaGreen=>vgaGreen, vgaBlue=>vgaBlue, Hsync=>Hsync, Vsync=>Vsync);
+
+  -- keyboard encoder component connection
+  U5 : KBD_ENC port map(clk=>clk, rst=>rst, PS2KeyboardCLK=>PS2KeyboardCLK, PS2KeyboardData=>PS2KeyboardData, data=>data_s, addr=>addr_s, we=>we_s);
 
   process(clk)
   begin
@@ -191,8 +256,6 @@ begin
   -- Plug in the led driver
   HD: leddriver port map (clk, rst, seg, an, value=>us_time_temp);
 
-  
-  
   -- micro memory signal assignments
   uAddr <= uM(5 downto 0);
   uPCsig <= uM(6);
