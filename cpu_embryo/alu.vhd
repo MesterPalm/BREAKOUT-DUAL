@@ -8,16 +8,16 @@ use IEEE.NUMERIC_STD.all;
 entity alu is
     port(
       clk : in std_logic;
-      alu_data : in unsigned(15 downto 0);
+      alu_data : in unsigned(31 downto 0);
       alu_opcode : in unsigned (3 downto 0);
-      ar : buffer unsigned (15 downto 0);
+      ar : buffer unsigned (31 downto 0);
       status : out unsigned (7 downto 0));
 end alu;
 
 architecture Behavioral of alu is
   signal equal : std_logic;
-	signal K_add : unsigned(15 downto 0);
-	signal K_sub : unsigned(15 downto 0);
+	signal K_add : unsigned(31 downto 0);
+	signal K_sub : unsigned(31 downto 0);
   
 begin
   process(clk) begin
@@ -25,7 +25,7 @@ begin
 
       if alu_opcode = 1 then         -- add
         -- Overflow flag
-				if ((ar(15) = alu_data(15)) and (K_add(15) /= ar(15))) then
+				if ((ar(31) = alu_data(31)) and (K_add(31) /= ar(31))) then
 					status(0) <= '1';
 				else
 					status(0) <= '0';
@@ -33,7 +33,7 @@ begin
         ar <= ar + alu_data;
       elsif alu_opcode = 2 then         -- sub
 				-- set overflow flag
-				if ((ar(15) = alu_data(15)) and (K_sub(15) /= ar(15))) then
+				if ((ar(31) = alu_data(31)) and (K_sub(31) /= ar(31))) then
 					status(0) <= '1';
 				else
 					status(0) <= '0';
@@ -42,9 +42,9 @@ begin
         status(1) <= equal;
         ar <= ar - alu_data;
 			elsif alu_opcode = 3 then 				-- arithmetic/logic shift left
-				ar <= ar(14 downto 0) & '0';
+				ar <= ar(30 downto 0) & '0';
 			elsif alu_opcode = 4 then 				-- arithmetic shift right
-				ar <= ar(15) & ar(15 downto 1);
+				ar <= ar(31) & ar(31 downto 1);
 			elsif alu_opcode = 15 then 				-- set special flag
 				status(7) <= '1';	
       else                              -- idle
