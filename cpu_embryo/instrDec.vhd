@@ -5,7 +5,7 @@ use IEEE.NUMERIC_STD.all;
 -- instrDec interface
 entity instrDec is
   port (
-    instruction : in unsigned(15 downto 0);
+    instruction : in unsigned(31 downto 0);
     uAddr : out unsigned(6 downto 0);
     grA : out unsigned(6 downto 0);
     grB : out unsigned(6 downto 0));

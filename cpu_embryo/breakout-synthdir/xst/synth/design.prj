@@ -1,0 +1,5 @@
+vhdl work "../../../breakout.vhd"
+vhdl work "../../../uMem.vhd"
+vhdl work "../../../pMem.vhd"
+vhdl work "../../../ultra.vhd"
+vhdl work "../../../leddriver.vhd"

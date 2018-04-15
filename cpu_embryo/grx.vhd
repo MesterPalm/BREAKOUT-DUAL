@@ -6,33 +6,33 @@ use IEEE.NUMERIC_STD.all;
 entity grx is
   port (
     grxAddr : in unsigned(6 downto 0);
-    grxDataIn : in unsigned(15 downto 0);
-    grxDataOut : out unsigned(15 downto 0);
+    grxDataIn : in unsigned(31 downto 0);
+    grxDataOut : out unsigned(31 downto 0);
     grxRW : in std_logic; --the read/write bit, in read mode when high else write
     clk : in std_logic);
 end grx;
 
 architecture Behavioral of grx is
 
-type grx_t is array (0 to 15) of unsigned(15 downto 0);
+type grx_t is array (0 to 15) of unsigned(31 downto 0);
 
 signal grx_c : grx_t :=
-  (b"0000_0000_0000_0000", 
-   b"0000_0000_0000_0000", 
-   b"0000_0000_0000_0000", 
-   b"0000_0000_0000_0000",
-   b"0000_0000_0000_0000",
-   b"0000_0000_0000_0000",
-   b"0000_0000_0000_0000",
-   b"0000_0000_0000_0000",
-   b"0000_0000_0000_0000",
-   b"0000_0000_0000_0000",
-   b"0000_0000_0000_0000",
-   b"0000_0000_0000_0000",
-   b"0000_0000_0000_0000",
-   b"0000_0000_0000_0000",
-   b"0000_0000_0000_0000",
-   b"0000_0000_0000_0000");
+  (X"0000_0000", 
+   X"0000_0000", 
+   X"0000_0000", 
+   X"0000_0000",
+   X"0000_0000",
+   X"0000_0000",
+   X"0000_0000",
+   X"0000_0000",
+   X"0000_0000",
+   X"0000_0000",
+   X"0000_0000",
+   X"0000_0000",
+   X"0000_0000",
+   X"0000_0000",
+   X"0000_0000",
+   X"0000_0000");
 
 begin  -- Behavioral
   process (clk) begin

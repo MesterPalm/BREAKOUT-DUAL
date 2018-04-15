@@ -1,0 +1,7 @@
+INFILE=/edu/vikpa137/BREAKOUT-DUAL/cpu_embryo/breakout-synthdir/layoutdefault/design.ncd
+OUTFILE=/edu/vikpa137/BREAKOUT-DUAL/cpu_embryo/breakout-synthdir/layoutdefault/design.bit
+FAMILY=Spartan6
+PART=xc6slx16-3csg324
+WORKINGDIR=/edu/vikpa137/BREAKOUT-DUAL/cpu_embryo/breakout-synthdir/layoutdefault
+LICENSE=ISE
+USER_INFO=1777494980_210567422_325

@@ -11,7 +11,7 @@ entity ultra is
     --trigger : out STD_LOGIC;    
     --echo : in STD_LOGIC;
     --gnd : out STD_LOGIC;
-    us_time : buffer unsigned (15 downto 0);
+    us_time : buffer unsigned (31 downto 0);
     rst : in std_logic);
 end ultra;
 
@@ -19,7 +19,7 @@ architecture ultra_behavior of ultra is
   type state is (q_trig, q_wait1, q_echo, q_wait2);
   signal q : state;
   signal us_counter : unsigned (6 downto 0);
-  signal us : unsigned (15 downto 0);
+  signal us : unsigned (31 downto 0);
   signal us_rst : std_logic;
   signal trig_counter : unsigned (3 downto 0);
   signal trigger :STD_LOGIC;    
@@ -32,11 +32,11 @@ begin
     if rising_edge(clk) then
       if (rst = '1') then
         us_counter <= "0000000";
-        us <= X"0000";
+        us <= X"0000_0000";
       else
         if (us_rst = '1') then
           us_counter <= "0000000";
-          us <= X"0000";
+          us <= X"0000_0000";
         else
           if (us_counter = 99) then          
             us <= us + 1;
