@@ -5,7 +5,7 @@ use IEEE.NUMERIC_STD.all;
 -- grx interface
 entity grx is
   port (
-    grxAddr : in unsigned(6 downto 0);
+    grxAddr : in unsigned(3 downto 0);
     grxDataIn : in unsigned(31 downto 0);
     grxDataOut : out unsigned(31 downto 0);
     grxRW : in std_logic; --the read/write bit, in read mode when high else write

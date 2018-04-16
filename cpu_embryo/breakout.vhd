@@ -17,14 +17,16 @@ architecture Behavioral of breakout is
   component instrDec
     port (
       instruction : in unsigned(31 downto 0);
+      operand : out unsigned(31 downto 0);
       uAddr : out unsigned(6 downto 0);
-      grA : out unsigned(6 downto 0);
-      grB : out unsigned(6 downto 0));
+      grA : out unsigned(3 downto 0);
+      grB : out unsigned(3 downto 0);
+      clk : std_logic);
   end component;
   
   -- general register component
   component grx
-    port (grxAddr : in unsigned(6 downto 0);
+    port (grxAddr : in unsigned(3 downto 0);
           grxDataIn : in unsigned(31 downto 0);
           grxDataOut : out unsigned(31 downto 0);
           grxRW : in std_logic; --the read/write bit, in read mode when high else write
@@ -64,12 +66,13 @@ architecture Behavioral of breakout is
   end component;
   --instruction decoder signal
   signal uProg : unsigned(6 downto 0);
-  signal grA : unsigned(6 downto 0);
-  signal grB : unsigned(6 downto 0);
+  signal operand : unsigned(31 downto 0);
+  signal grA : unsigned(3 downto 0);
+  signal grB : unsigned(3 downto 0);
   --general register
   signal grxDataIn : unsigned(31 downto 0);
   signal grxDataOut : unsigned(31 downto 0);
-  signal grxAddr : unsigned (6 downto 0);
+  signal grxAddr : unsigned (3 downto 0);
   signal grxRW : std_logic;
 
   -- micro memory signals
@@ -194,7 +197,7 @@ begin
   end process;
 	
   --instruction decoder connection
-  ID : instrDec port map (instruction =>IR, uAddr=>uProg, grA=>grA, grB=>grB);
+  ID : instrDec port map (instruction =>IR, operand=>operand, uAddr=>uProg, grA=>grA, grB=>grB, clk=>clk);
   -- general register connection
   GR : grx port map(grxAddr, grxDataIn, grxDataOut, grxRW, clk);
 
@@ -221,12 +224,13 @@ begin
 
   -- data bus assignment
   DB : DATA_BUS <= IR when (TB = "0001") else
-    PM when (TB = "0010") else
-    PC when (TB = "0011") else
-    ASR when (TB = "0100") else
-    grxDataOut when (TB = "0101") else
-    us_time when (TB = "0110") else
-    AR when (TB = "0111") else
-   (others => '0');
+                   PM when (TB = "0010") else
+                   PC when (TB = "0011") else
+                   ASR when (TB = "0100") else
+                   grxDataOut when (TB = "0101") else
+                   us_time when (TB = "0110") else
+                   AR when (TB = "0111") else
+                   operand when (TB = "1001") else
+                   (others => '0');
 
 end Behavioral;
