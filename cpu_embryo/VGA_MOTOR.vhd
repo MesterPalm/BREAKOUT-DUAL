@@ -21,7 +21,10 @@ entity VGA_MOTOR is
 	 vgaGreen	        : out std_logic_vector(2 downto 0);
 	 vgaBlue		: out std_logic_vector(2 downto 1);
 	 Hsync		        : out std_logic;
-	 Vsync		        : out std_logic);
+	 Vsync		        : out std_logic;
+         collision              : out std_logic;
+         normal                 : out std_logic_vector(2 downto 0)
+         );
 end VGA_MOTOR;
 
 
@@ -33,7 +36,7 @@ architecture Behavioral of VGA_MOTOR is
   signal	ClkDiv	        : unsigned(1 downto 0);		-- Clock divisor, to generate 25 MHz signal
   signal	Clk25		: std_logic;			-- One pulse width 25 MHz signal
 		
-  signal 	tilePixel       : std_logic_vector(7 downto 0);	-- Tile pixel data
+  signal 	tilePixel       : std_logic_vector(11 downto 0);	-- Tile pixel data
   signal	tileAddr	: unsigned(10 downto 0);	-- Tile address
 
   signal        blank           : std_logic;                    -- blanking signal
@@ -335,6 +338,38 @@ architecture Behavioral of VGA_MOTOR is
                   x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF"
                   
                   );
+  
+  -- Ball memory type
+  type balls is array (0 to 63) of std_logic_vector(11 downto 0);
+
+  signal ballSprite : bs := 
+		( 
+                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- ball
+                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
+		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
+                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
+                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
+                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
+                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
+                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF"
+
+                  );
+  
+  -- Paddle memory type
+  type paddles is array (0 to 63) of std_logic_vector(11 downto 0);
+
+  signal paddleSprite : paddles := 
+		( 
+                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- ball
+                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
+		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
+                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
+                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
+                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
+                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
+                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF"
+
+                  );
 		  
 begin
 
@@ -444,12 +479,16 @@ begin
   begin
     if rising_edge(clk) then
       if (blank = '0') then
-        tilePixel <= tileMem(to_integer(tileAddr))(7 downto 0);
+        tilePixel <= tileMem(to_integer(tileAddr))(11 downto 0);
       else
         tilePixel <= (others => '0');
       end if;
     end if;
   end process;
+
+
+  -- Collision logic
+  collision <= '1' when (
 	
 
 
@@ -471,6 +510,11 @@ begin
   vgaBlue(2) 	<= tilePixel(1);
   vgaBlue(1) 	<= tilePixel(0);
 
+  -- normal generation
+  normal(2) <= tilePixel(10);
+  normal(1) <= tilePixel(9);
+  normal(0) <= tilePixel(8);
+  
 
 end Behavioral;
 

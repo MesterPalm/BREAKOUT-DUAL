@@ -9,7 +9,7 @@ Target Device  : xc6slx16
 Target Package : csg324
 Target Speed   : -3
 Mapper Version : spartan6 -- $Revision: 1.52.76.2 $
-Mapped Date    : Fri Apr 13 14:45:50 2018
+Mapped Date    : Mon Apr 16 14:25:23 2018
 
 Design Summary
 --------------
@@ -86,7 +86,7 @@ Specific Feature Utilization:
 Average Fanout of Non-Clock Nets:                3.30
 
 Peak Memory Usage:  572 MB
-Total REAL time to MAP completion:  10 secs 
+Total REAL time to MAP completion:  12 secs 
 Total CPU time to MAP completion:   9 secs 
 
 Table of Contents
@@ -314,7 +314,7 @@ Section 12 - Control Set Information
 | clk_BUFGP    |                             |            | _n0106_inv                         | 3                | 16             |
 | clk_BUFGP    | Led_1_OBUF                  |            |                                    | 13               | 41             |
 | clk_BUFGP    | Led_1_OBUF                  |            | U4/Clk25                           | 3                | 10             |
-| clk_BUFGP    | Led_1_OBUF                  |            | U4/_n0088_inv                      | 3                | 10             |
+| clk_BUFGP    | Led_1_OBUF                  |            | U4/_n0092_inv                      | 3                | 10             |
 | clk_BUFGP    | Led_1_OBUF                  |            | U5/PS2Clk_op                       | 3                | 10             |
 | clk_BUFGP    | Led_1_OBUF                  |            | U5/WRstate_FSM_FFd2                | 7                | 10             |
 | clk_BUFGP    | Led_1_OBUF                  |            | U5/_n0742_inv                      | 1                | 1              |

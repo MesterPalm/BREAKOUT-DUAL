@@ -81,7 +81,10 @@ architecture Behavioral of breakout is
            vgaGreen	        : out std_logic_vector(2 downto 0);     -- VGA green
            vgaBlue		: out std_logic_vector(2 downto 1);     -- VGA blue
            Hsync		: out std_logic;                        -- horizontal sync
-           Vsync		: out std_logic);                       -- vertical sync
+           Vsync		: out std_logic;                        -- vertical sync
+           collision            : out std_logic;                        -- true if the pixel can be colided with
+           normal               : out std_logic_vector(2 downto 0)     -- the normal of the pixel
+           );
   end component;
 
   -- Led driver for debugging
@@ -137,6 +140,10 @@ architecture Behavioral of breakout is
   -- intermediate signals between PICT_MEM and VGA_MOTOR
   signal	data_out2_s     : std_logic_vector(7 downto 0);         -- data
   signal	addr2_s		: unsigned(10 downto 0);                -- address
+
+  -- intermediate signals between VGA_MOTOR and ALU / other component
+  signal        collision_s     : std_logic;
+  signal        normal_s        : std_logic_vector(2 downto 0);
   
 begin
   rst <= btns;
@@ -222,7 +229,7 @@ begin
   U3 : PICT_MEM port map(clk=>clk, we1=>we_s, data_in1=>data_s, addr1=>addr_s, we2=>'0', data_in2=>"00000000", data_out2=>data_out2_s, addr2=>addr2_s);
 	
   -- VGA motor component connection
-  U4 : VGA_MOTOR port map(clk=>clk, rst=>rst, data=>data_out2_s, addr=>addr2_s, vgaRed=>vgaRed, vgaGreen=>vgaGreen, vgaBlue=>vgaBlue, Hsync=>Hsync, Vsync=>Vsync);
+  U4 : VGA_MOTOR port map(clk=>clk, rst=>rst, data=>data_out2_s, addr=>addr2_s, vgaRed=>vgaRed, vgaGreen=>vgaGreen, vgaBlue=>vgaBlue, Hsync=>Hsync, Vsync=>Vsync, collision=>collision_s, normal=>normal_s);
 
   -- keyboard encoder component connection
   U5 : KBD_ENC port map(clk=>clk, rst=>rst, PS2KeyboardCLK=>PS2KeyboardCLK, PS2KeyboardData=>PS2KeyboardData, data=>data_s, addr=>addr_s, we=>we_s);

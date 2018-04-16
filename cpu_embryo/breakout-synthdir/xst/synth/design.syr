@@ -5,7 +5,7 @@ Parameter TMPDIR set to tmpdir
 
 
 Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.08 secs
+Total CPU time to Xst completion: 0.11 secs
  
 --> 
 
@@ -100,8 +100,8 @@ Elaborating entity <KBD_ENC> (architecture <behavioral>) from library <work>.
 INFO:HDLCompiler:679 - "/edu/andry954/TSEA83/BREAKOUT-DUAL/cpu_embryo/breakout-synthdir/xst/synth/../../../KBD_ENC.vhd" Line 291. Case statement is complete. others clause is never selected
 
 Elaborating entity <leddriver> (architecture <Behavioral>) from library <work>.
-WARNING:Xst:2972 - "/edu/andry954/TSEA83/BREAKOUT-DUAL/cpu_embryo/breakout.vhd" line 214. All outputs of instance <U0> of block <uMem> are unconnected in block <breakout>. Underlying logic will be removed.
-WARNING:Xst:2972 - "/edu/andry954/TSEA83/BREAKOUT-DUAL/cpu_embryo/breakout.vhd" line 217. All outputs of instance <U1> of block <pMem> are unconnected in block <breakout>. Underlying logic will be removed.
+WARNING:Xst:2972 - "/edu/andry954/TSEA83/BREAKOUT-DUAL/cpu_embryo/breakout.vhd" line 221. All outputs of instance <U0> of block <uMem> are unconnected in block <breakout>. Underlying logic will be removed.
+WARNING:Xst:2972 - "/edu/andry954/TSEA83/BREAKOUT-DUAL/cpu_embryo/breakout.vhd" line 224. All outputs of instance <U1> of block <pMem> are unconnected in block <breakout>. Underlying logic will be removed.
 
 =========================================================================
 *                           HDL Synthesis                               *
@@ -109,14 +109,16 @@ WARNING:Xst:2972 - "/edu/andry954/TSEA83/BREAKOUT-DUAL/cpu_embryo/breakout.vhd" 
 
 Synthesizing Unit <breakout>.
     Related source file is "/edu/andry954/TSEA83/BREAKOUT-DUAL/cpu_embryo/breakout.vhd".
-INFO:Xst:3010 - "/edu/andry954/TSEA83/BREAKOUT-DUAL/cpu_embryo/breakout.vhd" line 222: Output port <data_out1> of the instance <U3> is unconnected or connected to loadless signal.
+INFO:Xst:3010 - "/edu/andry954/TSEA83/BREAKOUT-DUAL/cpu_embryo/breakout.vhd" line 229: Output port <data_out1> of the instance <U3> is unconnected or connected to loadless signal.
+INFO:Xst:3010 - "/edu/andry954/TSEA83/BREAKOUT-DUAL/cpu_embryo/breakout.vhd" line 232: Output port <normal> of the instance <U4> is unconnected or connected to loadless signal.
+INFO:Xst:3010 - "/edu/andry954/TSEA83/BREAKOUT-DUAL/cpu_embryo/breakout.vhd" line 232: Output port <collision> of the instance <U4> is unconnected or connected to loadless signal.
     Found 24-bit register for signal <counter_temp>.
     Found 1-bit register for signal <Led<4>>.
     Found 1-bit register for signal <Led<3>>.
     Found 1-bit register for signal <Led<2>>.
     Found 16-bit register for signal <us_time_temp>.
     Found 24-bit adder for signal <counter_temp[23]_GND_4_o_add_23_OUT> created at line 1241.
-    Found 16-bit comparator greater for signal <Led<0>> created at line 211
+    Found 16-bit comparator greater for signal <Led<0>> created at line 218
     Summary:
 	inferred   1 Adder/Subtractor(s).
 	inferred  43 D-type flip-flop(s).
@@ -172,24 +174,24 @@ WARNING:Xst:2999 - Signal 'tileMem', unconnected in block 'VGA_MOTOR', is tied t
     Found 2048x12-bit single-port Read Only RAM <Mram_tileMem> for signal <tileMem>.
     Found 10-bit register for signal <Xpixel>.
     Found 10-bit register for signal <Ypixel>.
-    Found 8-bit register for signal <tilePixel>.
+    Found 12-bit register for signal <tilePixel>.
     Found 2-bit register for signal <ClkDiv>.
     Found 2-bit adder for signal <ClkDiv[1]_GND_18_o_add_0_OUT> created at line 1241.
     Found 10-bit adder for signal <Xpixel[9]_GND_18_o_add_5_OUT> created at line 1241.
     Found 10-bit adder for signal <Ypixel[9]_GND_18_o_add_14_OUT> created at line 1241.
-    Found 11-bit adder for signal <addr> created at line 461.
-    Found 5x4-bit multiplier for signal <PWR_9_o_Ypixel[8]_MuLt_28_OUT> created at line 461.
-    Found 10-bit comparator lessequal for signal <n0010> created at line 391
-    Found 10-bit comparator greater for signal <Xpixel[9]_PWR_9_o_LessThan_12_o> created at line 391
-    Found 10-bit comparator lessequal for signal <n0022> created at line 426
-    Found 10-bit comparator greater for signal <Ypixel[9]_GND_18_o_LessThan_22_o> created at line 426
-    Found 10-bit comparator lessequal for signal <n0027> created at line 438
-    Found 10-bit comparator lessequal for signal <n0029> created at line 438
+    Found 11-bit adder for signal <addr> created at line 464.
+    Found 5x4-bit multiplier for signal <PWR_9_o_Ypixel[8]_MuLt_28_OUT> created at line 464.
+    Found 10-bit comparator lessequal for signal <n0010> created at line 394
+    Found 10-bit comparator greater for signal <Xpixel[9]_PWR_9_o_LessThan_12_o> created at line 394
+    Found 10-bit comparator lessequal for signal <n0022> created at line 429
+    Found 10-bit comparator greater for signal <Ypixel[9]_GND_18_o_LessThan_22_o> created at line 429
+    Found 10-bit comparator lessequal for signal <n0027> created at line 441
+    Found 10-bit comparator lessequal for signal <n0029> created at line 441
     Summary:
 	inferred   1 RAM(s).
 	inferred   1 Multiplier(s).
 	inferred   4 Adder/Subtractor(s).
-	inferred  30 D-type flip-flop(s).
+	inferred  34 D-type flip-flop(s).
 	inferred   6 Comparator(s).
 	inferred   2 Multiplexer(s).
 Unit <VGA_MOTOR> synthesized.
@@ -268,10 +270,10 @@ WARNING:Xst:647 - Input <rst> is never used. This port will be preserved and lef
 	inferred  29 D-type flip-flop(s).
 	inferred   4 Multiplexer(s).
 Unit <leddriver> synthesized.
-RTL-Simplification CPUSTAT: 0.16 
+RTL-Simplification CPUSTAT: 0.14 
 RTL-BasicInf CPUSTAT: 0.22 
-RTL-BasicOpt CPUSTAT: 0.01 
-RTL-Remain-Bus CPUSTAT: 0.00 
+RTL-BasicOpt CPUSTAT: 0.00 
+RTL-Remain-Bus CPUSTAT: 0.01 
 
 =========================================================================
 HDL Synthesis Report
@@ -301,6 +303,7 @@ Macro Statistics
  1-bit register                                        : 9
  10-bit register                                       : 2
  11-bit register                                       : 1
+ 12-bit register                                       : 1
  16-bit register                                       : 3
  18-bit register                                       : 1
  2-bit register                                        : 1
@@ -309,7 +312,7 @@ Macro Statistics
  5-bit register                                        : 1
  6-bit register                                        : 1
  7-bit register                                        : 2
- 8-bit register                                        : 3
+ 8-bit register                                        : 2
 # Comparators                                          : 7
  10-bit comparator greater                             : 2
  10-bit comparator lessequal                           : 4
@@ -496,7 +499,6 @@ Optimizing FSM <U5/FSM_1> on signal <WRstate[1:2]> with user encoding.
  wrchar  | 01
  wrcur   | 10
 ---------------------
-WARNING:Xst:2677 - Node <Mram_tileMem2> of sequential type is unconnected in block <MTP_>.
 WARNING:Xst:1710 - FF/Latch <Maddsub_PWR_10_o_curposY[4]_MuLt_99_OUT1_0> (without init value) has a constant value of 0 in block <KBD_ENC>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <Maddsub_PWR_10_o_curposY[4]_MuLt_99_OUT_0> (without init value) has a constant value of 0 in block <KBD_ENC>. This FF/Latch will be trimmed during the optimization process.
 INFO:Xst:2261 - The FF/Latch <curposX_0> in Unit <KBD_ENC> is equivalent to the following FF/Latch, which will be removed : <Maddsub_PWR_10_o_curposY[4]_MuLt_99_OUT1_6> 
@@ -520,6 +522,7 @@ Optimizing unit <VGA_MOTOR> ...
 Optimizing unit <KBD_ENC> ...
 
 Optimizing unit <leddriver> ...
+WARNING:Xst:2677 - Node <Mram_tileMem2> of sequential type is unconnected in block <U4>.
 
 Mapping all equations...
 Building and optimizing final netlist ...
@@ -765,9 +768,9 @@ Total CPU time to Xst completion: 6.13 secs
 --> 
 
 
-Total memory usage is 464448 kilobytes
+Total memory usage is 464540 kilobytes
 
 Number of errors   :    0 (   0 filtered)
 Number of warnings :   11 (   0 filtered)
-Number of infos    :   17 (   0 filtered)
+Number of infos    :   19 (   0 filtered)
 
