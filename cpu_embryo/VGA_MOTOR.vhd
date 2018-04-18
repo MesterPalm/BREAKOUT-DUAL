@@ -22,8 +22,12 @@ entity VGA_MOTOR is
 	 vgaBlue		: out std_logic_vector(2 downto 1);
 	 Hsync		        : out std_logic;
 	 Vsync		        : out std_logic;
-         collision              : out std_logic;
-         normal                 : out std_logic_vector(2 downto 0)
+         -- one bit for each sprite so that we can se which ball colided.
+         collision              : out std_logic_vector(1 downto 0);
+         -- the normal that the ball colided with.
+         normal                 : out std_logic_vector(2 downto 0);
+         ball_one_pos           : out std_logic_vector(18 downto 0);
+         ball_two_pos           : out std_logic_vector(18 downto 0)
          );
 end VGA_MOTOR;
 
@@ -488,7 +492,7 @@ begin
 
 
   -- Collision logic
-  collision <= '1' when (
+  --collision <= '1' when (
 	
 
 
@@ -514,7 +518,39 @@ begin
   normal(2) <= tilePixel(10);
   normal(1) <= tilePixel(9);
   normal(0) <= tilePixel(8);
+
+  
+  -----------------------------------------------------------------------------
+  -- Start of K-nät for the muxing of tiles and sprites.
+  -----------------------------------------------------------------------------
+  ball_one_x <= ball_one_pos(18 downto 9);
+  ball_one_y <= ball_one_pos(8 downto 0);
+  delta_one_x <= ball_one_x - Xpixel;
+  delta_one_y <= ball_one_y - Ypixel(8 downto 0);
+  
+  delta_adr <= current pixel adr - spriteadr;
+  transparent <= '1' when delta_adr >= 0 and delta addr <= 63 and (not sprite(delta_adr)(transparentbit)) else '0';
+  -- Do this for every sprite
+
+  process(clk)
+  begin
+    if rising_edge(clk) then
+      if (sprite_1_transparent) then
+        if (sprite_2_transparent) then
+          --...
+          -- Choose the tile if no sprites are in front of it.
+        else
+
+        end if;
+      else
+
+      end if;
+    end if;
+  end process;
   
 
+  
+
+  
 end Behavioral;
 
