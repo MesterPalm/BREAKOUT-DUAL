@@ -22,12 +22,14 @@ entity VGA_MOTOR is
 	 vgaBlue		: out std_logic_vector(2 downto 1);
 	 Hsync		        : out std_logic;
 	 Vsync		        : out std_logic;
-         -- one bit for each sprite so that we can se which ball colided.
-         collision              : out std_logic_vector(1 downto 0);
-         -- the normal that the ball colided with.
-         normal                 : out std_logic_vector(2 downto 0);
-         ball_one_pos           : out std_logic_vector(18 downto 0);
-         ball_two_pos           : out std_logic_vector(18 downto 0)
+         -- first bit 1 if collision, 3-bit enumerated normal.
+         collision_one          : out std_logic_vector(3 downto 0);
+         collision_two          : out std_logic_vector(3 downto 0);
+         -- The balls start_stop X and start_stop Y.
+         ball_one_posX          : out std_logic_vector(19 downto 0);
+         ball_two_posY          : out std_logic_vector(19 downto 0);
+         ball_two_posX          : out std_logic_vector(19 downto 0);
+         ball_two_posY          : out std_logic_vector(19 downto 0)
          );
 end VGA_MOTOR;
 
@@ -40,7 +42,7 @@ architecture Behavioral of VGA_MOTOR is
   signal	ClkDiv	        : unsigned(1 downto 0);		-- Clock divisor, to generate 25 MHz signal
   signal	Clk25		: std_logic;			-- One pulse width 25 MHz signal
 		
-  signal 	tilePixel       : std_logic_vector(11 downto 0);	-- Tile pixel data
+  signal 	outPixel        : std_logic_vector(7 downto 0);	-- output pixel data
   signal	tileAddr	: unsigned(10 downto 0);	-- Tile address
 
   signal        blank           : std_logic;                    -- blanking signal
@@ -483,9 +485,9 @@ begin
   begin
     if rising_edge(clk) then
       if (blank = '0') then
-        tilePixel <= tileMem(to_integer(tileAddr))(11 downto 0);
+        outPixel <= tileMem(to_integer(tileAddr))(11 downto 0);
       else
-        tilePixel <= (others => '0');
+        outPixel <= (others => '0');
       end if;
     end if;
   end process;
@@ -505,46 +507,68 @@ begin
 
 
   -- VGA generation
-  vgaRed(2) 	<= tilePixel(7);
-  vgaRed(1) 	<= tilePixel(6);
-  vgaRed(0) 	<= tilePixel(5);
-  vgaGreen(2)   <= tilePixel(4);
-  vgaGreen(1)   <= tilePixel(3);
-  vgaGreen(0)   <= tilePixel(2);
-  vgaBlue(2) 	<= tilePixel(1);
-  vgaBlue(1) 	<= tilePixel(0);
-
-  -- normal generation
-  normal(2) <= tilePixel(10);
-  normal(1) <= tilePixel(9);
-  normal(0) <= tilePixel(8);
-
+  vgaRed(2) 	<= outPixel(7);
+  vgaRed(1) 	<= outPixel(6);
+  vgaRed(0) 	<= outPixel(5);
+  vgaGreen(2)   <= outPixel(4);
+  vgaGreen(1)   <= outPixel(3);
+  vgaGreen(0)   <= outPixel(2);
+  vgaBlue(2) 	<= outPixel(1);
+  vgaBlue(1) 	<= outPixel(0);
   
   -----------------------------------------------------------------------------
   -- Start of K-nät for the muxing of tiles and sprites.
   -----------------------------------------------------------------------------
-  ball_one_x <= ball_one_pos(18 downto 9);
-  ball_one_y <= ball_one_pos(8 downto 0);
-  delta_one_x <= ball_one_x - Xpixel;
-  delta_one_y <= ball_one_y - Ypixel(8 downto 0);
-  
-  delta_adr <= current pixel adr - spriteadr;
-  transparent <= '1' when delta_adr >= 0 and delta addr <= 63 and (not sprite(delta_adr)(transparentbit)) else '0';
-  -- Do this for every sprite
+  -- Inside sprites
+  -- one
+  inside_one <= '1' when Xpixel >= ball_one_posX(19 downto 10) and Xpixel <= ball_one_posX(9 downto 0) and Ypixel >= ball_one_posX(19 downto 10) and Ypixel <= ball_one_posX(9 downto 0) else '0';
+  -- two
+  inside_one <= '1' when Xpixel >= ball_two_posX(19 downto 10) and Xpixel <= ball_two_posX(9 downto 0) and Ypixel >= ball_two_posX(19 downto 10) and Ypixel <= ball_two_posX(9 downto 0) else '0';
 
+  --Sprite adress (6-bit)
+  -- one
+  addr_one <= (Ypos - ball_one_posX(19 downto 10))(2 downto 0) & (Xpos - ball_one_posX(19 downto 10))(2 downto 0);
+  -- two
+  addr_two <= (Ypos - ball_two_posX(19 downto 10))(2 downto 0) & (Xpos - ball_two_posX(19 downto 10))(2 downto 0);
+  
+  -- Transparent
+  transparent_one <= '1' when inside_one and ballSprite(to_integer(addr_one)) = 0 else '0';
+  transparent_two <= '1' when inside_two and ballSprite(to_integer(addr_two)) = 0 else '0';
+
+  -- Kollision kanske ska lösas med process sats då vi inte vill skriva över en
+  -- kollision. Collision behöver vara inout eller kollisionsflaggan behövs för
+  -- att inte skriva över tidigare resultat.
+  -- Collision
+  -- one
   process(clk)
   begin
     if rising_edge(clk) then
-      if (sprite_1_transparent) then
-        if (sprite_2_transparent) then
-          --...
-          -- Choose the tile if no sprites are in front of it.
+      if not collision_one(3) then
+        collision_one(3) <= '1' when transparent_one and tileMem(to_integer(tileAddr))(11) else '0';
+        collision_one(2 downto 0) <= tileMem(to_integer(tileAddr))(10 downto 8);
+      end if;
+    end if;
+  end process;
+                               
+  -- Pixel MUX
+  process(clk)
+  begin
+    if rising_edge(clk) then
+      if (blank = '0') then
+        if (transparent_one) then
+          if (transparent_two) then
+            -- Choose the tile if no sprites are in front of it.
+            outPixel <= tileMem(to_integer(tileAddr))(7 downto 0);            
+          else
+            outPixel <=  ballSprite(to_integer(addr_two))(7 downto 0);
+          end if;
         else
-
+          outPixel <=  ballSprite(to_integer(addr_one))(7 downto 0);
         end if;
       else
-
+        outPixel <= (others => '0');
       end if;
+      
     end if;
   end process;
   
