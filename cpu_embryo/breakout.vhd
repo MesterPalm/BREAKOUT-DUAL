@@ -72,20 +72,28 @@ architecture Behavioral of breakout is
   end component;
 	
   -- VGA motor component
-  component VGA_MOTOR
-    port ( clk			: in std_logic;                         -- system clock
-           rst			: in std_logic;                         -- reset
-           data			: in std_logic_vector(7 downto 0);      -- data
-           addr			: out unsigned(10 downto 0);            -- address
-           vgaRed		: out std_logic_vector(2 downto 0);     -- VGA red
-           vgaGreen	        : out std_logic_vector(2 downto 0);     -- VGA green
-           vgaBlue		: out std_logic_vector(2 downto 1);     -- VGA blue
-           Hsync		: out std_logic;                        -- horizontal sync
-           Vsync		: out std_logic;                        -- vertical sync
-           collision            : out std_logic;                        -- true if the pixel can be colided with
-           normal               : out std_logic_vector(2 downto 0)     -- the normal of the pixel
-           );
-  end component;
+  component VGA_MOTOR is
+  port ( clk			: in std_logic;
+	 data			: in std_logic_vector(7 downto 0);
+	 addr			: out unsigned(10 downto 0);
+	 rst			: in std_logic;
+	 vgaRed		        : out std_logic_vector(2 downto 0);
+	 vgaGreen	        : out std_logic_vector(2 downto 0);
+	 vgaBlue		: out std_logic_vector(2 downto 1);
+	 Hsync		        : out std_logic;
+	 Vsync		        : out std_logic;
+         -- first bit 1 if collision, 3-bit enumerated normal.
+         collision_one          : buffer unsigned(3 downto 0);
+         collision_two          : buffer unsigned(3 downto 0);
+         -- The balls start_stop X and start_stop Y.
+         ball_one_posX          : in unsigned(9 downto 0);
+         ball_one_posY          : in unsigned(9 downto 0);
+         ball_two_posX          : in unsigned(9 downto 0);
+         ball_two_posY          : in unsigned(9 downto 0);
+         collision_reset        : in std_logic
+         
+         );
+end component;
 
   -- Led driver for debugging
   --component leddriver
@@ -144,6 +152,15 @@ architecture Behavioral of breakout is
   -- intermediate signals between VGA_MOTOR and ALU / other component
   signal        collision_s     : std_logic;
   signal        normal_s        : std_logic_vector(2 downto 0);
+
+  signal collision_one_s          : unsigned(3 downto 0);
+  signal collision_two_s          : unsigned(3 downto 0);
+         -- The balls start_stop X and start_stop Y.
+  signal ball_one_posX_s         : unsigned(9 downto 0);
+  signal ball_one_posY_s          : unsigned(9 downto 0);
+  signal ball_two_posX_s          : unsigned(9 downto 0);
+  signal ball_two_posY_s          : unsigned(9 downto 0);
+  signal collision_reset_s        : std_logic;
   
 begin
   rst <= btns;
@@ -229,7 +246,7 @@ begin
   U3 : PICT_MEM port map(clk=>clk, we1=>we_s, data_in1=>data_s, addr1=>addr_s, we2=>'0', data_in2=>"00000000", data_out2=>data_out2_s, addr2=>addr2_s);
 	
   -- VGA motor component connection
-  U4 : VGA_MOTOR port map(clk=>clk, rst=>rst, data=>data_out2_s, addr=>addr2_s, vgaRed=>vgaRed, vgaGreen=>vgaGreen, vgaBlue=>vgaBlue, Hsync=>Hsync, Vsync=>Vsync, collision=>collision_s, normal=>normal_s);
+  U4 : VGA_MOTOR port map(clk=>clk, rst=>rst, data=>data_out2_s, addr=>addr2_s, vgaRed=>vgaRed, vgaGreen=>vgaGreen, vgaBlue=>vgaBlue, Hsync=>Hsync, Vsync=>Vsync, collision_one=>collision_one_s, collision_two=>collision_two_s, ball_one_posX=>ball_one_posX_s, ball_one_posY=>ball_one_posY_s, ball_two_posX=>ball_two_posX_s, ball_two_posY=>ball_two_posY_s, collision_reset=>collision_reset_s);
 
   -- keyboard encoder component connection
   U5 : KBD_ENC port map(clk=>clk, rst=>rst, PS2KeyboardCLK=>PS2KeyboardCLK, PS2KeyboardData=>PS2KeyboardData, data=>data_s, addr=>addr_s, we=>we_s);
