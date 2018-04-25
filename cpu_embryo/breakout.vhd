@@ -18,7 +18,8 @@ architecture Behavioral of breakout is
     port (
       instruction : in unsigned(31 downto 0);
       operand : out unsigned(31 downto 0);
-      uAddr : out unsigned(6 downto 0);
+      uMode : out unsigned(6 downto 0);
+      uProg : out unsigned(6 downto 0);
       grA : out unsigned(3 downto 0);
       grB : out unsigned(3 downto 0);
       clk : std_logic);
@@ -65,6 +66,7 @@ architecture Behavioral of breakout is
     );
   end component;
   --instruction decoder signal
+  signal uMode : unsigned(6 downto 0);
   signal uProg : unsigned(6 downto 0);
   signal operand : unsigned(31 downto 0);
   signal grA : unsigned(3 downto 0);
@@ -188,8 +190,10 @@ begin
         uPC <= (others => '0');
       elsif (uPCsig = "001") then
         uPC <= uAddr;
-      elsif uPCsig = "010" then
+      elsif (uPCsig = "010") then
         uPC <= uProg;
+      elsif (uPCsig = "011") then
+        uPc <= uMode;
       else
         uPC <= uPC + 1;
       end if;
@@ -197,7 +201,7 @@ begin
   end process;
 	
   --instruction decoder connection
-  ID : instrDec port map (instruction =>IR, operand=>operand, uAddr=>uProg, grA=>grA, grB=>grB, clk=>clk);
+  ID : instrDec port map (instruction =>IR, operand=>operand, uMode=>uMode, uProg=>uProg, grA=>grA, grB=>grB, clk=>clk);
   -- general register connection
   GR : grx port map(grxAddr, grxDataIn, grxDataOut, grxRW, clk);
 
@@ -211,7 +215,7 @@ begin
 
   AL : alu port map(clk, alu_data=>ALUd, alu_opcode=>ALU_op, ar=>AR, status=>SR);
   
-  -- micro memory signal assignments
+  -- micro memory signal assignment
   uAddr <= uM(6 downto 0);
   uPCsig <= uM(9 downto 7);
   PCsig <= uM(10);
