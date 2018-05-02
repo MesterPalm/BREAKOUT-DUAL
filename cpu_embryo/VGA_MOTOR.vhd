@@ -76,293 +76,415 @@ architecture Behavioral of VGA_MOTOR is
 -- colour chart http://www.fountainware.com/EXPL/vga_color_palettes.htm
   signal tileMem : ram_t := 
 		( 
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- space
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
+                  -- Tile start
 
-                  x"037",x"037",x"037",x"037",x"037",x"037",x"037",x"037",      -- blue
-                  x"037",x"037",x"037",x"037",x"037",x"037",x"037",x"037",
-		  x"037",x"037",x"037",x"037",x"037",x"037",x"037",x"037",
-                  x"037",x"037",x"037",x"037",x"037",x"037",x"037",x"037",
-                  x"037",x"037",x"037",x"037",x"037",x"037",x"037",x"037",
-                  x"037",x"037",x"037",x"037",x"037",x"037",x"037",x"037",
-                  x"037",x"037",x"037",x"037",x"037",x"037",x"037",x"037",
-                  x"037",x"037",x"037",x"037",x"037",x"037",x"037",x"037",
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- space
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
 
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- space
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
 
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- space
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
+-- Tile start
 
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- space
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
+x"0FF",x"0FF",x"0FF",x"0FF",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"0FF",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"0FF",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"0FF",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"0FF",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"0FF",x"000",x"000",x"000",x"000", 
+x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- space
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
 
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- space
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
 
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- space
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
+-- Tile start
 
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- space
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
+x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000", 
+x"0FF",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"0FF",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- space
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
 
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- space
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
 
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- space
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
+-- Tile start
 
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- space
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
+x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- space
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
 
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- space
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
 
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- space
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
+-- Tile start
 
-                  x"037",x"037",x"037",x"037",x"037",x"037",x"037",x"037",      -- blue
-                  x"037",x"037",x"037",x"037",x"037",x"037",x"037",x"037",
-		  x"037",x"037",x"037",x"037",x"037",x"037",x"037",x"037",
-                  x"037",x"037",x"037",x"037",x"037",x"037",x"037",x"037",
-                  x"037",x"037",x"037",x"037",x"037",x"037",x"037",x"037",
-                  x"037",x"037",x"037",x"037",x"037",x"037",x"037",x"037",
-                  x"037",x"037",x"037",x"037",x"037",x"037",x"037",x"037",
-                  x"037",x"037",x"037",x"037",x"037",x"037",x"037",x"037",
+x"0FF",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"0FF",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"0FF",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- space
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
 
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- space
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
 
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- space
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
+-- Tile start
 
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- space
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
+x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000", 
+x"0FF",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"0FF",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- space
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
 
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- space
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
 
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- space
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
+-- Tile start
 
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- space
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
+x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000", 
+x"0FF",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"0FF",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000", 
+x"0FF",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"0FF",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- space
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
 
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- space
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
 
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- space
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
+-- Tile start
 
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- space
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
+x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- space
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
 
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- space
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"004",x"004",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"004",x"004",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF"
+
+-- Tile start
+
+x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000", 
+x"0FF",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"0FF",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000", 
+x"0FF",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"0FF",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+
+
+
+-- Tile start
+
+x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000", 
+x"0FF",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"0FF",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+
+
+
+-- Tile start
+
+x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000", 
+x"0FF",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"0FF",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"0FF",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"0FF",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"0FF",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
+x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+
+
+
+-- Tile start
+
+x"B25",x"A25",x"A25",x"A25",x"A25",x"A25",x"A25",x"925", 
+x"C25",x"025",x"025",x"025",x"025",x"025",x"025",x"825", 
+x"C25",x"025",x"025",x"025",x"025",x"025",x"025",x"825", 
+x"C25",x"025",x"025",x"025",x"025",x"025",x"025",x"825", 
+x"C25",x"025",x"025",x"025",x"025",x"025",x"025",x"825", 
+x"C25",x"025",x"025",x"025",x"025",x"025",x"025",x"825", 
+x"C25",x"025",x"025",x"025",x"025",x"025",x"025",x"825", 
+x"D25",x"E25",x"E25",x"E25",x"E25",x"E25",x"E25",x"F25", 
+
+
+
+-- Tile start
+
+x"B27",x"A27",x"A27",x"A27",x"A27",x"A27",x"A27",x"F27", 
+x"C27",x"027",x"027",x"027",x"027",x"027",x"F27",x"000", 
+x"C27",x"027",x"027",x"027",x"027",x"F27",x"000",x"000", 
+x"C27",x"027",x"027",x"027",x"F27",x"000",x"000",x"000", 
+x"C27",x"027",x"027",x"F27",x"000",x"000",x"000",x"000", 
+x"C27",x"027",x"F27",x"000",x"000",x"000",x"000",x"000", 
+x"C27",x"F27",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"F27",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+
+
+
+-- Tile start
+
+x"D27",x"A27",x"A27",x"A27",x"A27",x"A27",x"A27",x"927", 
+x"000",x"D27",x"027",x"027",x"027",x"027",x"027",x"827", 
+x"000",x"000",x"D27",x"027",x"027",x"027",x"027",x"827", 
+x"000",x"000",x"000",x"D27",x"027",x"027",x"027",x"827", 
+x"000",x"000",x"000",x"000",x"D27",x"027",x"027",x"827", 
+x"000",x"000",x"000",x"000",x"000",x"D27",x"027",x"827", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"D27",x"827", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"D27", 
+
+
+
+-- Tile start
+
+x"927",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"C27",x"927",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"C27",x"027",x"927",x"000",x"000",x"000",x"000",x"000", 
+x"C27",x"027",x"027",x"927",x"000",x"000",x"000",x"000", 
+x"C27",x"027",x"027",x"027",x"927",x"000",x"000",x"000", 
+x"C27",x"027",x"027",x"027",x"027",x"927",x"000",x"000", 
+x"C27",x"027",x"027",x"027",x"027",x"027",x"927",x"000", 
+x"D27",x"E27",x"E27",x"E27",x"E27",x"E27",x"E27",x"927", 
+
+
+
+-- Tile start
+
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"B27", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"B27",x"827", 
+x"000",x"000",x"000",x"000",x"000",x"B27",x"027",x"827", 
+x"000",x"000",x"000",x"000",x"B27",x"027",x"027",x"827", 
+x"000",x"000",x"000",x"B27",x"027",x"027",x"027",x"827", 
+x"000",x"000",x"B27",x"027",x"027",x"027",x"027",x"827", 
+x"000",x"B27",x"027",x"027",x"027",x"027",x"027",x"827", 
+x"B27",x"E27",x"E27",x"E27",x"E27",x"E27",x"E27",x"F27", 
+
+
+
+-- Tile start
+
+x"B4A",x"A4A",x"A4A",x"A4A",x"A4A",x"A4A",x"A4A",x"94A", 
+x"C4A",x"04A",x"04A",x"04A",x"04A",x"04A",x"04A",x"84A", 
+x"C4A",x"04A",x"04A",x"04A",x"04A",x"04A",x"04A",x"84A", 
+x"C4A",x"04A",x"04A",x"04A",x"04A",x"04A",x"04A",x"84A", 
+x"C4A",x"04A",x"04A",x"04A",x"04A",x"04A",x"04A",x"84A", 
+x"C4A",x"04A",x"04A",x"04A",x"04A",x"04A",x"04A",x"84A", 
+x"C4A",x"04A",x"04A",x"04A",x"04A",x"04A",x"04A",x"84A", 
+x"D4A",x"E4A",x"E4A",x"E4A",x"E4A",x"E4A",x"E4A",x"F4A", 
+
+
+
+-- Tile start
+
+x"B0C",x"A0C",x"A0C",x"A0C",x"A0C",x"A0C",x"A0C",x"90C", 
+x"C0C",x"00C",x"00C",x"00C",x"00C",x"00C",x"00C",x"80C", 
+x"C0C",x"00C",x"00C",x"00C",x"00C",x"00C",x"00C",x"80C", 
+x"C0C",x"00C",x"00C",x"00C",x"00C",x"00C",x"00C",x"80C", 
+x"C0C",x"00C",x"00C",x"00C",x"00C",x"00C",x"00C",x"80C", 
+x"C0C",x"00C",x"00C",x"00C",x"00C",x"00C",x"00C",x"80C", 
+x"C0C",x"00C",x"00C",x"00C",x"00C",x"00C",x"00C",x"80C", 
+x"D0C",x"E0C",x"E0C",x"E0C",x"E0C",x"E0C",x"E0C",x"F0C", 
+
+
+
+-- Tile start
+
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+
+
+
+-- Tile start
+
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+
+
+
+-- Tile start
+
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+
+
+
+-- Tile start
+
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+
+
+
+-- Tile start
+
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+
+
+
+-- Tile start
+
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+
+
+
+-- Tile start
+
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+
+
+
+-- Tile start
+
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+
+
+
+-- Tile start
+
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+
+
+
+-- Tile start
+
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+
+
+
+-- Tile start
+
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+
+
+
+-- Tile start
+
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000",
+
+-- Tile start
+
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000",
+
+-- Tile start
+
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000"
                   
                   );
   
@@ -371,31 +493,31 @@ architecture Behavioral of VGA_MOTOR is
 
   signal ballSprite : balls := 
 		( 
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- ball
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF"
+
+x"000",x"B00",x"AFF",x"AFF",x"AFF",x"AFF",x"900",x"000", 
+x"B00",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"900", 
+x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF", 
+x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF", 
+x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF", 
+x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF", 
+x"D00",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"F00", 
+x"000",x"D00",x"EFF",x"EFF",x"EFF",x"EFF",x"F00",x"000"
 
                   );
   
   -- Paddle memory type
-  type paddles is array (0 to 63) of unsigned(11 downto 0);
+  type paddles is array (0 to 767) of unsigned(11 downto 0);
 
   signal paddleSprite : paddles := 
 		( 
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",      -- ball
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-		  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",
-                  x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF"
-
+                  x"BFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"9FF",x"BFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"9FF",x"BFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"9FF",x"BFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"9FF",x"BFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"9FF",x"BFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"9FF",x"BFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"9FF",x"BFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"9FF",x"BFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"9FF",x"BFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"9FF",x"BFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"9FF",x"BFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"9FF", 
+x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF", 
+x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF", 
+x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF", 
+x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF", 
+x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF", 
+x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF", 
+x"DFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"FFF",x"DFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"FFF",x"DFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"FFF",x"DFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"FFF",x"DFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"FFF",x"DFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"FFF",x"DFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"FFF",x"DFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"FFF",x"DFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"FFF",x"DFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"FFF",x"DFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"FFF",x"DFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"FFF"
                   );
 		  
 begin
@@ -506,7 +628,7 @@ begin
   --begin
   --  if rising_edge(clk) then
   --    if (blank = '0') then
-  --      outPixel <= tileMem(to_integer(tileAddr))(11 downto 0);
+  --      outPixel <= tileMem(to_integer(tileAddr))(7 downto 0);
   --   else
   --      outPixel <= (others => '0');
   --    end if;
@@ -542,8 +664,8 @@ begin
   -----------------------------------------------------------------------------
   -- Inside sprites
   -- one
-  ball_one_posX_end <= ball_one_posX + 8;
-  ball_one_posY_end <= ball_one_posY + 8;
+  ball_one_posX_end <= ball_one_posX + 7;
+  ball_one_posY_end <= ball_one_posY + 7;
   inside_one <= '1' when Xpixel >= ball_one_posX(9 downto 0) and Xpixel <= ball_one_posX_end(9 downto 0) and Ypixel >= ball_one_posX(9 downto 0) and Ypixel <= ball_one_posX_end(9 downto 0) else '0';
   -- two
   ball_two_posX_end <= ball_two_posY + 8;
@@ -561,8 +683,8 @@ begin
   addr_two <= sub_twoY(2 downto 0) & sub_twoX(2 downto 0);
   
   -- Transparent
-  transparent_one <= '1' when inside_one = '1' and ballSprite(to_integer(addr_one)) = x"000" else '0';
-  transparent_two <= '1' when inside_two = '1' and ballSprite(to_integer(addr_two)) = x"000" else '0';
+  transparent_one <= '1' when (inside_one = '1' and ballSprite(to_integer(addr_one)) = x"000") or inside_one = '0'  else '0';
+  transparent_two <= '1' when (inside_two = '1' and ballSprite(to_integer(addr_two)) = x"000") or inside_one = '0' else '0';
 
   -- Kollision kanske ska lösas med process sats då vi inte vill skriva över en
   -- kollision. Collision behöver vara inout eller kollisionsflaggan behövs för
@@ -599,12 +721,12 @@ begin
     if rising_edge(clk) then
       if blank = '0' then
         if transparent_one = '1' then
-          if transparent_two = '1' then
+        --  if transparent_two = '1' then
             -- Choose the tile if no sprites are in front of it.
             outPixel <= tileMem(to_integer(tileAddr))(7 downto 0);            
-          else
-            outPixel <=  ballSprite(to_integer(addr_two))(7 downto 0);
-          end if;
+         -- else
+          --  outPixel <=  ballSprite(to_integer(addr_two))(7 downto 0);
+          --end if;
         else
           outPixel <=  ballSprite(to_integer(addr_one))(7 downto 0);
         end if;
@@ -614,6 +736,8 @@ begin
       
     end if;
   end process;
+
+  
   
 
   

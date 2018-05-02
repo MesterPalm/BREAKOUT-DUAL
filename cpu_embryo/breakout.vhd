@@ -150,9 +150,6 @@ end component;
   signal	addr2_s		: unsigned(10 downto 0);                -- address
 
   -- intermediate signals between VGA_MOTOR and ALU / other component
-  signal        collision_s     : std_logic;
-  signal        normal_s        : std_logic_vector(2 downto 0);
-
   signal collision_one_s          : unsigned(3 downto 0);
   signal collision_two_s          : unsigned(3 downto 0);
          -- The balls start_stop X and start_stop Y.
@@ -161,10 +158,33 @@ end component;
   signal ball_two_posX_s          : unsigned(9 downto 0);
   signal ball_two_posY_s          : unsigned(9 downto 0);
   signal collision_reset_s        : std_logic;
+
+  -- temp counter --FOR TESTING--
+  signal second_counter : unsigned (27 downto 0);
   
 begin
   rst <= btns;
   Led(1) <= btns;
+
+  -- TEST LOOP --
+  process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        ball_one_posX_s <= "0000000000";
+        ball_one_posY_s <= "0000000000";
+      elsif second_counter = 100000000 then
+        second_counter <= x"0000000";
+        collision_reset_s <= '0';
+        ball_one_posX_s <= ball_one_posX_s + 1;
+        ball_one_posY_s <= ball_one_posY_s + 1;
+      else
+        second_counter <= second_counter + 1;
+      end if;
+    end if;
+  end process;
+
+  led(7) <= collision_one_s(3);
   
   -- mPC : micro Program Counter
   process(clk)
