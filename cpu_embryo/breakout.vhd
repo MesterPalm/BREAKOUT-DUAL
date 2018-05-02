@@ -83,14 +83,15 @@ architecture Behavioral of breakout is
 	 Hsync		        : out std_logic;
 	 Vsync		        : out std_logic;
          -- first bit 1 if collision, 3-bit enumerated normal.
-         collision_one          : buffer unsigned(3 downto 0);
+         collision_one          : out unsigned(3 downto 0);
          collision_two          : buffer unsigned(3 downto 0);
          -- The balls start_stop X and start_stop Y.
          ball_one_posX          : in unsigned(9 downto 0);
          ball_one_posY          : in unsigned(9 downto 0);
          ball_two_posX          : in unsigned(9 downto 0);
          ball_two_posY          : in unsigned(9 downto 0);
-         collision_reset        : in std_logic
+         collision_reset        : in std_logic;
+         Led : out unsigned(3 downto 0)
          
          );
 end component;
@@ -164,7 +165,7 @@ end component;
   
 begin
   rst <= btns;
-  Led(1) <= btns;
+  --Led(1) <= btns;
 
   -- TEST LOOP --
   process(clk)
@@ -173,18 +174,25 @@ begin
       if rst = '1' then
         ball_one_posX_s <= "0000000000";
         ball_one_posY_s <= "0000000000";
+        collision_reset_s <= '1';
       elsif second_counter = 100000000 then
         second_counter <= x"0000000";
-        collision_reset_s <= '0';
+        --collision_reset_s <= '1';
         ball_one_posX_s <= ball_one_posX_s + 1;
         ball_one_posY_s <= ball_one_posY_s + 1;
       else
         second_counter <= second_counter + 1;
+        collision_reset_s <= '0';
       end if;
     end if;
   end process;
 
-  led(7) <= collision_one_s(3);
+  Led(3 downto 0) <= collision_one_s(3 downto 0);
+  --Led(7) <= '1';--collision_one_s(3);
+  --Led(6) <= '1';--collision_one_s(2);
+  --Led(5) <= '1';--collision_one_s(1);
+  --Led(4) <= '1';--collision_one_s(0);
+  --led(3) <= '0';
   
   -- mPC : micro Program Counter
   process(clk)
@@ -252,7 +260,7 @@ begin
   --  end if;
 --  end process;
 
-  Led(0) <= '1' when (us_time > 750) else '0';
+  --Led(0) <= '1' when (us_time > 750) else '0';
 	
   -- micro memory component connection
   U0 : uMem port map(uAddr=>uPC, uData=>uM);
@@ -266,7 +274,7 @@ begin
   U3 : PICT_MEM port map(clk=>clk, we1=>we_s, data_in1=>data_s, addr1=>addr_s, we2=>'0', data_in2=>"00000000", data_out2=>data_out2_s, addr2=>addr2_s);
 	
   -- VGA motor component connection
-  U4 : VGA_MOTOR port map(clk=>clk, rst=>rst, data=>data_out2_s, addr=>addr2_s, vgaRed=>vgaRed, vgaGreen=>vgaGreen, vgaBlue=>vgaBlue, Hsync=>Hsync, Vsync=>Vsync, collision_one=>collision_one_s, collision_two=>collision_two_s, ball_one_posX=>ball_one_posX_s, ball_one_posY=>ball_one_posY_s, ball_two_posX=>ball_two_posX_s, ball_two_posY=>ball_two_posY_s, collision_reset=>collision_reset_s);
+  U4 : VGA_MOTOR port map(clk=>clk, rst=>rst, data=>data_out2_s, addr=>addr2_s, vgaRed=>vgaRed, vgaGreen=>vgaGreen, vgaBlue=>vgaBlue, Hsync=>Hsync, Vsync=>Vsync, collision_one(3 downto 0)=>collision_one_s(3 downto 0), collision_two=>collision_two_s, ball_one_posX=>ball_one_posX_s, ball_one_posY=>ball_one_posY_s, ball_two_posX=>ball_two_posX_s, ball_two_posY=>ball_two_posY_s, collision_reset=>collision_reset_s, Led(3 downto 0)=>Led(7 downto 4));
 
   -- keyboard encoder component connection
   U5 : KBD_ENC port map(clk=>clk, rst=>rst, PS2KeyboardCLK=>PS2KeyboardCLK, PS2KeyboardData=>PS2KeyboardData, data=>data_s, addr=>addr_s, we=>we_s);
@@ -276,22 +284,17 @@ begin
     if rising_edge(clk) then
       if rst = '1' then
         counter_temp <= X"000000";
-        led(2) <= '1';
-        led(3) <= '0';
-        led(4) <= '0';
       else
         if counter_temp = X"000000" then
           us_time_temp <= us_time;
           counter_temp <= counter_temp + 1;
-          led(2) <= '0';
-          led(3) <= '1';
-          led(4) <= '0';
+          --led(2) <= '1';
+          --led(3) <= '0';
         else
           --us_time_temp <= X"DEF3";
           counter_temp <= counter_temp + 1;
-          led(2) <= '0';
-          led(3) <= '0';
-          led(4) <= '1';
+          --led(2) <= '0';
+          --led(3) <= '1';
         end if;
       end if;
      

@@ -23,15 +23,15 @@ entity VGA_MOTOR is
 	 Hsync		        : out std_logic;
 	 Vsync		        : out std_logic;
          -- first bit 1 if collision, 3-bit enumerated normal.
-         collision_one          : buffer unsigned(3 downto 0);
+         collision_one          : out unsigned(3 downto 0);
          collision_two          : buffer unsigned(3 downto 0);
          -- The balls start_stop X and start_stop Y.
          ball_one_posX          : in unsigned(9 downto 0);
          ball_one_posY          : in unsigned(9 downto 0);
          ball_two_posX          : in unsigned(9 downto 0);
          ball_two_posY          : in unsigned(9 downto 0);
-         collision_reset        : in std_logic
-         
+         collision_reset        : in std_logic;
+         Led                    : out unsigned(3 downto 0)
          );
 end VGA_MOTOR;
 
@@ -65,6 +65,8 @@ architecture Behavioral of VGA_MOTOR is
   signal sub_oneX : unsigned(9 downto 0);
   signal sub_twoY : unsigned(9 downto 0);
   signal sub_twoX : unsigned(9 downto 0);
+
+  signal collision_one_temp : unsigned(3 downto 0);
   
   signal temp : std_logic;
 	
@@ -494,14 +496,14 @@ x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000"
   signal ballSprite : balls := 
 		( 
 
-x"000",x"B00",x"AFF",x"AFF",x"AFF",x"AFF",x"900",x"000", 
-x"B00",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"900", 
+x"000",x"000",x"AFF",x"AFF",x"AFF",x"AFF",x"000",x"000", 
+x"000",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000", 
 x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF", 
 x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF", 
 x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF", 
 x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF", 
-x"D00",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"F00", 
-x"000",x"D00",x"EFF",x"EFF",x"EFF",x"EFF",x"F00",x"000"
+x"000",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000", 
+x"000",x"000",x"EFF",x"EFF",x"EFF",x"EFF",x"000",x"000"
 
                   );
   
@@ -695,20 +697,29 @@ begin
   begin
     if rising_edge(clk) then
       if collision_reset = '1' then
-        collision_one(3) <= '0';
-      elsif collision_one(3) = '0' and transparent_one = '0' and tileMem(to_integer(tileAddr))(11) = '1' then
-        collision_one(3) <= '1';
-        collision_one(2 downto 0) <= tileMem(to_integer(tileAddr))(10 downto 8);
+        collision_one_temp(3) <= '0';
+        --Led(0) <= '0';
+      elsif collision_one_temp(3) = '0' and inside_one = '1' and transparent_one = '0' and tileMem(to_integer(tileAddr))(11) = '1' then
+        --Led(0) <= '1';
+        collision_one_temp(3) <= '1';
+        collision_one_temp(2 downto 0) <= tileMem(to_integer(tileAddr))(10 downto 8);
       end if;
     end if;
   end process;
+  collision_one <= collision_one_temp;
+  Led(3 downto 0) <= collision_one_temp(3 downto 0);
+  --Led(3) <= collision_one(3);
+  --Led(2) <= collision_one(2);
+  --Led(1) <= collision_one(1);
+  --Led(0) <= collision_one(0);
+ 
   --two
   process(clk)
   begin
     if rising_edge(clk) then
       if collision_reset = '1' then
         collision_two(3) <= '0';
-      elsif collision_two(3) = '0' and transparent_two = '0' and tileMem(to_integer(tileAddr))(11) = '1' then
+      elsif collision_two(3) = '0' and inside_two = '1' and transparent_two = '0' and tileMem(to_integer(tileAddr))(11) = '1' then
         collision_two(3) <= '1';
         collision_two(2 downto 0) <= tileMem(to_integer(tileAddr))(10 downto 8);
       end if;
