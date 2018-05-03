@@ -185,6 +185,12 @@ begin
         uPC <= uProg;
       elsif (uPCsig = "011") then
         uPc <= uMode;
+      elsif (uPCsig = "100") then
+        if (SR(1)='1') then
+          uPC <= uAddr;
+        else
+          uPC <= uPC+1;
+        end if;
       else
         uPC <= uPC + 1;
       end if;
