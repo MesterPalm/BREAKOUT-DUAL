@@ -19,20 +19,20 @@ begin
   process (instruction)
   begin  --format select
     case instruction(31 downto 27) is
-      when "00011" | "00100" =>                          --FORMAT op-gra-grb
+      when "00011" | "00100" | "00101" | "00111" =>      --FORMAT op-gra-grb
         grA <= instruction(24 downto 21);
         grB <= instruction(20 downto 17);
         operand <= "000000000000000"  & instruction(16 downto 0);
         
-      when "00010" =>                            --FORMAT op-addM-gra-operand
+      when "00010" =>                          --FORMAT op-addM-gra-operand
         grA <= instruction(24 downto 21);
         grB <= "0000";
         operand <= "00000000000" & instruction(20 downto 0);
-     -- when "10" =>                            --FORMAT op-operand
+     -- when "10" =>                           --FORMAT op-operand
        --  grA <= "0000";
        --  grB <= "0000";
      --    operand <= "00000" & instruction(26 downto 0);
-    when others =>                            --FORMAT op-addM-operand
+    when others =>                             --FORMAT op-addM-operand
         grA <= "0000";
         grB <= "0000";
         operand <= "0000000" & instruction(24 downto 0);
@@ -47,7 +47,9 @@ begin
     b"000_100_1" when "00010",          --LOAD
     b"000_101_1" when "00011",          --ADD
     b"000_111_0" when "00100",          --SUB
-    b"000_111_0" when "00101",          --MOV
+    b"001_000_1" when "00101",          --MOV
+    b"001_001_1" when "00110",          --BEQ
+    b"001_010_1" when "00111",          --CMP
     b"000_000_0" when others;
 
   --Addressing mode select
