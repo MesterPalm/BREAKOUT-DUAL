@@ -75,7 +75,7 @@ architecture Behavioral of breakout is
   component VGA_MOTOR is
   port ( clk			: in std_logic;
 	 data			: in std_logic_vector(7 downto 0);
-	 addr			: out unsigned(10 downto 0);
+	 addr			: buffer unsigned(10 downto 0);
 	 rst			: in std_logic;
 	 vgaRed		        : out std_logic_vector(2 downto 0);
 	 vgaGreen	        : out std_logic_vector(2 downto 0);
@@ -83,15 +83,19 @@ architecture Behavioral of breakout is
 	 Hsync		        : out std_logic;
 	 Vsync		        : out std_logic;
          -- first bit 1 if collision, 3-bit enumerated normal.
-         collision_one          : out unsigned(3 downto 0);
+         collision_one          : buffer unsigned(3 downto 0);
          collision_two          : buffer unsigned(3 downto 0);
+         collision_addr_one     : buffer unsigned(10 downto 0);
+         collision_addr_two     : buffer unsigned(10 downto 0);
          -- The balls start_stop X and start_stop Y.
          ball_one_posX          : in unsigned(9 downto 0);
          ball_one_posY          : in unsigned(9 downto 0);
          ball_two_posX          : in unsigned(9 downto 0);
          ball_two_posY          : in unsigned(9 downto 0);
-         collision_reset        : in std_logic;
-         Led : out unsigned(3 downto 0)
+         paddle_one_pos : in unsigned(9 downto 0);
+         paddle_two_pos : in unsigned(9 downto 0);
+         collision_reset        : in std_logic
+         --Led : out unsigned(3 downto 0)
          
          );
 end component;
@@ -153,12 +157,16 @@ end component;
   -- intermediate signals between VGA_MOTOR and ALU / other component
   signal collision_one_s          : unsigned(3 downto 0);
   signal collision_two_s          : unsigned(3 downto 0);
+  signal collision_addr_one_s     : unsigned(10 downto 0);
+  signal collision_addr_two_s     : unsigned(10 downto 0);
          -- The balls start_stop X and start_stop Y.
-  signal ball_one_posX_s         : unsigned(9 downto 0);
+  signal ball_one_posX_s          : unsigned(9 downto 0);
   signal ball_one_posY_s          : unsigned(9 downto 0);
   signal ball_two_posX_s          : unsigned(9 downto 0);
   signal ball_two_posY_s          : unsigned(9 downto 0);
   signal collision_reset_s        : std_logic;
+  signal paddle_one_pos_s         : unsigned(9 downto 0);
+  signal paddle_two_pos_s         : unsigned(9 downto 0);
 
   -- temp counter --FOR TESTING--
   signal second_counter : unsigned (27 downto 0);
@@ -174,8 +182,12 @@ begin
       if rst = '1' then
         ball_one_posX_s <= "0000000000";
         ball_one_posY_s <= "0000000000";
+        ball_two_posX_s <= "0100000000";
+        ball_two_posY_s <= "0100000000";
+        paddle_one_pos_s <= "1000000000";
+        paddle_two_pos_s <= "1000000000";
         collision_reset_s <= '1';
-      elsif second_counter = 100000000 then
+      elsif second_counter = 50000000 then
         second_counter <= x"0000000";
         --collision_reset_s <= '1';
         ball_one_posX_s <= ball_one_posX_s + 1;
@@ -187,12 +199,8 @@ begin
     end if;
   end process;
 
-  Led(3 downto 0) <= collision_one_s(3 downto 0);
-  --Led(7) <= '1';--collision_one_s(3);
-  --Led(6) <= '1';--collision_one_s(2);
-  --Led(5) <= '1';--collision_one_s(1);
-  --Led(4) <= '1';--collision_one_s(0);
-  --led(3) <= '0';
+  Led(7 downto 0) <= collision_addr_one_s(7 downto 0);
+  
   
   -- mPC : micro Program Counter
   process(clk)
@@ -274,7 +282,7 @@ begin
   U3 : PICT_MEM port map(clk=>clk, we1=>we_s, data_in1=>data_s, addr1=>addr_s, we2=>'0', data_in2=>"00000000", data_out2=>data_out2_s, addr2=>addr2_s);
 	
   -- VGA motor component connection
-  U4 : VGA_MOTOR port map(clk=>clk, rst=>rst, data=>data_out2_s, addr=>addr2_s, vgaRed=>vgaRed, vgaGreen=>vgaGreen, vgaBlue=>vgaBlue, Hsync=>Hsync, Vsync=>Vsync, collision_one(3 downto 0)=>collision_one_s(3 downto 0), collision_two=>collision_two_s, ball_one_posX=>ball_one_posX_s, ball_one_posY=>ball_one_posY_s, ball_two_posX=>ball_two_posX_s, ball_two_posY=>ball_two_posY_s, collision_reset=>collision_reset_s, Led(3 downto 0)=>Led(7 downto 4));
+  U4 : VGA_MOTOR port map(clk=>clk, rst=>rst, data=>data_out2_s, addr=>addr2_s, vgaRed=>vgaRed, vgaGreen=>vgaGreen, vgaBlue=>vgaBlue, Hsync=>Hsync, Vsync=>Vsync, collision_one(3 downto 0)=>collision_one_s(3 downto 0), collision_two=>collision_two_s, ball_one_posX=>ball_one_posX_s, ball_one_posY=>ball_one_posY_s, ball_two_posX=>ball_two_posX_s, ball_two_posY=>ball_two_posY_s, collision_reset=>collision_reset_s, paddle_one_pos=>paddle_one_pos_s, paddle_two_pos=>paddle_two_pos_s, collision_addr_one=>collision_addr_one_s, collision_addr_two=>collision_addr_two_s);
 
   -- keyboard encoder component connection
   U5 : KBD_ENC port map(clk=>clk, rst=>rst, PS2KeyboardCLK=>PS2KeyboardCLK, PS2KeyboardData=>PS2KeyboardData, data=>data_s, addr=>addr_s, we=>we_s);
@@ -287,19 +295,16 @@ begin
       else
         if counter_temp = X"000000" then
           us_time_temp <= us_time;
-          counter_temp <= counter_temp + 1;
-          --led(2) <= '1';
-          --led(3) <= '0';
+          counter_temp <= counter_temp + 1;         
         else
           --us_time_temp <= X"DEF3";
           counter_temp <= counter_temp + 1;
-          --led(2) <= '0';
-          --led(3) <= '1';
         end if;
       end if;
      
     end if;
   end process;
+  
   -- Plug in the led driver
   HD: leddriver port map (clk, rst, seg, an, value=>us_time_temp);
 

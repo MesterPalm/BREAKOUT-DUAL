@@ -15,7 +15,7 @@ use IEEE.NUMERIC_STD.ALL;               -- IEEE library for the unsigned type
 entity VGA_MOTOR is
   port ( clk			: in std_logic;
 	 data			: in std_logic_vector(7 downto 0);
-	 addr			: out unsigned(10 downto 0);
+	 addr			: buffer unsigned(10 downto 0);
 	 rst			: in std_logic;
 	 vgaRed		        : out std_logic_vector(2 downto 0);
 	 vgaGreen	        : out std_logic_vector(2 downto 0);
@@ -23,15 +23,19 @@ entity VGA_MOTOR is
 	 Hsync		        : out std_logic;
 	 Vsync		        : out std_logic;
          -- first bit 1 if collision, 3-bit enumerated normal.
-         collision_one          : out unsigned(3 downto 0);
+         collision_one          : buffer unsigned(3 downto 0);
          collision_two          : buffer unsigned(3 downto 0);
+         collision_addr_one     : buffer unsigned(10 downto 0);
+         collision_addr_two     : buffer unsigned(10 downto 0);
          -- The balls start_stop X and start_stop Y.
          ball_one_posX          : in unsigned(9 downto 0);
          ball_one_posY          : in unsigned(9 downto 0);
          ball_two_posX          : in unsigned(9 downto 0);
          ball_two_posY          : in unsigned(9 downto 0);
          collision_reset        : in std_logic;
-         Led                    : out unsigned(3 downto 0)
+         paddle_one_pos         : in unsigned(9 downto 0);
+         paddle_two_pos         : in unsigned(9 downto 0)
+         --Led                    : out unsigned(3 downto 0)
          );
 end VGA_MOTOR;
 
@@ -49,22 +53,32 @@ architecture Behavioral of VGA_MOTOR is
 
   signal        blank           : std_logic;                    -- blanking signal
 
-  signal  ball_one_posX_end      : unsigned(9 downto 0);
-  signal  ball_one_posY_end      : unsigned(9 downto 0);
-  signal  ball_two_posX_end      : unsigned(9 downto 0);
-  signal  ball_two_posY_end      : unsigned(9 downto 0);
+  signal paddle_one_pos_end     : unsigned(9 downto 0);
+  signal paddle_two_pos_end     : unsigned(9 downto 0);
+  signal ball_one_posX_end      : unsigned(9 downto 0);
+  signal ball_one_posY_end      : unsigned(9 downto 0);
+  signal ball_two_posX_end      : unsigned(9 downto 0);
+  signal ball_two_posY_end      : unsigned(9 downto 0);
 
   signal addr_one : unsigned(5 downto 0);
   signal addr_two : unsigned(5 downto 0);
+  signal addr_paddle_one: unsigned(1 downto 0);
+  signal addr_paddle_two: unsigned(1 downto 0);
 
+  signal inside_paddle_one : std_logic;
+  signal inside_paddle_two : std_logic;
   signal inside_one : std_logic;
   signal inside_two : std_logic;
   signal transparent_one : std_logic;
   signal transparent_two : std_logic;
+  signal transparent_paddle_one : std_logic;
+  signal transparent_paddle_two : std_logic;
   signal sub_oneY : unsigned(9 downto 0);
   signal sub_oneX : unsigned(9 downto 0);
   signal sub_twoY : unsigned(9 downto 0);
   signal sub_twoX : unsigned(9 downto 0);
+  signal sub_paddle_one : unsigned(9 downto 0);
+  signal sub_paddle_two : unsigned(9 downto 0);
 
   signal collision_one_temp : unsigned(3 downto 0);
   
@@ -508,18 +522,13 @@ x"000",x"000",x"EFF",x"EFF",x"EFF",x"EFF",x"000",x"000"
                   );
   
   -- Paddle memory type
-  type paddles is array (0 to 767) of unsigned(11 downto 0);
+  type paddles is array (0 to 3) of unsigned(11 downto 0);
 
   signal paddleSprite : paddles := 
-		( 
-                  x"BFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"9FF",x"BFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"9FF",x"BFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"9FF",x"BFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"9FF",x"BFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"9FF",x"BFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"9FF",x"BFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"9FF",x"BFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"9FF",x"BFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"9FF",x"BFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"9FF",x"BFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"9FF",x"BFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"AFF",x"9FF", 
-x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF", 
-x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF", 
-x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF", 
-x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF", 
-x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF", 
-x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF",x"CFF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"8FF", 
-x"DFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"FFF",x"DFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"FFF",x"DFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"FFF",x"DFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"FFF",x"DFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"FFF",x"DFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"FFF",x"DFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"FFF",x"DFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"FFF",x"DFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"FFF",x"DFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"FFF",x"DFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"FFF",x"DFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"EFF",x"FFF"
+		(
+                  
+                  x"0FF", x"0FF", x"0FF", x"0FF"
+                  
                   );
 		  
 begin
@@ -623,26 +632,6 @@ begin
   -- ***********************************
   blank <= '1' when (Xpixel >= 640 or Ypixel >= 480) else '0';
 
-
-  
-  -- Tile memory
-  --process(clk)
-  --begin
-  --  if rising_edge(clk) then
-  --    if (blank = '0') then
-  --      outPixel <= tileMem(to_integer(tileAddr))(7 downto 0);
-  --   else
-  --      outPixel <= (others => '0');
-  --    end if;
-  --  end if;
-  --end process;
-
-
-  -- Collision logic
-  --collision <= '1' when (
-	
-
-
   -- Tile memory address composite
   tileAddr <= unsigned(data(4 downto 0)) & Ypixel(4 downto 2) & Xpixel(4 downto 2);
 
@@ -665,16 +654,37 @@ begin
   -- Start of K-nät for the muxing of tiles and sprites.
   -----------------------------------------------------------------------------
   -- Inside sprites
+  -- paddle one
+  paddle_one_pos_end <= paddle_one_pos + 31;
+  inside_paddle_one <= '1' when Xpixel >= paddle_one_pos(9 downto 0) and Xpixel <= paddle_one_pos_end(9 downto 0) and Ypixel >= 0 and Ypixel <= 7 else '0';
+
+  --Led(2 downto 0) <= "000";
+  
+  
+  
+  -- paddle two
+  paddle_two_pos_end <= paddle_two_pos + 31;
+  inside_paddle_two <= '1' when Xpixel >= paddle_two_pos(9 downto 0) and Xpixel <= paddle_two_pos_end(9 downto 0) and Ypixel <= 480 and Ypixel >= 473 else '0';
+  
   -- one
   ball_one_posX_end <= ball_one_posX + 7;
   ball_one_posY_end <= ball_one_posY + 7;
   inside_one <= '1' when Xpixel >= ball_one_posX(9 downto 0) and Xpixel <= ball_one_posX_end(9 downto 0) and Ypixel >= ball_one_posX(9 downto 0) and Ypixel <= ball_one_posX_end(9 downto 0) else '0';
-  -- two
-  ball_two_posX_end <= ball_two_posY + 8;
-  ball_two_posY_end <= ball_two_posY + 8;
+
+-- two
+  ball_two_posX_end <= ball_two_posY + 7;
+  ball_two_posY_end <= ball_two_posY + 7;
   inside_two <= '1' when Xpixel >= ball_two_posX(9 downto 0) and Xpixel <= ball_two_posX_end(9 downto 0) and Ypixel >= ball_two_posX(9 downto 0) and Ypixel <= ball_two_posX_end(9 downto 0) else '0';
 
   --Sprite adress (6-bit)
+  -- paddle one
+  --sub_paddle_one <= Xpixel - paddle_one_pos;
+  --addr_paddle_one <= sub_paddle_one(5 downto 4);
+  
+  -- paddle two
+  --sub_paddle_two <= Xpixel - paddle_two_pos;
+  --addr_paddle_two <= sub_paddle_two(5 downto 4);
+  
   -- one
   sub_oneY <= Ypixel - ball_one_posY;
   sub_oneX <= Xpixel - ball_one_posX; 
@@ -685,8 +695,12 @@ begin
   addr_two <= sub_twoY(2 downto 0) & sub_twoX(2 downto 0);
   
   -- Transparent
+  transparent_paddle_one <= '1' when inside_paddle_one = '0' else '0';
+
+  transparent_paddle_two <= '1' when inside_paddle_two = '0' else '0';
+    
   transparent_one <= '1' when (inside_one = '1' and ballSprite(to_integer(addr_one)) = x"000") or inside_one = '0'  else '0';
-  transparent_two <= '1' when (inside_two = '1' and ballSprite(to_integer(addr_two)) = x"000") or inside_one = '0' else '0';
+  transparent_two <= '1' when (inside_two = '1' and ballSprite(to_integer(addr_two)) = x"000") or inside_two = '0' else '0';
 
   -- Kollision kanske ska lösas med process sats då vi inte vill skriva över en
   -- kollision. Collision behöver vara inout eller kollisionsflaggan behövs för
@@ -697,21 +711,16 @@ begin
   begin
     if rising_edge(clk) then
       if collision_reset = '1' then
-        collision_one_temp(3) <= '0';
-        --Led(0) <= '0';
-      elsif collision_one_temp(3) = '0' and inside_one = '1' and transparent_one = '0' and tileMem(to_integer(tileAddr))(11) = '1' then
-        --Led(0) <= '1';
-        collision_one_temp(3) <= '1';
-        collision_one_temp(2 downto 0) <= tileMem(to_integer(tileAddr))(10 downto 8);
+        collision_one(3) <= '0';
+      elsif collision_one(3) = '0' and inside_one = '1' and transparent_one = '0' and tileMem(to_integer(tileAddr))(11) = '1' then
+        collision_one(3) <= '1';
+        collision_one(2 downto 0) <= tileMem(to_integer(tileAddr))(10 downto 8);
+        collision_addr_one <= addr;
       end if;
     end if;
   end process;
-  collision_one <= collision_one_temp;
-  Led(3 downto 0) <= collision_one_temp(3 downto 0);
-  --Led(3) <= collision_one(3);
-  --Led(2) <= collision_one(2);
-  --Led(1) <= collision_one(1);
-  --Led(0) <= collision_one(0);
+  
+  --Led(3 downto 0) <= collision_one(3 downto 0);
  
   --two
   process(clk)
@@ -722,6 +731,7 @@ begin
       elsif collision_two(3) = '0' and inside_two = '1' and transparent_two = '0' and tileMem(to_integer(tileAddr))(11) = '1' then
         collision_two(3) <= '1';
         collision_two(2 downto 0) <= tileMem(to_integer(tileAddr))(10 downto 8);
+        collision_addr_two <= addr;
       end if;
     end if;
   end process;
@@ -732,19 +742,28 @@ begin
     if rising_edge(clk) then
       if blank = '0' then
         if transparent_one = '1' then
-        --  if transparent_two = '1' then
-            -- Choose the tile if no sprites are in front of it.
-            outPixel <= tileMem(to_integer(tileAddr))(7 downto 0);            
-         -- else
-          --  outPixel <=  ballSprite(to_integer(addr_two))(7 downto 0);
-          --end if;
+          if transparent_two = '1' then
+            if transparent_paddle_one = '1' then
+              if transparent_paddle_two = '1' then
+                -- Choose the tile if no sprites are in front of it.
+                outPixel <= tileMem(to_integer(tileAddr))(7 downto 0);
+                --Led(3) <= '1';
+              else
+                outPixel <= paddleSprite(0)(7 downto 0);
+              end if;
+            else
+              outPixel <= paddleSprite(0)(7 downto 0);
+              --Led(3) <= '0';
+            end if;                       
+          else
+            outPixel <=  ballSprite(to_integer(addr_two))(7 downto 0);
+          end if;
         else
           outPixel <=  ballSprite(to_integer(addr_one))(7 downto 0);
         end if;
       else
         outPixel <= (others => '0');
       end if;
-      
     end if;
   end process;
 
