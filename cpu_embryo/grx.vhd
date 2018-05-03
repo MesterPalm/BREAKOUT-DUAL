@@ -35,13 +35,13 @@ signal grx_c : grx_t :=
    X"0000_0000");
 
 begin  -- Behavioral
-  process (clk) begin
-    if rising_edge(clk) then
+  process (grxAddr, grxRW) begin
+     --if rising_edge(clk) then
       if (grxRW = '1') then
         grxDataOut <= grx_c(to_integer(grxAddr));
       else
         grx_c(to_integer(grxAddr)) <= grxDataIn;
       end if;
-    end if;
+    --end if;
   end process;
 end Behavioral;

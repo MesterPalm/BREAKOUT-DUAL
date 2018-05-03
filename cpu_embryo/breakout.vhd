@@ -21,8 +21,7 @@ architecture Behavioral of breakout is
       uMode : out unsigned(6 downto 0);
       uProg : out unsigned(6 downto 0);
       grA : out unsigned(3 downto 0);
-      grB : out unsigned(3 downto 0);
-      clk : std_logic);
+      grB : out unsigned(3 downto 0));
   end component;
   
   -- general register component
@@ -37,7 +36,7 @@ architecture Behavioral of breakout is
   -- micro Memory component
   component uMem
     port(uAddr : in unsigned(6 downto 0);
-         uData : out unsigned(22 downto 0));
+         uData : out unsigned(24 downto 0));
   end component;
 
   -- program Memory component
@@ -68,9 +67,10 @@ architecture Behavioral of breakout is
   --instruction decoder signal
   signal uMode : unsigned(6 downto 0);
   signal uProg : unsigned(6 downto 0);
-  signal operand : unsigned(31 downto 0);
+  signal uOperand : unsigned(31 downto 0);
   signal grA : unsigned(3 downto 0);
   signal grB : unsigned(3 downto 0);
+
   --general register
   signal grxDataIn : unsigned(31 downto 0);
   signal grxDataOut : unsigned(31 downto 0);
@@ -78,13 +78,14 @@ architecture Behavioral of breakout is
   signal grxRW : std_logic;
 
   -- micro memory signals
-  signal uM : unsigned(22 downto 0); -- micro Memory output
+  signal uM : unsigned(24 downto 0); -- micro Memory output
   signal uPC : unsigned(6 downto 0); -- micro Program Counter
   signal uPCsig : unsigned(2 downto 0); -- (0:uPC++, 1:uPC=uAddr)
   signal uAddr : unsigned(6 downto 0); -- micro Address
   signal TB : unsigned(3 downto 0); -- To Bus field
   signal FB : unsigned(3 downto 0); -- From Bus field
-
+  signal S : std_logic;
+  
   -- ALU signals
   signal ALU_op : unsigned(3 downto 0);   -- ALU opcode
   signal ALUd : unsigned( 31 downto 0);
@@ -156,31 +157,21 @@ begin
       end if;
     end if;
   end process;
-
-  -- AX : Accumulator register
---  process (clk)
---  begin
---    if rising_edge(clk) then
---     if (rst = '1') then
---        AR <= (others => '0');
---      elsif (FB = "0111") then
---        AR <= DATA_BUS;
---      end if;
---    end if;
---  end process;
   
-      -- ALU
-  process (clk)
-  begin
-    if rising_edge(clk) then
-      if (rst = '1') then
-        ALUd <= (others =>'0');
-      elsif (FB = "1000") then
-        ALUd <= DATA_BUS;
-      end if;
-    end if;
-  end process;
+  -- ALU
+  --process (clk)
+  --begin
+  --  if rising_edge(clk) then
+  --    if (rst = '1') then
+  --      ALUd <= (others =>'0');
+  --    elsif (FB = "1000") then
+  --      ALUd <= DATA_BUS;
+  --    end if;
+  --  end if;
+  --end process;
 
+  ALUd <= DATA_BUS when (FB="1000") else
+          (others => '0');
   
   -- mPC : micro Program Counter
   process(clk)
@@ -201,7 +192,7 @@ begin
   end process;
 	
   --instruction decoder connection
-  ID : instrDec port map (instruction =>IR, operand=>operand, uMode=>uMode, uProg=>uProg, grA=>grA, grB=>grB, clk=>clk);
+  ID : instrDec port map (instruction =>IR, operand=>uOperand, uMode=>uMode, uProg=>uProg, grA=>grA, grB=>grB);
   -- general register connection
   GR : grx port map(grxAddr, grxDataIn, grxDataOut, grxRW, clk);
 
@@ -218,13 +209,15 @@ begin
   -- micro memory signal assignment
   uAddr <= uM(6 downto 0);
   uPCsig <= uM(9 downto 7);
-  PCsig <= uM(10);
-  FB <= uM(14 downto 11);
-  TB <= uM(18 downto 15);
-  grxAddr <= grA when (TB = "0101") else
-             grB when (FB = "0101") else
-             (others => '0');
-  ALU_op <= uM(22 downto 19);
+  PCsig <= uM(12);
+  FB <= uM(16 downto 13);               --Kanse behöver flytta så denna avkänn                             --direkt
+  TB <= uM(20 downto 17);
+  grxAddr <=
+    b"1111" when (uM(11) = '1') else
+    grA when (uM(10)= '0') else
+    grB when (uM(10) = '1') else
+    (others => '0');
+  ALU_op <= uM(24 downto 21);
 
   -- data bus assignment
   DB : DATA_BUS <= IR when (TB = "0001") else
@@ -234,7 +227,7 @@ begin
                    grxDataOut when (TB = "0101") else
                    us_time when (TB = "0110") else
                    AR when (TB = "0111") else
-                   operand when (TB = "1001") else
+                   uOperand when (TB = "1001") else
                    (others => '0');
 
 end Behavioral;
