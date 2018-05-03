@@ -20,6 +20,9 @@ architecture Behavioral of alu is
   signal K_sub : unsigned(31 downto 0);
   signal normal : unsigned (2 downto 0); -- Collision normal vector
 	signal ball_v : unsigned (2 downto 0); -- Ball velocity vector
+	signal ball_m : unsigned (3 downto 0); -- Ball velocity magnitude
+	signal xprime : unsigned (9 downto 0); -- x pos after move
+	signal yprime : unsigned (9 downto 0); -- y pos after move
 	signal reflected : unsigned (2 downto 0); -- Reflected velocity vector 
 	signal diff : unsigned (2 downto 0); 	-- Reflection diff (to determine whether to reflect)
   
@@ -57,7 +60,40 @@ begin
         	ar <= ar(31 downto 3) & reflected; -- TODO: make coherent with actual ball-reg structure
 				end if;
 
-        
+      elsif alu_opcode = 7 then 	-- Update ball position
+				-- Ball reg in alu_data => ball_reg' in AR
+				case to_integer(ball_v) is
+					when 0 => 
+						xprime <= alu_data(31 downto 22) + ball_m;
+						yprime <= alu_data(21 downto 12);
+					when 1 => 
+						xprime <= alu_data(31 downto 22) + ball_m;
+						yprime <= alu_data(21 downto 12) - ball_m;
+					when 2 => 
+						xprime <= alu_data(31 downto 22);
+						yprime <= alu_data(21 downto 12) - ball_m;
+					when 3 => 
+						xprime <= alu_data(31 downto 22) - ball_m;
+						yprime <= alu_data(21 downto 12) - ball_m;
+					when 4 => 
+						xprime <= alu_data(31 downto 22) - ball_m;
+						yprime <= alu_data(21 downto 12);
+					when 5 => 
+						xprime <= alu_data(31 downto 22) - ball_m;
+						yprime <= alu_data(21 downto 12) + ball_m;
+					when 6 => 
+						xprime <= alu_data(31 downto 22);
+						yprime <= alu_data(21 downto 12) + ball_m;
+					when 7 => 
+						xprime <= alu_data(31 downto 22) + ball_m;
+						yprime <= alu_data(21 downto 12) + ball_m;
+					when others =>
+						xprime <= alu_data(31 downto 22);
+						yprime <= alu_data(21 downto 12);
+				end case;
+				ar <= xprime & yprime & alu_data(11 downto 0);
+
+				  
       elsif alu_opcode = 15 then 				-- set special flag
         status(7) <= '1';	
       else                              -- idle
@@ -68,6 +104,7 @@ begin
 
 	normal <= ar(2 downto 0); -- Assumes AR holds normal as 3 least sigbits
 	ball_v <= alu_data(2 downto 0); -- Same assumption
+	ball_m <= alu_data(6 downto 3);
 	diff <= 5 + normal - ball_v;
 	reflected <= 4 - ball_v + normal + normal;
   K_add <= ar + alu_data;
