@@ -32,9 +32,48 @@ architecture Behavioral of PICT_MEM is
 
   -- picture memory type (This can be changed together with the tilemem to get
   -- difrent sizes of the pixels ("storpixel" is now 4x4).
-  type ram_t is array (0 to 2047) of std_logic_vector(7 downto 0);    
+  type ram_t is array (0 to 299) of std_logic_vector(7 downto 0);    
   -- initiate picture memory to one cursor ("1F") followed by spaces ("00")
-  signal pictMem : ram_t := (0 => x"1F", others => (others => '0'));
+  signal pictMem : ram_t := --(0 => x"1F", others => (others => '0'));
+                            (
+-- Level start
+
+-- Level start
+
+x"0a", x"0a", x"0a", x"12", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"13", 
+
+x"00", x"00", x"00", x"12", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"13", 
+
+x"00", x"00", x"00", x"12", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"13", 
+
+x"00", x"00", x"00", x"12", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"13", 
+
+x"00", x"00", x"00", x"12", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"13", 
+
+x"00", x"00", x"00", x"12", x"00", x"00", x"00", x"0f", x"0b", x"0b", x"0b", x"0b", x"0b", x"0b", x"0b", x"0e", x"00", x"00", x"00", x"13", 
+
+x"00", x"00", x"00", x"12", x"0f", x"0e", x"00", x"0b", x"0b", x"10", x"10", x"10", x"10", x"10", x"0b", x"0b", x"00", x"0f", x"0e", x"13", 
+
+x"00", x"00", x"00", x"12", x"0b", x"0b", x"00", x"0b", x"0b", x"10", x"11", x"0b", x"11", x"10", x"0b", x"0b", x"00", x"0b", x"0b", x"13", 
+
+x"00", x"00", x"00", x"12", x"0d", x"0c", x"00", x"0b", x"0b", x"10", x"10", x"10", x"10", x"10", x"0b", x"0b", x"00", x"0d", x"0c", x"13", 
+
+x"00", x"00", x"00", x"12", x"00", x"00", x"00", x"0d", x"0b", x"0b", x"0b", x"0b", x"0b", x"0b", x"0b", x"0c", x"00", x"00", x"00", x"13", 
+
+x"00", x"00", x"00", x"12", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"13", 
+
+x"00", x"00", x"00", x"12", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"13", 
+
+x"00", x"00", x"00", x"12", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"13", 
+
+x"00", x"00", x"00", x"12", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"13", 
+
+x"0a", x"0a", x"0a", x"12", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"00", x"13"
+
+
+
+
+                             );
 
 
 begin

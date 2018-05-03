@@ -12,6 +12,7 @@ entity ultra is
     --echo : in STD_LOGIC;
     --gnd : out STD_LOGIC;
     us_time : buffer unsigned (15 downto 0);
+    Xpixel  : buffer unsigned (9 downto 0);
     rst : in std_logic);
 end ultra;
 
@@ -20,10 +21,20 @@ architecture ultra_behavior of ultra is
   signal q : state;
   signal us_counter : unsigned (6 downto 0);
   signal us : unsigned (15 downto 0);
+  --signal us_time : unsigned (15 downto 0);
   signal us_rst : std_logic;
   signal trig_counter : unsigned (3 downto 0);
   signal trigger :STD_LOGIC;    
   signal echo : STD_LOGIC;
+  signal diff : unsigned(10 downto 0);
+  signal Xpixel_temp : unsigned(10 downto 0);
+  signal avg1 : unsigned(10 downto 0);
+  signal avg2 : unsigned(10 downto 0);
+  signal avg3 : unsigned(10 downto 0);
+  signal avg4 : unsigned(10 downto 0);
+  signal avg_sum : unsigned(10 downto 0);
+  signal temp_sum : unsigned(10 downto 0);
+
 begin
   JA(0) <= trigger; 
   echo <= JB(0);
@@ -96,5 +107,31 @@ begin
    end if;
   end process;
 
-                 
+  process (clk) begin
+    if rising_edge(clk) then
+      if (rst = '1') then
+        avg_sum <= "00011100000"; --Xpixel_temp;
+        avg1 <= "00011100000";
+        avg2 <= "00011100000";
+        avg3 <= "00011100000";
+        avg4 <= "00011100000";
+
+      else
+        if diff < 75 then
+          avg1 <= avg2;
+          avg2 <= avg3;
+          avg3 <= avg4;
+          avg4 <= Xpixel_temp;
+          avg_sum <= avg1 + avg2 + avg3 + avg4;
+        end if;
+        Xpixel <= ("0" & avg_sum(10 downto 2)) + 40;
+        
+      end if;
+    end if;
+  end process;
+  
+  temp_sum <= "00" & avg_sum(10 downto 2); 
+  diff <= temp_sum - Xpixel_temp when temp_sum > Xpixel_temp else Xpixel_temp - temp_sum;
+  Xpixel_temp <= ("00" & us_time(10 downto 2));
+  
 end ultra_behavior;

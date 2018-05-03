@@ -40,7 +40,8 @@ architecture Behavioral of breakout is
     port(clk : in std_logic;
 	 JA: out unsigned(1 downto 0); -- vcc, trigger, gnd
 	 JB: in unsigned(1 downto 0); -- echo
-	 us_time : buffer unsigned(15 downto 0);
+	 Xpixel : buffer unsigned(9 downto 0);
+         us_time : buffer unsigned(15 downto 0);
          rst : in std_logic
     );
   end component;
@@ -168,6 +169,8 @@ end component;
   signal paddle_one_pos_s         : unsigned(9 downto 0);
   signal paddle_two_pos_s         : unsigned(9 downto 0);
 
+  -- paddle registre
+  
   -- temp counter --FOR TESTING--
   signal second_counter : unsigned (27 downto 0);
   
@@ -184,7 +187,6 @@ begin
         ball_one_posY_s <= "0000000000";
         ball_two_posX_s <= "0100000000";
         ball_two_posY_s <= "0100000000";
-        paddle_one_pos_s <= "1000000000";
         paddle_two_pos_s <= "1000000000";
         collision_reset_s <= '1';
       elsif second_counter = 50000000 then
@@ -276,7 +278,7 @@ begin
   -- program memory component connection
   U1 : pMem port map(pAddr=>ASR, pData=>PM);
 
-  UL : ultra port map(clk, JA, JB, us_time, rst);
+  UL : ultra port map(clk=>clk, JA=>JA, JB=>JB, Xpixel=>paddle_one_pos_s, rst=>rst, us_time=>us_time);
 
    -- picture memory component connection
   U3 : PICT_MEM port map(clk=>clk, we1=>we_s, data_in1=>data_s, addr1=>addr_s, we2=>'0', data_in2=>"00000000", data_out2=>data_out2_s, addr2=>addr2_s);
