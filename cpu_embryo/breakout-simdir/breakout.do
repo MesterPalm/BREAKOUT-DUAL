@@ -12,7 +12,8 @@ add wave -hex {sim:/breakout_tb/uut/ir }
 
 add wave -hex {sim:/breakout_tb/uut/u0/uaddr }
 add wave -hex {sim:/breakout_tb/uut/u1/paddr }
-add wave -hex {sim:/breakout_tb/uut/u1/pdata }
+add wave -hex {sim:/breakout_tb/uut/u1/pdataout }
+add wave -hex {sim:/breakout_tb/uut/u1/pdatain }
 
 add wave -dec {sim:/breakout_tb/uut/al/alu_data}
 add wave -dec {sim:/breakout_tb/uut/al/ar}

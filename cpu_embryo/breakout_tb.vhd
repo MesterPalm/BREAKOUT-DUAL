@@ -9,19 +9,37 @@ ARCHITECTURE behavior OF breakout_tb IS
 
   --Component Declaration for the Unit Under Test (UUT)
   COMPONENT breakout
-  PORT(clk : IN std_logic;
-       rst : IN std_logic;
+  PORT(clk: in std_logic;
+       btns: in std_logic;             --rst
        JA: out unsigned(1 downto 0); -- trigger
        JB: in unsigned(1 downto 0); -- echo
-       Led : out unsigned(1 downto 0));
+       Led : out unsigned(7 downto 0);
+       seg : out unsigned (7 downto 0);
+       an : out unsigned (3 downto 0);
+       Hsync : out std_logic;                        -- horizontal sync
+       Vsync : out std_logic;                        -- vertical sync
+       vgaRed : out std_logic_vector(2 downto 0);   -- VGA red
+       vgaGreen : out std_logic_vector(2 downto 0);     -- VGA green
+       vgaBlue : out std_logic_vector(2 downto 1);     -- VGA blue
+       PS2KeyboardCLK : in std_logic;                         -- PS2 clock
+       PS2KeyboardData : in std_logic);
   END COMPONENT;
 
   --Inputs
-  signal clk : std_logic:= '0';
-  signal rst : std_logic:= '0';
-  signal JA : unsigned(1 downto 0);
-  signal JB : unsigned(1 downto 0);
-  signal Led : unsigned(1 downto 0);
+  signal clk: std_logic;
+  signal rst: std_logic;             --rst
+  signal JA: unsigned(1 downto 0); -- trigger
+  signal JB: unsigned(1 downto 0); -- echo
+  signal Led : unsigned(7 downto 0);
+  signal seg : unsigned (7 downto 0);
+  signal an : unsigned (3 downto 0);
+  signal Hsync : std_logic;                        -- horizontal sync
+  signal Vsync : std_logic;                        -- vertical sync
+  signal vgaRed : std_logic_vector(2 downto 0);   -- VGA red
+  signal vgaGreen : std_logic_vector(2 downto 0);     -- VGA green
+  signal vgaBlue : std_logic_vector(2 downto 1);     -- VGA blue
+  signal PS2KeyboardCLK : std_logic;                         -- PS2 clock
+  signal PS2KeyboardData : std_logic;        
   
   --Clock period definitions
   constant clk_period : time:= 10 ns;
@@ -30,10 +48,19 @@ BEGIN
   -- Instantiate the Unit Under Test (UUT)
   uut: breakout PORT MAP (
     clk => clk,
-    rst => rst,
+    btns => rst,
     JA => JA,
     JB => JB,
-    Led => Led
+    Led => Led,
+    seg => seg,
+    an => an,
+    Hsync => Hsync,
+    Vsync => Vsync,
+    vgaRed => vgaRed,
+    vgaGreen => vgaGreen,
+    vgaBlue => vgaBlue,
+    PS2KeyboardCLK => PS2KeyboardCLK,
+    PS2KeyboardData=>PS2KeyboardData
   );
 		
   -- Clock process definitions
