@@ -12,7 +12,7 @@ end uMem;
 architecture Behavioral of uMem is
 
 -- micro Memory
-type u_mem_t is array (0 to 25) of unsigned(24 downto 0);
+type u_mem_t is array (0 to 36) of unsigned(24 downto 0);
 constant u_mem_c : u_mem_t :=
    --OP_TB_FB_PC_S_grA/B_uPC_uAddr
    --4__4__4__1_1__3___7
@@ -25,8 +25,8 @@ constant u_mem_c : u_mem_t :=
    b"0001_1001_1000_0_0_0_000_0000000", -- AR := uOperand ADRESS-MODE 11/ 
    b"0010_0101_1000_0_1_0_000_0000000", -- AR := GR15 + AR;
    b"0000_0111_0100_0_0_0_010_0000000", -- ASR := AR; uPC:=uProg
-   b"0000_0010_0101_0_0_0_001_0000000", -- GRX := PM; LOAD
-   b"0000_0010_0011_0_0_0_001_0000000", -- PC := PM; BRA; BEQ END 2
+   b"0000_0010_0101_0_0_0_001_0000000", -- GRX := PM; LOAD START END
+   b"0000_0010_0011_0_0_0_001_0000000", -- PC := PM; BRA; BEQ END 2; BNE END 2
    b"0001_0101_1000_0_0_0_000_0000000", -- AR := GRA; ADD BEGIN 
    b"0010_0101_1000_0_0_1_000_0000000", -- AR := AR+GRB
    b"0000_0111_0101_0_0_0_001_0000000", --GRA := AR; ADD END
@@ -39,9 +39,20 @@ constant u_mem_c : u_mem_t :=
    b"0000_0000_0000_0_0_0_001_0000000", --PC:=PC+1;uPC:=0; BEQ END 1
    b"0001_0101_1000_0_0_0_000_0000000", --AR:=GRA ; CMP BEGIN
    b"0011_0101_1000_0_0_1_001_0000000", --AR:=AR-GRB;uPC:=0;CMP END
+   b"0000_0101_0010_0_0_0_001_0000000", --PM:=GRX ;STORE START AND END
+   b"0000_0000_0000_0_0_0_100_0000000", --Hopp till 0 om Z =1; BNE BEGIN 
+   b"0000_0000_0000_0_0_0_001_0001010", --Hopp till BRA
+   b"0100_0101_1000_0_0_0_000_0000000", --AR:=ASL(GRA); ASL BEGIN
+   b"0000_0111_0101_0_0_0_001_0000000", --GRA:=AR; hopp till 0; ASL END
+   b"0101_0101_1000_0_0_0_000_0000000", --AR:=ASR(GRA); ASR BEGIN
+   b"0000_0111_0101_0_0_0_001_0000000", --GRA:=AR; hopp till 0; ASR END
+   b"0000_0000_0000_0_0_0_101_0001010", --if minus jump to branch BMI START
+   b"0000_0000_0000_0_0_0_001_0000000", --jump to start BMI END
    b"0000_0000_0000_0_0_0_000_0000000",
    b"0000_0000_0000_0_0_0_000_0000000",
-   b"0000_0000_0000_0_0_0_000_0000000");
+   b"0000_0000_0000_0_0_0_000_0000000",
+   b"0000_0000_0000_0_0_0_000_0000000",
+   b"0000_0000_0000_0_0_0_000_0000000"); 
  --b"0000_0000_0000_0_0_0_000_0000000"--
 
 signal u_mem : u_mem_t := u_mem_c;

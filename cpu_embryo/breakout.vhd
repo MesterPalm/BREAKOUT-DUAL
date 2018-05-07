@@ -42,7 +42,10 @@ architecture Behavioral of breakout is
   -- program Memory component
   component pMem
     port(pAddr : in unsigned(31 downto 0);
-         pData : out unsigned(31 downto 0));
+         pDataOut : out unsigned(31 downto 0);
+         pDataIn : in unsigned(31 downto 0);
+         readWrite : in std_logic
+         );
   end component;
 
   -- ALU component
@@ -94,6 +97,8 @@ architecture Behavioral of breakout is
   
   -- program memory signals
   signal PM : unsigned(31 downto 0); -- Program Memory output
+  signal PMin : unsigned(31 downto 0);  -- Program Memory input
+  signal PMrw : std_logic;              -- read write bit to PM
   signal PC : unsigned(31 downto 0); -- Program Counter
   signal Pcsig : std_logic; -- 0:PC=PC, 1:PC++
   signal ASR : unsigned(31 downto 0); -- Address Register
@@ -116,6 +121,21 @@ begin
     end if;
   end process;
 
+  -- program memory in
+  process(clk)
+  begin
+    if rising_edge(clk) then
+      if (rst = '1') then
+        PMin <= (others => '0');
+        PMrw <= '1';
+      elsif (FB = "0010") then
+        PMin <= DATA_BUS;
+        PMrw <= '0';
+      else
+        PMrw <= '1';
+      end if;
+    end if; 
+  end process;
   
   -- PC : Program Counter
   process(clk)
@@ -185,8 +205,14 @@ begin
         uPC <= uProg;
       elsif (uPCsig = "011") then
         uPc <= uMode;
-      elsif (uPCsig = "100") then
+      elsif (uPCsig = "100") then       --Branch zero
         if (SR(1)='1') then
+          uPC <= uAddr;
+        else
+          uPC <= uPC+1;
+        end if;
+      elsif uPCsig = "101" then         --Branch minus
+        if (SR(0) = '1') then
           uPC <= uAddr;
         else
           uPC <= uPC+1;
@@ -206,7 +232,7 @@ begin
   U0 : uMem port map(uAddr=>uPC, uData=>uM);
 
   -- program memory component connection
-  U1 : pMem port map(pAddr=>ASR, pData=>PM);
+  U1 : pMem port map(pAddr=>ASR, pDataOut=>PM, pDataIn=>PMin, readWrite=>PMrw);
 
   UL : ultra port map(clk, JA, JB, us_time, rst);
 

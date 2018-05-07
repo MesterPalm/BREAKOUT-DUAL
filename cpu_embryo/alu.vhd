@@ -50,9 +50,9 @@ begin
         status(1) <= equal;
         ar <= ar - alu_data;
       elsif alu_opcode = 4 then 				-- arithmetic/logic shift left
-        ar <= ar(30 downto 0) & '0';
+        ar <= alu_data(30 downto 0) & '0';
       elsif alu_opcode = 5 then 				-- arithmetic shift right
-        ar <= ar(31) & ar(31 downto 1);
+        ar <= alu_data(31) & alu_data(31 downto 1);
       elsif alu_opcode = 6 then         -- vector reflection
 				if diff > 2 then
         	ar <= ar(31 downto 3) & ball_v; -- TODO: make coherent with actual ball-reg structure
