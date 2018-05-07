@@ -26,14 +26,18 @@ architecture ultra_behavior of ultra is
   signal trig_counter : unsigned (3 downto 0);
   signal trigger :STD_LOGIC;    
   signal echo : STD_LOGIC;
-  signal diff : unsigned(10 downto 0);
-  signal Xpixel_temp : unsigned(10 downto 0);
-  signal avg1 : unsigned(10 downto 0);
-  signal avg2 : unsigned(10 downto 0);
-  signal avg3 : unsigned(10 downto 0);
-  signal avg4 : unsigned(10 downto 0);
-  signal avg_sum : unsigned(10 downto 0);
-  signal temp_sum : unsigned(10 downto 0);
+  signal diff : unsigned(11 downto 0);
+  signal Xpixel_temp : unsigned(11 downto 0);
+  signal avg1 : unsigned(11 downto 0);
+  signal avg2 : unsigned(11 downto 0);
+  signal avg3 : unsigned(11 downto 0);
+  signal avg4 : unsigned(11 downto 0);
+  signal avg5 : unsigned(11 downto 0);
+  signal avg6 : unsigned(11 downto 0);
+  signal avg7 : unsigned(11 downto 0);
+  signal avg8 : unsigned(11 downto 0);
+  signal avg_sum : unsigned(11 downto 0);
+  signal temp_sum : unsigned(11 downto 0);
 
 begin
   JA(0) <= trigger; 
@@ -110,28 +114,32 @@ begin
   process (clk) begin
     if rising_edge(clk) then
       if (rst = '1') then
-        avg_sum <= "00011100000"; --Xpixel_temp;
-        avg1 <= "00011100000";
-        avg2 <= "00011100000";
-        avg3 <= "00011100000";
-        avg4 <= "00011100000";
+        avg_sum <= "000011100000"; --Xpixel_temp;
+        avg1 <= "000011100000";
+        avg2 <= "000011100000";
+        avg3 <= "000011100000";
+        avg4 <= "000011100000";
 
       else
-        if diff < 75 then
+        if diff < 65 then
           avg1 <= avg2;
           avg2 <= avg3;
           avg3 <= avg4;
-          avg4 <= Xpixel_temp;
-          avg_sum <= avg1 + avg2 + avg3 + avg4;
+          avg4 <= avg5;
+          avg5 <= avg6;
+          avg6 <= avg7;
+          avg7 <= avg8;         
+          avg8 <= Xpixel_temp;
+          avg_sum <= avg1 + avg2 + avg3 + avg4 + avg5 + avg6 + avg7 + avg8;
         end if;
-        Xpixel <= ("0" & avg_sum(10 downto 2)) + 40;
+        Xpixel <= ("0" & avg_sum(11 downto 3)) + 40;
         
       end if;
     end if;
   end process;
   
-  temp_sum <= "00" & avg_sum(10 downto 2); 
+  temp_sum <= "000" & avg_sum(11 downto 3); 
   diff <= temp_sum - Xpixel_temp when temp_sum > Xpixel_temp else Xpixel_temp - temp_sum;
-  Xpixel_temp <= ("00" & us_time(10 downto 2));
+  Xpixel_temp <= ("000" & us_time(10 downto 2));
   
 end ultra_behavior;
