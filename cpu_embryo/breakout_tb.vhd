@@ -13,9 +13,9 @@ ARCHITECTURE behavior OF breakout_tb IS
        btns: in std_logic;             --rst
        JA: out unsigned(1 downto 0); -- trigger
        JB: in unsigned(1 downto 0); -- echo
-       Led : out unsigned(7 downto 0);
-       seg : out unsigned (7 downto 0);
-       an : out unsigned (3 downto 0);
+ --      Led : out unsigned(7 downto 0);
+ --      seg : out unsigned (7 downto 0);
+ --      an : out unsigned (3 downto 0);
        Hsync : out std_logic;                        -- horizontal sync
        Vsync : out std_logic;                        -- vertical sync
        vgaRed : out std_logic_vector(2 downto 0);   -- VGA red
@@ -30,9 +30,9 @@ ARCHITECTURE behavior OF breakout_tb IS
   signal rst: std_logic;             --rst
   signal JA: unsigned(1 downto 0); -- trigger
   signal JB: unsigned(1 downto 0); -- echo
-  signal Led : unsigned(7 downto 0);
-  signal seg : unsigned (7 downto 0);
-  signal an : unsigned (3 downto 0);
+--  signal Led : unsigned(7 downto 0);
+--  signal seg : unsigned (7 downto 0);
+--  signal an : unsigned (3 downto 0);
   signal Hsync : std_logic;                        -- horizontal sync
   signal Vsync : std_logic;                        -- vertical sync
   signal vgaRed : std_logic_vector(2 downto 0);   -- VGA red
@@ -51,9 +51,9 @@ BEGIN
     btns => rst,
     JA => JA,
     JB => JB,
-    Led => Led,
-    seg => seg,
-    an => an,
+--    Led => Led,
+--    seg => seg,
+--    an => an,
     Hsync => Hsync,
     Vsync => Vsync,
     vgaRed => vgaRed,
