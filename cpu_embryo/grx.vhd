@@ -16,7 +16,7 @@ architecture Behavioral of grx is
 
 type grx_t is array (0 to 15) of unsigned(31 downto 0);
 
-signal grx_c : grx_t :=
+constant grx_c : grx_t :=
   (X"0000_0000", 
    X"0000_0000", 
    X"0000_0000", 
@@ -34,13 +34,15 @@ signal grx_c : grx_t :=
    X"0000_0000",
    X"0000_0000");
 
+signal grx : grx_t := grx_c;
+
 begin  -- Behavioral
   process (grxAddr, grxRW) begin
      --if rising_edge(clk) then
       if (grxRW = '1') then
-        grxDataOut <= grx_c(to_integer(grxAddr));
-      else
-        grx_c(to_integer(grxAddr)) <= grxDataIn;
+        grxDataOut <= grx(to_integer(grxAddr));
+      elsif (grxRW = '0') then
+        grx(to_integer(grxAddr)) <= grxDataIn;
       end if;
     --end if;
   end process;
