@@ -8,7 +8,7 @@ entity breakout is
        btns: in std_logic;             --rst
        JA: out unsigned(1 downto 0); -- trigger
        JB: in unsigned(1 downto 0); -- echo
-       --Led : out unsigned(7 downto 0);
+       Led : out unsigned(7 downto 0);
        --seg : out unsigned (7 downto 0);
        --an : out unsigned (3 downto 0);
        Hsync : out std_logic;                        -- horizontal sync
@@ -140,7 +140,9 @@ architecture Behavioral of breakout is
          
          );
   end component;
-
+  --address decoder signal
+  constant spaceBorder : unsigned(31 downto 0) := "00000000000000000000001111101000";
+  signal spaceSelect : std_logic;
   --instruction decoder signal
   signal uMode : unsigned(6 downto 0);
   signal uProg : unsigned(6 downto 0);
@@ -225,7 +227,17 @@ begin
   JA(1) <= trigger2_s;
   echo1_s <= JB(0);
   echo2_s <= JB(1);
-  --Led <= x"00";
+  Led(0) <= '0';
+  Led(7 downto 1) <= PC(7 downto 1);
+  -----Led <= x"00";
+  ----------Led(0) <= '0';--clk;
+  ----------Led(1) <= rst;
+  ----------Led(2) <= '0';
+  ----------Led(3) <= '0';
+  ----------Led(4) <= '0';
+  ----------Led(5) <= '0';
+  ----------Led(6) <= '0';
+  ----------Led(7) <= '0';
   
   
   
@@ -248,10 +260,22 @@ begin
       if (rst = '1') then
         PMin <= (others => '0');
         PMrw <= '1';
+        data_s <= x"00";
+        we_s <= '0';
       elsif (FB = "0010") then
-        PMin <= DATA_BUS;
-        PMrw <= '0';
+        if spaceSelect = '0' then
+          data_s <= x"00";
+          PMin <= DATA_BUS;
+          PMrw <= '0';
+          we_s <= '0';
+        elsif spaceSelect = '1' then
+           data_s <= DATA_BUS(7 downto 0);
+           
+           we_s <= '1';
+        end if;
       else
+        data_s <= x"00";
+        we_s <= '0';
         PMrw <= '1';
       end if;
     end if; 
@@ -271,14 +295,22 @@ begin
     end if;
   end process;
   
-  -- ASR : Address Register
-  process(clk)
-  begin
+  -- ASR and Picture memory adress
+  process (clk)
+  begin  -- process
     if rising_edge(clk) then
-      if (rst = '1') then
+      if rst = '1' then
+        spaceSelect <= '0';
         ASR <= (others => '0');
-      elsif (FB = "0100") then
-        ASR <= DATA_BUS;
+        addr_s <= (others => '0');
+      elsif FB = "0100" then
+        if DATA_BUS < spaceBorder then
+          ASR <= DATA_BUS;
+          spaceSelect <= '0';
+        elsif DATA_BUS >= spaceBorder then
+          addr_s <= DATA_BUS(10 downto 0) - spaceBorder(10 downto 0);
+          spaceSelect <= '1';
+        end if;
       end if;
     end if;
   end process;
@@ -289,6 +321,7 @@ begin
     if rising_edge(clk) then
       if (rst = '1') then
         grxDataIn <= (others => '0');
+        grxRW <= '1';
       elsif (FB = "0101") then
         grxDataIn <= DATA_BUS;
         grxRW <= '0';
@@ -330,10 +363,6 @@ begin
       end if;
     end if;
   end process;
-
-  we_s <= '1' when (FB = "1010") else '0';
-  data_s <= DATA_BUS(7 downto 0) when (FB = "1001") else
-               (others => '0');
 	
   --instruction decoder connection
   ID : instrDec port map (instruction =>IR, operand=>uOperand, uMode=>uMode, uProg=>uProg, grA=>grA, grB=>grB);

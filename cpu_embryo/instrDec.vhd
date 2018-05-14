@@ -24,7 +24,7 @@ begin
         grB <= instruction(20 downto 17);
         operand <= "000000000000000"  & instruction(16 downto 0);
         
-      when "00010"| "01000" | "01010" | "01011" =>                          --FORMAT op-addM-gra-operand
+      when "00010"| "01000" | "01010" | "01011" | "01101" | "01110" =>  --FORMAT op-addM-gra-operand
         grA <= instruction(24 downto 21);
         grB <= "0000";
         operand <= "00000000000" & instruction(20 downto 0);
@@ -45,8 +45,8 @@ begin
     b"000_000_0" when "00000",
     b"000_101_0" when "00001",          --BRA
     b"000_100_1" when "00010",          --LOAD
-    b"000_101_1" when "00011",          --ADD
-    b"000_111_0" when "00100",          --SUB
+    b"000_101_1" when "00011",          --ADDR
+    b"000_111_0" when "00100",          --SUBR
     b"001_000_1" when "00101",          --MOV
     b"001_001_1" when "00110",          --BEQ
     b"001_010_1" when "00111",          --CMP
@@ -55,7 +55,9 @@ begin
     b"001_101_0" when "01010",          --ASL
     b"001_110_0" when "01011",          --ASR
     b"001_111_0" when "01100",          --BMI
-    b"000_000_0" when others;
+    b"001_111_0" when "01101",          --ADD
+    b"010_000_0" when "01110",          --SUB
+    b"010_001_1" when others;
 
   --Addressing mode select
   with instruction(26 downto 25) select
