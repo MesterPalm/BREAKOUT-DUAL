@@ -38,7 +38,18 @@ architecture Behavioral of breakout is
           grxDataIn : in unsigned(31 downto 0);
           grxDataOut : out unsigned(31 downto 0);
           grxRW : in std_logic; --the read/write bit, in read mode when high else write
-          clk : in std_logic);
+          clk : in std_logic;
+          ballx1 : out unsigned(9 downto 0);
+          bally1 : out unsigned(9 downto 0);
+          ballx2 : out unsigned(9 downto 0);
+          bally2 : out unsigned(9 downto 0);
+          collision1 : in unsigned(3 downto 0);
+          collision2 : in unsigned(3 downto 0);
+          collisAddr1 : in unsigned(10 downto 0);
+          collisAddr2 : in unsigned(10 downto 0);
+          paddle1 : in unsigned(9 downto 0);
+          paddle2 : in unsigned(9 downto 0)
+          );
   end component;
 
   -- micro Memory component
@@ -52,7 +63,8 @@ architecture Behavioral of breakout is
     port(pAddr : in unsigned(31 downto 0);
          pDataOut : out unsigned(31 downto 0);
          pDataIn : in unsigned(31 downto 0);
-         readWrite : in std_logic
+         readWrite : in std_logic;
+         clk : in std_logic
          );
   end component;
 
@@ -140,6 +152,11 @@ architecture Behavioral of breakout is
          
          );
   end component;
+  --ball register
+  constant initialPos1 : unsigned(31 downto 0) := "01000000000111000000000000000000";
+  signal ballReg1 : unsigned(31 downto 0) := initialPos1;
+  constant initialPos2 : unsigned(31 downto 0) := "00000000000000000000000000000000";
+  signal ballReg2 : unsigned(31 downto 0) := initialPos2;
   --address decoder signal
   constant spaceBorder : unsigned(31 downto 0) := "00000000000000000000001111101000";
   signal spaceSelect : std_logic;
@@ -219,7 +236,14 @@ architecture Behavioral of breakout is
   signal echo1_s : std_logic;
   signal echo2_s : std_logic;
     
-
+   -- tick counter
+  signal tick_counter_s : unsigned(23 downto 0);
+  signal tick_flag_s : std_logic;
+  -- collsion reset
+  signal coll_s : std_logic;
+  signal already_collided : unsigned(1 downto 0);
+  signal brt_flag : std_logic;
+    
 begin
 
   rst <= btns;
@@ -229,17 +253,12 @@ begin
   echo2_s <= JB(1);
   Led(0) <= '0';
   Led(7 downto 1) <= PC(7 downto 1);
-  -----Led <= x"00";
-  ----------Led(0) <= '0';--clk;
-  ----------Led(1) <= rst;
-  ----------Led(2) <= '0';
-  ----------Led(3) <= '0';
-  ----------Led(4) <= '0';
-  ----------Led(5) <= '0';
-  ----------Led(6) <= '0';
-  ----------Led(7) <= '0';
   
+ -- ball_one_posX_s <= ballReg1(31 downto 22);
+ -- ball_one_posY_s <= ballReg1(21 downto 12);
   
+ -- ball_two_posX_s <= ballReg2(31 downto 22);
+ -- ball_two_posY_s <= ballReg2(21 downto 12);
   
   -- IR : Instruction Register
   process(clk)
@@ -358,29 +377,110 @@ begin
         else
           uPC <= uPC+1;
         end if;
+      elsif uPCsig = "110" then         --Branch tick flag
+        if (tick_flag_s = '1') then
+          uPC <= uAddr;
+          brt_flag <= '1';
+        else
+          uPC <= uPC+1;
+        end if;
       else
         uPC <= uPC + 1;
       end if;
+      if(brt_flag = '1') then
+        brt_flag <= '0';
+      end if;
     end if;
   end process;
-	
+
+  -----------------------------------------------------------------------------
+  -- tick counter
+  process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        tick_counter_s <= x"000000";
+      else
+        if tick_flag_s = '1' then
+          tick_counter_s <= x"000000";
+        else
+          tick_counter_s <= tick_counter_s + 1;
+        end if;
+      end if;
+    end if;
+  end process;
+
+  -- tick flag
+  process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        tick_flag_s <= '0';
+      else
+        if tick_counter_s = 4000000 then
+          tick_flag_s <= '1';
+        else
+          if brt_flag = '1' then
+            tick_flag_s <= '0';
+          end if;
+        end if;
+      end if;
+    end if;
+  end process;
+
+  -- collision reset
+  process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '0' then
+        collision_reset_s <= '1';
+      else
+        if coll_s = '1' and already_collided = "00" then  -- link this one to register
+          collision_reset_s <= '1';
+        else
+          collision_reset_s <= '0';
+        end if;
+      end if;
+    end if;
+  end process;
+
+  process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '0' then
+        coll_s <= '1';
+      else
+        if already_collided /= "00" then -- link this one to register
+          coll_s <= '1';
+        else
+          coll_s <= '0';
+        end if;
+      end if;
+    end if;
+  end process;
+     
   --instruction decoder connection
   ID : instrDec port map (instruction =>IR, operand=>uOperand, uMode=>uMode, uProg=>uProg, grA=>grA, grB=>grB);
   -- general register connection
-  GR : grx port map(grxAddr, grxDataIn, grxDataOut, grxRW, clk);
+  GR : grx port map(grxAddr, grxDataIn, grxDataOut, grxRW, clk,
+                    ballx1 => ball_one_posX_s, bally1 => ball_one_posY_s,
+                    ballx2 => ball_two_posX_s, bally2 => ball_two_posY_s,
+                    collision1 => collision_one_s, collision2 => collision_two_s,
+                    collisAddr1 => collision_addr_one_s, collisAddr2 => collision_addr_two_s,
+                    paddle1 => paddle_one_pos_s, paddle2 => paddle_two_pos_s);
 
   -- micro memory component connection
   U0 : uMem port map(uAddr=>uPC, uData=>uM);
 
   -- program memory component connection
-  U1 : pMem port map(pAddr=>ASR, pDataOut=>PM, pDataIn=>PMin, readWrite=>PMrw);
+  U1 : pMem port map(pAddr=>ASR, pDataOut=>PM, pDataIn=>PMin, readWrite=>PMrw, clk=>clk);
 
   UL1 : ultra port map(clk=>clk, trigger=>trigger1_s, echo=>echo1_s, Xpixel=>paddle_one_pos_s, rst=>rst);
 
   UL2 : ultra port map(clk=>clk, trigger=>trigger2_s, echo=>echo2_s, Xpixel=>paddle_two_pos_s, rst=>rst);
   
    -- picture memory component connection
-   U3 : PICT_MEM port map(clk=>clk, we1=>we_s, data_in1=>data_s, addr1=>addr_s, we2=>'0', data_in2=>"00000000", data_out2=>data_out2_s, addr2=>addr2_s);
+   U3 : PICT_MEM port map(clk=>clk, we1=>we_s, data_in1=>data_s, data_out1 => data_out_s, addr1=>addr_s, we2=>'0', data_in2=>"00000000", data_out2=>data_out2_s, addr2=>addr2_s);
 
   -- VGA motor component connection
   U4 : VGA_MOTOR port map(clk=>clk, rst=>rst, data=>data_out2_s, addr=>addr2_s, vgaRed=>vgaRed, vgaGreen=>vgaGreen, vgaBlue=>vgaBlue, Hsync=>Hsync, Vsync=>Vsync, collision_one(3 downto 0)=>collision_one_s(3 downto 0), collision_two=>collision_two_s, ball_one_posX=>ball_one_posX_s, ball_one_posY=>ball_one_posY_s, ball_two_posX=>ball_two_posX_s, ball_two_posY=>ball_two_posY_s, collision_reset=>collision_reset_s, paddle_one_pos=>paddle_one_pos_s, paddle_two_pos=>paddle_two_pos_s, collision_addr_one=>collision_addr_one_s, collision_addr_two=>collision_addr_two_s);
@@ -394,7 +494,7 @@ begin
   uAddr <= uM(6 downto 0);
   uPCsig <= uM(9 downto 7);
   PCsig <= uM(12);
-  FB <= uM(16 downto 13);               --Kanse behöver flytta så denna avkänn                             --direkt
+  FB <= uM(16 downto 13);             
   TB <= uM(20 downto 17);
   grxAddr <=
     b"1111" when (uM(11) = '1') else
@@ -405,13 +505,13 @@ begin
 
   -- data bus assignment
   DB : DATA_BUS <= IR when (TB = "0001") else
-                   PM when (TB = "0010") else
+                   PM when (TB = "0010" and spaceSelect = '0') else
+                   x"000000" & data_out_s when (TB = "0010" and spaceSelect = '1') else
                    PC when (TB = "0011") else
                    ASR when (TB = "0100") else
                    grxDataOut when (TB = "0101") else
                    AR when (TB = "0111") else
                    uOperand when (TB = "1001") else
-                   x"000000" & data_out_s when (TB = "1010") else
                    (others => '0');
 
 end Behavioral;

@@ -19,12 +19,13 @@ begin
   process (instruction)
   begin  --format select
     case instruction(31 downto 27) is
-      when "00011" | "00100" | "00101" | "00111" =>      --FORMAT op-addM-gra-grb-operand
+      when "00011" | "00100" | "00101" | "00111" | "10001" =>      --FORMAT op-addM-gra-grb-operand
         grA <= instruction(24 downto 21);
         grB <= instruction(20 downto 17);
         operand <= "000000000000000"  & instruction(16 downto 0);
         
-      when "00010"| "01000" | "01010" | "01011" | "01101" | "01110" =>  --FORMAT op-addM-gra-operand
+      when "00010" | "01000" | "01010" | "01011" |
+           "01101" | "01110" | "01111" | "10000" | "10010" =>  --FORMAT op-addM-gra-operand
         grA <= instruction(24 downto 21);
         grB <= "0000";
         operand <= "00000000000" & instruction(20 downto 0);
@@ -32,7 +33,7 @@ begin
        --  grA <= "0000";
        --  grB <= "0000";
      --    operand <= "00000" & instruction(26 downto 0);
-    when others =>--"00001" "01001" "01100"                    --FORMAT op-addM-operand
+    when others =>--"00001" "01001" "01100"  "10011"           --FORMAT op-addM-operand
         grA <= "0000";
         grB <= "0000";
         operand <= "0000000" & instruction(24 downto 0);
@@ -55,9 +56,14 @@ begin
     b"001_101_0" when "01010",          --ASL
     b"001_110_0" when "01011",          --ASR
     b"001_111_0" when "01100",          --BMI
-    b"001_111_0" when "01101",          --ADD
-    b"010_000_0" when "01110",          --SUB
-    b"010_001_1" when others;
+    b"010_000_0" when "01101",          --ADD
+    b"010_001_1" when "01110",          --SUB
+    b"010_011_0" when "01111",          --AND
+    b"010_100_1" when "10000",          --OR
+    b"010_110_0" when "10001",          --REF
+    b"010_111_1" when "10010",          --UPD
+    b"011_000_1" when "10011",          --BRT
+    b"000_000_0" when others;
 
   --Addressing mode select
   with instruction(26 downto 25) select

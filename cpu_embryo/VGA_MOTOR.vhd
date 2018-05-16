@@ -681,12 +681,12 @@ begin
   -- one
   ball_one_posX_end <= ball_one_posX + 7;
   ball_one_posY_end <= ball_one_posY + 7;
-  inside_one <= '1' when Xpixel >= ball_one_posX(9 downto 0) and Xpixel <= ball_one_posX_end(9 downto 0) and Ypixel >= ball_one_posX(9 downto 0) and Ypixel <= ball_one_posX_end(9 downto 0) else '0';
+  inside_one <= '1' when Xpixel >= ball_one_posX(9 downto 0) and Xpixel <= ball_one_posX_end(9 downto 0) and Ypixel >= ball_one_posY(9 downto 0) and Ypixel <= ball_one_posY_end(9 downto 0) else '0';
 
 -- two
   ball_two_posX_end <= ball_two_posY + 7;
   ball_two_posY_end <= ball_two_posY + 7;
-  inside_two <= '1' when Xpixel >= ball_two_posX(9 downto 0) and Xpixel <= ball_two_posX_end(9 downto 0) and Ypixel >= ball_two_posX(9 downto 0) and Ypixel <= ball_two_posX_end(9 downto 0) else '0';
+  inside_two <= '1' when Xpixel >= ball_two_posX(9 downto 0) and Xpixel <= ball_two_posX_end(9 downto 0) and Ypixel >= ball_two_posY(9 downto 0) and Ypixel <= ball_two_posY_end(9 downto 0) else '0';
 
   --Sprite adress (6-bit)
   -- paddle one
