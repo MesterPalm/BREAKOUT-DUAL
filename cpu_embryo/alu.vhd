@@ -55,42 +55,42 @@ begin
         ar <= alu_data(31) & alu_data(31 downto 1);
       elsif alu_opcode = 6 then         -- vector reflection
 				if diff > 2 then
-        	ar <= ar(31 downto 3) & ball_v; -- TODO: make coherent with actual ball-reg structure
+        	ar <= alu_data(31 downto 3) & ball_v; -- TODO: make coherent with actual ball-reg structure
 				else
-        	ar <= ar(31 downto 3) & reflected; -- TODO: make coherent with actual ball-reg structure
+        	ar <= alu_data(31 downto 3) & reflected; -- TODO: make coherent with actual ball-reg structure
 				end if;
 
       elsif alu_opcode = 7 then 	-- Update ball position
 				-- Ball reg in alu_data => ball_reg' in AR
-        case to_integer(ball_v) is
-          when 0 => 
-            xprime <= alu_data(31 downto 22) + ball_m;
-            yprime <= alu_data(21 downto 12);
-          when 1 => 
-            xprime <= alu_data(31 downto 22) + ball_m;
-            yprime <= alu_data(21 downto 12) - ball_m;
-          when 2 => 
-            xprime <= alu_data(31 downto 22);
-            yprime <= alu_data(21 downto 12) - ball_m;
-          when 3 => 
-            xprime <= alu_data(31 downto 22) - ball_m;
-            yprime <= alu_data(21 downto 12) - ball_m;
-          when 4 => 
-            xprime <= alu_data(31 downto 22) - ball_m;
-            yprime <= alu_data(21 downto 12);
-          when 5 => 
-            xprime <= alu_data(31 downto 22) - ball_m;
-            yprime <= alu_data(21 downto 12) + ball_m;
-          when 6 => 
-            xprime <= alu_data(31 downto 22);
-            yprime <= alu_data(21 downto 12) + ball_m;
-          when 7 => 
-            xprime <= alu_data(31 downto 22) + ball_m;
-            yprime <= alu_data(21 downto 12) + ball_m;
-          when others =>
-            xprime <= alu_data(31 downto 22);
-            yprime <= alu_data(21 downto 12);
-        end case;
+ --       case to_integer(ball_v) is
+ --         when 0 => 
+ --           xprime <= alu_data(31 downto 22) + ball_m;
+ --           yprime <= alu_data(21 downto 12);
+ --         when 1 => 
+ --           xprime <= alu_data(31 downto 22) + ball_m;
+ --           yprime <= alu_data(21 downto 12) - ball_m;
+ --         when 2 => 
+ --           xprime <= alu_data(31 downto 22);
+ --           yprime <= alu_data(21 downto 12) - ball_m;
+ --         when 3 => 
+ --           xprime <= alu_data(31 downto 22) - ball_m;
+ --           yprime <= alu_data(21 downto 12) - ball_m;
+ --         when 4 => 
+ --           xprime <= alu_data(31 downto 22) - ball_m;
+ --           yprime <= alu_data(21 downto 12);
+ --         when 5 => 
+ --           xprime <= alu_data(31 downto 22) - ball_m;
+ --           yprime <= alu_data(21 downto 12) + ball_m;
+ --         when 6 => 
+ --           xprime <= alu_data(31 downto 22);
+ --           yprime <= alu_data(21 downto 12) + ball_m;
+ --         when 7 => 
+ --           xprime <= alu_data(31 downto 22) + ball_m;
+ --           yprime <= alu_data(21 downto 12) + ball_m;
+ --         when others =>
+ --           xprime <= alu_data(31 downto 22);
+ --           yprime <= alu_data(21 downto 12);
+ --       end case;
         ar <= xprime & yprime & alu_data(11 downto 0);
       elsif alu_opcode = 8 then         -- and
         ar <= ar and alu_data;
@@ -103,6 +103,28 @@ begin
       end if;
     end if;
   end process;
+  yprime <=  alu_data(21 downto 12) when ball_v = 0 else
+             alu_data(21 downto 12) - ball_m when ball_v = 1 else
+             alu_data(21 downto 12) - ball_m when ball_v = 2 else
+             alu_data(21 downto 12) - ball_m when ball_v = 3 else
+             alu_data(21 downto 12) when ball_v = 4 else
+             alu_data(21 downto 12) + ball_m when ball_v = 5 else
+             alu_data(21 downto 12) + ball_m when ball_v = 6 else
+             alu_data(21 downto 12) + ball_m when ball_v = 7 else
+             alu_data(21 downto 12);
+  
+  xprime <=  alu_data(31 downto 22) + ball_m when ball_v = 0 else
+             alu_data(31 downto 22) + ball_m when ball_v = 1 else
+             alu_data(31 downto 22) when ball_v = 2 else
+             alu_data(31 downto 22) - ball_m when ball_v = 3 else
+             alu_data(31 downto 22) - ball_m when ball_v = 4 else
+             alu_data(31 downto 22) - ball_m when ball_v = 5 else
+             alu_data(31 downto 22) when ball_v = 6 else
+             alu_data(31 downto 22) + ball_m when ball_v = 7 else
+             alu_data(31 downto 22);
+
+ 
+             
 
 	normal <= ar(2 downto 0); -- Assumes AR holds normal as 3 least sigbits
 	ball_v <= alu_data(2 downto 0); -- Same assumption

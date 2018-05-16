@@ -34,8 +34,8 @@ entity VGA_MOTOR is
          ball_two_posY          : in unsigned(9 downto 0);
          collision_reset        : in std_logic;
          paddle_one_pos         : in unsigned(9 downto 0);
-         paddle_two_pos         : in unsigned(9 downto 0)
-         --Led                    : out unsigned(3 downto 0)
+         paddle_two_pos         : in unsigned(9 downto 0);
+         Led                    : out unsigned(7 downto 0)
          );
 end VGA_MOTOR;
 
@@ -545,6 +545,11 @@ x"000",x"000",x"EFF",x"EFF",x"EFF",x"EFF",x"000",x"000"
 		  
 begin
 
+  Led(7) <= collision_one(3);
+  Led(6) <= collision_two(3);
+  Led(5) <= collision_reset;
+  Led(4 downto 0) <= "00000";
+
   -- Clock divisor
   -- Divide system clock (100 MHz) by 4
   process(clk)
@@ -684,7 +689,7 @@ begin
   inside_one <= '1' when Xpixel >= ball_one_posX(9 downto 0) and Xpixel <= ball_one_posX_end(9 downto 0) and Ypixel >= ball_one_posY(9 downto 0) and Ypixel <= ball_one_posY_end(9 downto 0) else '0';
 
 -- two
-  ball_two_posX_end <= ball_two_posY + 7;
+  ball_two_posX_end <= ball_two_posX + 7;
   ball_two_posY_end <= ball_two_posY + 7;
   inside_two <= '1' when Xpixel >= ball_two_posX(9 downto 0) and Xpixel <= ball_two_posX_end(9 downto 0) and Ypixel >= ball_two_posY(9 downto 0) and Ypixel <= ball_two_posY_end(9 downto 0) else '0';
 
@@ -711,7 +716,7 @@ begin
 
   transparent_paddle_two <= '1' when inside_paddle_two = '0' else '0';
     
-  transparent_one <= '1' when (inside_one = '1' and ballSprite(to_integer(addr_one)) = x"000") or inside_one = '0'  else '0';
+  transparent_one <= '1' when (inside_one = '1' and ballSprite(to_integer(addr_one)) = x"000") or inside_one = '0' else '0';
   transparent_two <= '1' when (inside_two = '1' and ballSprite(to_integer(addr_two)) = x"000") or inside_two = '0' else '0';
 
   -- Kollision kanske ska lösas med process sats då vi inte vill skriva över en
@@ -723,7 +728,7 @@ begin
   begin
     if rising_edge(clk) then
       if collision_reset = '1' then
-        collision_one(3) <= '0';
+        collision_one(3 downto 0) <= "0000";
       elsif collision_one(3) = '0' and inside_one = '1' and transparent_one = '0' and tileMem(to_integer(tileAddr))(11) = '1' then
         collision_one(3) <= '1';
         collision_one(2 downto 0) <= tileMem(to_integer(tileAddr))(10 downto 8);
@@ -739,7 +744,7 @@ begin
   begin
     if rising_edge(clk) then
       if collision_reset = '1' then
-        collision_two(3) <= '0';
+        collision_two(3 downto 0) <= "0000";
       elsif collision_two(3) = '0' and inside_two = '1' and transparent_two = '0' and tileMem(to_integer(tileAddr))(11) = '1' then
         collision_two(3) <= '1';
         collision_two(2 downto 0) <= tileMem(to_integer(tileAddr))(10 downto 8);

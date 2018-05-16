@@ -17,7 +17,10 @@ entity breakout is
        vgaGreen : out std_logic_vector(2 downto 0);     -- VGA green
        vgaBlue : out std_logic_vector(2 downto 1);     -- VGA blue
        PS2KeyboardCLK	        : in std_logic;                         -- PS2 clock
-       PS2KeyboardData        : in std_logic);                        -- PS2 data
+       PS2KeyboardData        : in std_logic;
+       btnu: in std_logic;
+       btnd: in std_logic
+       );                        -- PS2 data
 end breakout ;
 
 architecture Behavioral of breakout is
@@ -48,7 +51,8 @@ architecture Behavioral of breakout is
           collisAddr1 : in unsigned(10 downto 0);
           collisAddr2 : in unsigned(10 downto 0);
           paddle1 : in unsigned(9 downto 0);
-          paddle2 : in unsigned(9 downto 0)
+          paddle2 : in unsigned(9 downto 0);
+          alreadyCollided : out unsigned(1 downto 0)
           );
   end component;
 
@@ -148,7 +152,8 @@ architecture Behavioral of breakout is
          ball_two_posY          : in unsigned(9 downto 0);
          paddle_one_pos : in unsigned(9 downto 0);
          paddle_two_pos : in unsigned(9 downto 0);
-         collision_reset        : in std_logic
+         collision_reset        : in std_logic;
+         Led : out unsigned(7 downto 0)
          
          );
   end component;
@@ -243,6 +248,7 @@ architecture Behavioral of breakout is
   signal coll_s : std_logic;
   signal already_collided : unsigned(1 downto 0);
   signal brt_flag : std_logic;
+  signal pause : std_logic;
     
 begin
 
@@ -251,8 +257,11 @@ begin
   JA(1) <= trigger2_s;
   echo1_s <= JB(0);
   echo2_s <= JB(1);
-  Led(0) <= '0';
-  Led(7 downto 1) <= PC(7 downto 1);
+
+  pause <= btnu;
+  
+  --Led(7 downto 4) <= collision_one_s;
+  --Led(3 downto 0) <= collision_two_s;
   
  -- ball_one_posX_s <= ballReg1(31 downto 22);
  -- ball_one_posY_s <= ballReg1(21 downto 12);
@@ -357,38 +366,40 @@ begin
   process(clk)
   begin
     if rising_edge(clk) then
-      if (rst = '1') then
-        uPC <= (others => '0');
-      elsif (uPCsig = "001") then
-        uPC <= uAddr;
-      elsif (uPCsig = "010") then
-        uPC <= uProg;
-      elsif (uPCsig = "011") then
-        uPc <= uMode;
-      elsif (uPCsig = "100") then       --Branch zero
-        if (SR(1)='1') then
+      if pause = '0' then
+        if (rst = '1') then
+          uPC <= (others => '0');
+        elsif (uPCsig = "001") then
           uPC <= uAddr;
+        elsif (uPCsig = "010") then
+          uPC <= uProg;
+        elsif (uPCsig = "011") then
+          uPc <= uMode;
+        elsif (uPCsig = "100") then       --Branch zero
+          if (SR(1)='1') then
+            uPC <= uAddr;
+          else
+            uPC <= uPC+1;
+          end if;
+        elsif uPCsig = "101" then         --Branch minus
+          if (SR(0) = '1') then
+            uPC <= uAddr;
+          else
+            uPC <= uPC+1;
+          end if;
+        elsif uPCsig = "110" then         --Branch tick flag
+          if (tick_flag_s = '1') then
+            uPC <= uAddr;
+            brt_flag <= '1';
+          else
+            uPC <= uPC+1;
+          end if;
         else
-          uPC <= uPC+1;
+          uPC <= uPC + 1;
         end if;
-      elsif uPCsig = "101" then         --Branch minus
-        if (SR(0) = '1') then
-          uPC <= uAddr;
-        else
-          uPC <= uPC+1;
+        if(brt_flag = '1') then
+          brt_flag <= '0';
         end if;
-      elsif uPCsig = "110" then         --Branch tick flag
-        if (tick_flag_s = '1') then
-          uPC <= uAddr;
-          brt_flag <= '1';
-        else
-          uPC <= uPC+1;
-        end if;
-      else
-        uPC <= uPC + 1;
-      end if;
-      if(brt_flag = '1') then
-        brt_flag <= '0';
       end if;
     end if;
   end process;
@@ -432,8 +443,8 @@ begin
   process(clk)
   begin
     if rising_edge(clk) then
-      if rst = '0' then
-        collision_reset_s <= '1';
+      if rst = '1' then
+        collision_reset_s <= '0';
       else
         if coll_s = '1' and already_collided = "00" then  -- link this one to register
           collision_reset_s <= '1';
@@ -447,7 +458,7 @@ begin
   process(clk)
   begin
     if rising_edge(clk) then
-      if rst = '0' then
+      if rst = '1' then
         coll_s <= '1';
       else
         if already_collided /= "00" then -- link this one to register
@@ -467,7 +478,8 @@ begin
                     ballx2 => ball_two_posX_s, bally2 => ball_two_posY_s,
                     collision1 => collision_one_s, collision2 => collision_two_s,
                     collisAddr1 => collision_addr_one_s, collisAddr2 => collision_addr_two_s,
-                    paddle1 => paddle_one_pos_s, paddle2 => paddle_two_pos_s);
+                    paddle1 => paddle_one_pos_s, paddle2 => paddle_two_pos_s,
+                    alreadyCollided=>already_collided);
 
   -- micro memory component connection
   U0 : uMem port map(uAddr=>uPC, uData=>uM);
@@ -483,7 +495,7 @@ begin
    U3 : PICT_MEM port map(clk=>clk, we1=>we_s, data_in1=>data_s, data_out1 => data_out_s, addr1=>addr_s, we2=>'0', data_in2=>"00000000", data_out2=>data_out2_s, addr2=>addr2_s);
 
   -- VGA motor component connection
-  U4 : VGA_MOTOR port map(clk=>clk, rst=>rst, data=>data_out2_s, addr=>addr2_s, vgaRed=>vgaRed, vgaGreen=>vgaGreen, vgaBlue=>vgaBlue, Hsync=>Hsync, Vsync=>Vsync, collision_one(3 downto 0)=>collision_one_s(3 downto 0), collision_two=>collision_two_s, ball_one_posX=>ball_one_posX_s, ball_one_posY=>ball_one_posY_s, ball_two_posX=>ball_two_posX_s, ball_two_posY=>ball_two_posY_s, collision_reset=>collision_reset_s, paddle_one_pos=>paddle_one_pos_s, paddle_two_pos=>paddle_two_pos_s, collision_addr_one=>collision_addr_one_s, collision_addr_two=>collision_addr_two_s);
+  U4 : VGA_MOTOR port map(clk=>clk, rst=>rst, data=>data_out2_s, addr=>addr2_s, vgaRed=>vgaRed, vgaGreen=>vgaGreen, vgaBlue=>vgaBlue, Hsync=>Hsync, Vsync=>Vsync, collision_one=>collision_one_s, collision_two=>collision_two_s, ball_one_posX=>ball_one_posX_s, ball_one_posY=>ball_one_posY_s, ball_two_posX=>ball_two_posX_s, ball_two_posY=>ball_two_posY_s, collision_reset=>collision_reset_s, paddle_one_pos=>paddle_one_pos_s, paddle_two_pos=>paddle_two_pos_s, collision_addr_one=>collision_addr_one_s, collision_addr_two=>collision_addr_two_s, Led=>Led);
 
   -- keyboard encoder component connection
  --U5 : KBD_ENC port map(clk=>clk, rst=>rst, PS2KeyboardCLK=>PS2KeyboardCLK, PS2KeyboardData=>PS2KeyboardData, data=>data_s, addr=>addr_s, we=>we_s);

@@ -49,23 +49,22 @@ begin  -- Behavioral
 
   grx_RO_s(13) <= "000000000000000000000" & collisAddr1;
   grx_RO_s(14) <= "000000000000000000000" & collisAddr2;
+
+  grxDataOut <= index when (grxRW = '1' and grxAddr = 15) else
+                grx_RO_s(to_integer(grxAddr)) when (grxRW = '1' and grxAddr > 8) else
+                grx_RW_s(to_integer(grxAddr)) when (grxRW = '1') else
+                (others => '1');
   
-  
-  process (grxAddr, grxRW) begin
-      if (grxRW = '1') then
-        if grxAddr = 15 then
-          grxDataOut <= index;
-        elsif grxAddr > 8 then
-          grxDataOut <= grx_RO_s(to_integer(grxAddr));
-        else
-          grxDataOut <= grx_RW_s(to_integer(grxAddr));
-        end if;
-      elsif (grxRW = '0') then
+  process (clk)
+  begin
+    if (rising_edge(clk)) then     
+      if (grxRW = '0') then
         if grxAddr = 15 then
           index <= grxDataIn;
         else
           grx_RW_s(to_integer(grxAddr)) <= grxDataIn;
         end if;
       end if;
+    end if;
   end process;
 end Behavioral;

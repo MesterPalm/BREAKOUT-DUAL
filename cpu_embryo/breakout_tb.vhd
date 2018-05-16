@@ -22,7 +22,9 @@ ARCHITECTURE behavior OF breakout_tb IS
        vgaGreen : out std_logic_vector(2 downto 0);     -- VGA green
        vgaBlue : out std_logic_vector(2 downto 1);     -- VGA blue
        PS2KeyboardCLK : in std_logic;                         -- PS2 clock
-       PS2KeyboardData : in std_logic);
+       PS2KeyboardData : in std_logic;
+       btnu:std_logic;
+       btnd:std_logic);
   END COMPONENT;
 
   --Inputs
@@ -60,7 +62,9 @@ BEGIN
     vgaGreen => vgaGreen,
     vgaBlue => vgaBlue,
     PS2KeyboardCLK => PS2KeyboardCLK,
-    PS2KeyboardData=>PS2KeyboardData
+    PS2KeyboardData=>PS2KeyboardData,
+    btnu=>'0',
+    btnd=>'0'
   );
 		
   -- Clock process definitions
