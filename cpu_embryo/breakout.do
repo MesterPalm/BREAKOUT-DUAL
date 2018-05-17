@@ -24,5 +24,7 @@ add wave -dec {sim:/breakout_tb/uut/id/grb}
 add wave -dec {sim:/breakout_tb/uut/gr/grxaddr}
 add wave -dec {sim:/breakout_tb/uut/u3/data_in1}
 
+add wave {sim:/breakout_tb/uut/u4/collision_reset}
+
 restart -f
 run 200 us

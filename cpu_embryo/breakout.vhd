@@ -153,7 +153,7 @@ architecture Behavioral of breakout is
          paddle_one_pos : in unsigned(9 downto 0);
          paddle_two_pos : in unsigned(9 downto 0);
          collision_reset        : in std_logic;
-         Led : out unsigned(7 downto 0)
+         Led : out unsigned(3 downto 0)
          
          );
   end component;
@@ -259,6 +259,8 @@ begin
   echo2_s <= JB(1);
 
   pause <= btnu;
+
+  Led(7 downto 4) <= collision_one_s(3 downto 0);
   
   --Led(7 downto 4) <= collision_one_s;
   --Led(3 downto 0) <= collision_two_s;
@@ -394,6 +396,12 @@ begin
           else
             uPC <= uPC+1;
           end if;
+        elsif uPC = "111" then
+          if (pause = '1') then
+            uPC <= uAddr;
+          else
+            uPC <= uPC+1;
+          end if;
         else
           uPC <= uPC + 1;
         end if;
@@ -444,7 +452,7 @@ begin
   begin
     if rising_edge(clk) then
       if rst = '1' then
-        collision_reset_s <= '0';
+        collision_reset_s <= '1';
       else
         if coll_s = '1' and already_collided = "00" then  -- link this one to register
           collision_reset_s <= '1';
@@ -495,7 +503,7 @@ begin
    U3 : PICT_MEM port map(clk=>clk, we1=>we_s, data_in1=>data_s, data_out1 => data_out_s, addr1=>addr_s, we2=>'0', data_in2=>"00000000", data_out2=>data_out2_s, addr2=>addr2_s);
 
   -- VGA motor component connection
-  U4 : VGA_MOTOR port map(clk=>clk, rst=>rst, data=>data_out2_s, addr=>addr2_s, vgaRed=>vgaRed, vgaGreen=>vgaGreen, vgaBlue=>vgaBlue, Hsync=>Hsync, Vsync=>Vsync, collision_one=>collision_one_s, collision_two=>collision_two_s, ball_one_posX=>ball_one_posX_s, ball_one_posY=>ball_one_posY_s, ball_two_posX=>ball_two_posX_s, ball_two_posY=>ball_two_posY_s, collision_reset=>collision_reset_s, paddle_one_pos=>paddle_one_pos_s, paddle_two_pos=>paddle_two_pos_s, collision_addr_one=>collision_addr_one_s, collision_addr_two=>collision_addr_two_s, Led=>Led);
+  U4 : VGA_MOTOR port map(clk=>clk, rst=>rst, data=>data_out2_s, addr=>addr2_s, vgaRed=>vgaRed, vgaGreen=>vgaGreen, vgaBlue=>vgaBlue, Hsync=>Hsync, Vsync=>Vsync, collision_one=>collision_one_s, collision_two=>collision_two_s, ball_one_posX=>ball_one_posX_s, ball_one_posY=>ball_one_posY_s, ball_two_posX=>ball_two_posX_s, ball_two_posY=>ball_two_posY_s, collision_reset=>collision_reset_s, paddle_one_pos=>paddle_one_pos_s, paddle_two_pos=>paddle_two_pos_s, collision_addr_one=>collision_addr_one_s, collision_addr_two=>collision_addr_two_s, Led(3 downto 0)=>Led(3 downto 0));
 
   -- keyboard encoder component connection
  --U5 : KBD_ENC port map(clk=>clk, rst=>rst, PS2KeyboardCLK=>PS2KeyboardCLK, PS2KeyboardData=>PS2KeyboardData, data=>data_s, addr=>addr_s, we=>we_s);

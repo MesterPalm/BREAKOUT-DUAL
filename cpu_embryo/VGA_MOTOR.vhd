@@ -35,7 +35,7 @@ entity VGA_MOTOR is
          collision_reset        : in std_logic;
          paddle_one_pos         : in unsigned(9 downto 0);
          paddle_two_pos         : in unsigned(9 downto 0);
-         Led                    : out unsigned(7 downto 0)
+         Led                    : out unsigned(3 downto 0)
          );
 end VGA_MOTOR;
 
@@ -545,10 +545,10 @@ x"000",x"000",x"EFF",x"EFF",x"EFF",x"EFF",x"000",x"000"
 		  
 begin
 
-  Led(7) <= collision_one(3);
-  Led(6) <= collision_two(3);
-  Led(5) <= collision_reset;
-  Led(4 downto 0) <= "00000";
+  Led(3) <= collision_one(3);
+  Led(2) <= collision_two(3);
+  Led(1) <= collision_reset;
+  Led(0) <= '0';
 
   -- Clock divisor
   -- Divide system clock (100 MHz) by 4
@@ -728,7 +728,7 @@ begin
   begin
     if rising_edge(clk) then
       if collision_reset = '1' then
-        collision_one(3 downto 0) <= "0000";
+        collision_one <= "0000";
       elsif collision_one(3) = '0' and inside_one = '1' and transparent_one = '0' and tileMem(to_integer(tileAddr))(11) = '1' then
         collision_one(3) <= '1';
         collision_one(2 downto 0) <= tileMem(to_integer(tileAddr))(10 downto 8);
@@ -744,7 +744,7 @@ begin
   begin
     if rising_edge(clk) then
       if collision_reset = '1' then
-        collision_two(3 downto 0) <= "0000";
+        collision_two <= "0000";
       elsif collision_two(3) = '0' and inside_two = '1' and transparent_two = '0' and tileMem(to_integer(tileAddr))(11) = '1' then
         collision_two(3) <= '1';
         collision_two(2 downto 0) <= tileMem(to_integer(tileAddr))(10 downto 8);

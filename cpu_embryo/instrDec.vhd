@@ -29,11 +29,7 @@ begin
         grA <= instruction(24 downto 21);
         grB <= "0000";
         operand <= "00000000000" & instruction(20 downto 0);
-     -- when "10" =>                           --FORMAT op-operand
-       --  grA <= "0000";
-       --  grB <= "0000";
-     --    operand <= "00000" & instruction(26 downto 0);
-    when others =>--"00001" "01001" "01100"  "10011"           --FORMAT op-addM-operand
+    when others =>--"00001" "01001" "01100"  "10011" "10100"    --FORMAT op-addM-operand
         grA <= "0000";
         grB <= "0000";
         operand <= "0000000" & instruction(24 downto 0);
@@ -63,6 +59,7 @@ begin
     b"010_110_0" when "10001",          --REF
     b"010_111_1" when "10010",          --UPD
     b"011_000_1" when "10011",          --BRT
+    b"011_001_1" when "10100",          --BRP
     b"000_000_0" when others;
 
   --Addressing mode select
