@@ -152,9 +152,7 @@ architecture Behavioral of breakout is
          ball_two_posY          : in unsigned(9 downto 0);
          paddle_one_pos : in unsigned(9 downto 0);
          paddle_two_pos : in unsigned(9 downto 0);
-         collision_reset        : in std_logic;
-         Led : out unsigned(3 downto 0)
-         
+         collision_reset        : in std_logic
          );
   end component;
   --ball register
@@ -242,7 +240,7 @@ architecture Behavioral of breakout is
   signal echo2_s : std_logic;
     
    -- tick counter
-  signal tick_counter_s : unsigned(23 downto 0);
+  signal tick_counter_s : unsigned(31 downto 0);
   signal tick_flag_s : std_logic;
   -- collsion reset
   signal coll_s : std_logic;
@@ -258,19 +256,10 @@ begin
   echo1_s <= JB(0);
   echo2_s <= JB(1);
 
-  pause <= btnu;
+  pause <= btnu or btnd;
 
-  Led(7 downto 4) <= collision_one_s(3 downto 0);
-  
-  --Led(7 downto 4) <= collision_one_s;
-  --Led(3 downto 0) <= collision_two_s;
-  
- -- ball_one_posX_s <= ballReg1(31 downto 22);
- -- ball_one_posY_s <= ballReg1(21 downto 12);
-  
- -- ball_two_posX_s <= ballReg2(31 downto 22);
- -- ball_two_posY_s <= ballReg2(21 downto 12);
-  
+  Led(7 downto 0) <= "00000000";
+   
   -- IR : Instruction Register
   process(clk)
   begin
@@ -300,7 +289,6 @@ begin
           we_s <= '0';
         elsif spaceSelect = '1' then
            data_s <= DATA_BUS(7 downto 0);
-           
            we_s <= '1';
         end if;
       else
@@ -368,47 +356,45 @@ begin
   process(clk)
   begin
     if rising_edge(clk) then
-      if pause = '0' then
-        if (rst = '1') then
-          uPC <= (others => '0');
-        elsif (uPCsig = "001") then
+      if (rst = '1') then
+        uPC <= (others => '0');
+      elsif (uPCsig = "001") then
+        uPC <= uAddr;
+      elsif (uPCsig = "010") then
+        uPC <= uProg;
+      elsif (uPCsig = "011") then
+        uPc <= uMode;
+      elsif (uPCsig = "100") then       --Branch zero
+        if (SR(1)='1') then
           uPC <= uAddr;
-        elsif (uPCsig = "010") then
-          uPC <= uProg;
-        elsif (uPCsig = "011") then
-          uPc <= uMode;
-        elsif (uPCsig = "100") then       --Branch zero
-          if (SR(1)='1') then
-            uPC <= uAddr;
-          else
-            uPC <= uPC+1;
-          end if;
-        elsif uPCsig = "101" then         --Branch minus
-          if (SR(0) = '1') then
-            uPC <= uAddr;
-          else
-            uPC <= uPC+1;
-          end if;
-        elsif uPCsig = "110" then         --Branch tick flag
-          if (tick_flag_s = '1') then
-            uPC <= uAddr;
-            brt_flag <= '1';
-          else
-            uPC <= uPC+1;
-          end if;
-        elsif uPC = "111" then
-          if (pause = '1') then
-            uPC <= uAddr;
-          else
-            uPC <= uPC+1;
-          end if;
         else
-          uPC <= uPC + 1;
+          uPC <= uPC+1;
         end if;
-        if(brt_flag = '1') then
-          brt_flag <= '0';
+      elsif uPCsig = "101" then         --Branch minus
+        if (SR(0) = '1') then
+          uPC <= uAddr;
+        else
+          uPC <= uPC+1;
         end if;
+      elsif uPCsig = "110" then         --Branch tick flag
+        if (tick_flag_s = '1') then
+          uPC <= uAddr;
+          brt_flag <= '1';
+        else
+          uPC <= uPC+1;
+        end if;
+      elsif uPCsig = "111" then
+        if (pause = '1') then
+          uPC <= uAddr;
+        else
+          uPC <= uPC+1;
+        end if;
+      else
+        uPC <= uPC + 1;
       end if;
+      if(brt_flag = '1') then
+        brt_flag <= '0';
+      end if; 
     end if;
   end process;
 
@@ -418,10 +404,10 @@ begin
   begin
     if rising_edge(clk) then
       if rst = '1' then
-        tick_counter_s <= x"000000";
+        tick_counter_s <= x"00000000";
       else
         if tick_flag_s = '1' then
-          tick_counter_s <= x"000000";
+          tick_counter_s <= x"00000000";
         else
           tick_counter_s <= tick_counter_s + 1;
         end if;
@@ -436,7 +422,7 @@ begin
       if rst = '1' then
         tick_flag_s <= '0';
       else
-        if tick_counter_s = 4000000 then
+        if tick_counter_s = 6000000 then
           tick_flag_s <= '1';
         else
           if brt_flag = '1' then
@@ -503,7 +489,7 @@ begin
    U3 : PICT_MEM port map(clk=>clk, we1=>we_s, data_in1=>data_s, data_out1 => data_out_s, addr1=>addr_s, we2=>'0', data_in2=>"00000000", data_out2=>data_out2_s, addr2=>addr2_s);
 
   -- VGA motor component connection
-  U4 : VGA_MOTOR port map(clk=>clk, rst=>rst, data=>data_out2_s, addr=>addr2_s, vgaRed=>vgaRed, vgaGreen=>vgaGreen, vgaBlue=>vgaBlue, Hsync=>Hsync, Vsync=>Vsync, collision_one=>collision_one_s, collision_two=>collision_two_s, ball_one_posX=>ball_one_posX_s, ball_one_posY=>ball_one_posY_s, ball_two_posX=>ball_two_posX_s, ball_two_posY=>ball_two_posY_s, collision_reset=>collision_reset_s, paddle_one_pos=>paddle_one_pos_s, paddle_two_pos=>paddle_two_pos_s, collision_addr_one=>collision_addr_one_s, collision_addr_two=>collision_addr_two_s, Led(3 downto 0)=>Led(3 downto 0));
+  U4 : VGA_MOTOR port map(clk=>clk, rst=>rst, data=>data_out2_s, addr=>addr2_s, vgaRed=>vgaRed, vgaGreen=>vgaGreen, vgaBlue=>vgaBlue, Hsync=>Hsync, Vsync=>Vsync, collision_one=>collision_one_s, collision_two=>collision_two_s, ball_one_posX=>ball_one_posX_s, ball_one_posY=>ball_one_posY_s, ball_two_posX=>ball_two_posX_s, ball_two_posY=>ball_two_posY_s, collision_reset=>collision_reset_s, paddle_one_pos=>paddle_one_pos_s, paddle_two_pos=>paddle_two_pos_s, collision_addr_one=>collision_addr_one_s, collision_addr_two=>collision_addr_two_s);
 
   -- keyboard encoder component connection
  --U5 : KBD_ENC port map(clk=>clk, rst=>rst, PS2KeyboardCLK=>PS2KeyboardCLK, PS2KeyboardData=>PS2KeyboardData, data=>data_s, addr=>addr_s, we=>we_s);
@@ -526,7 +512,7 @@ begin
   -- data bus assignment
   DB : DATA_BUS <= IR when (TB = "0001") else
                    PM when (TB = "0010" and spaceSelect = '0') else
-                   x"000000" & data_out_s when (TB = "0010" and spaceSelect = '1') else
+                   x"0000_00" & data_out_s when (TB = "0010" and spaceSelect = '1') else
                    PC when (TB = "0011") else
                    ASR when (TB = "0100") else
                    grxDataOut when (TB = "0101") else

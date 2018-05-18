@@ -1,99 +1,304 @@
 //! **************************************************************************
-// Written by: Map M.81d on Mon Apr 16 14:25:35 2018
+// Written by: Map M.81d on Fri May 18 06:48:32 2018
 //! **************************************************************************
 
 SCHEMATIC START;
 COMP "Vsync" LOCATE = SITE "P7" LEVEL 1;
 COMP "JA<0>" LOCATE = SITE "T12" LEVEL 1;
+COMP "JA<1>" LOCATE = SITE "V12" LEVEL 1;
 COMP "JB<0>" LOCATE = SITE "K2" LEVEL 1;
+COMP "JB<1>" LOCATE = SITE "K1" LEVEL 1;
 COMP "Led<0>" LOCATE = SITE "U16" LEVEL 1;
 COMP "Led<1>" LOCATE = SITE "V16" LEVEL 1;
 COMP "Led<2>" LOCATE = SITE "U15" LEVEL 1;
 COMP "Led<3>" LOCATE = SITE "V15" LEVEL 1;
 COMP "Led<4>" LOCATE = SITE "M11" LEVEL 1;
-COMP "seg<0>" LOCATE = SITE "T17" LEVEL 1;
-COMP "seg<1>" LOCATE = SITE "T18" LEVEL 1;
-COMP "seg<2>" LOCATE = SITE "U17" LEVEL 1;
-COMP "seg<3>" LOCATE = SITE "U18" LEVEL 1;
-COMP "seg<4>" LOCATE = SITE "M14" LEVEL 1;
-COMP "seg<5>" LOCATE = SITE "N14" LEVEL 1;
-COMP "seg<6>" LOCATE = SITE "L14" LEVEL 1;
-COMP "seg<7>" LOCATE = SITE "M13" LEVEL 1;
+COMP "Led<5>" LOCATE = SITE "N11" LEVEL 1;
+COMP "Led<6>" LOCATE = SITE "R11" LEVEL 1;
+COMP "Led<7>" LOCATE = SITE "T11" LEVEL 1;
 COMP "vgaRed<0>" LOCATE = SITE "U7" LEVEL 1;
 COMP "vgaRed<1>" LOCATE = SITE "V7" LEVEL 1;
 COMP "vgaRed<2>" LOCATE = SITE "N7" LEVEL 1;
 COMP "PS2KeyboardData" LOCATE = SITE "J13" LEVEL 1;
+COMP "btnd" LOCATE = SITE "C9" LEVEL 1;
 COMP "btns" LOCATE = SITE "B8" LEVEL 1;
+COMP "btnu" LOCATE = SITE "A8" LEVEL 1;
 COMP "PS2KeyboardCLK" LOCATE = SITE "L12" LEVEL 1;
 COMP "clk" LOCATE = SITE "V10" LEVEL 1;
-COMP "an<0>" LOCATE = SITE "N16" LEVEL 1;
-COMP "an<1>" LOCATE = SITE "N15" LEVEL 1;
-COMP "an<2>" LOCATE = SITE "P18" LEVEL 1;
-COMP "an<3>" LOCATE = SITE "P17" LEVEL 1;
 COMP "Hsync" LOCATE = SITE "N6" LEVEL 1;
 COMP "vgaGreen<0>" LOCATE = SITE "P8" LEVEL 1;
 COMP "vgaGreen<1>" LOCATE = SITE "T6" LEVEL 1;
 COMP "vgaGreen<2>" LOCATE = SITE "V6" LEVEL 1;
 COMP "vgaBlue<1>" LOCATE = SITE "R7" LEVEL 1;
 COMP "vgaBlue<2>" LOCATE = SITE "T7" LEVEL 1;
-PIN U3/Mram_pictMem_pins<22> = BEL "U3/Mram_pictMem" PINNAME CLKA;
-PIN U3/Mram_pictMem_pins<23> = BEL "U3/Mram_pictMem" PINNAME CLKB;
-PIN U4_Mram_tileMem1_pins<11> = BEL "U4_Mram_tileMem1" PINNAME CLKA;
-TIMEGRP sys_clk_pin = BEL "Led_2" BEL "Led_4" BEL "Led_3" BEL "us_time_temp_0"
-        BEL "us_time_temp_1" BEL "us_time_temp_2" BEL "us_time_temp_3" BEL
-        "us_time_temp_4" BEL "us_time_temp_5" BEL "us_time_temp_6" BEL
-        "us_time_temp_7" BEL "us_time_temp_8" BEL "us_time_temp_9" BEL
-        "us_time_temp_10" BEL "us_time_temp_11" BEL "us_time_temp_12" BEL
-        "us_time_temp_13" BEL "us_time_temp_14" BEL "us_time_temp_15" BEL
-        "counter_temp_0" BEL "counter_temp_1" BEL "counter_temp_2" BEL
-        "counter_temp_3" BEL "counter_temp_4" BEL "counter_temp_5" BEL
-        "counter_temp_6" BEL "counter_temp_7" BEL "counter_temp_8" BEL
-        "counter_temp_9" BEL "counter_temp_10" BEL "counter_temp_11" BEL
-        "counter_temp_12" BEL "counter_temp_13" BEL "counter_temp_14" BEL
-        "counter_temp_15" BEL "counter_temp_16" BEL "counter_temp_17" BEL
-        "counter_temp_18" BEL "counter_temp_19" BEL "counter_temp_20" BEL
-        "counter_temp_21" BEL "counter_temp_22" BEL "counter_temp_23" BEL
-        "UL/us_15" BEL "UL/us_14" BEL "UL/us_12" BEL "UL/us_11" BEL "UL/us_13"
-        BEL "UL/us_9" BEL "UL/us_8" BEL "UL/us_10" BEL "UL/us_6" BEL "UL/us_5"
-        BEL "UL/us_7" BEL "UL/us_4" BEL "UL/us_3" BEL "UL/us_1" BEL "UL/us_0"
-        BEL "UL/us_2" BEL "UL/q_FSM_FFd1" BEL "UL/q_FSM_FFd2" BEL
-        "UL/us_counter_6" BEL "UL/us_counter_5" BEL "UL/us_counter_4" BEL
-        "UL/us_counter_3" BEL "UL/us_counter_2" BEL "UL/us_counter_1" BEL
-        "UL/us_counter_0" BEL "UL/us_time_15" BEL "UL/us_time_14" BEL
-        "UL/us_time_13" BEL "UL/us_time_12" BEL "UL/us_time_11" BEL
-        "UL/us_time_10" BEL "UL/us_time_9" BEL "UL/us_time_8" BEL
-        "UL/us_time_7" BEL "UL/us_time_6" BEL "UL/us_time_5" BEL
-        "UL/us_time_4" BEL "UL/us_time_3" BEL "UL/us_time_2" BEL
-        "UL/us_time_1" BEL "UL/us_time_0" BEL "U4/Ypixel_9" BEL "U4/Ypixel_8"
-        BEL "U4/Ypixel_7" BEL "U4/Ypixel_6" BEL "U4/Ypixel_5" BEL
-        "U4/Ypixel_4" BEL "U4/Ypixel_3" BEL "U4/Ypixel_2" BEL "U4/Ypixel_1"
-        BEL "U4/Ypixel_0" BEL "U4/Xpixel_9" BEL "U4/Xpixel_8" BEL
-        "U4/Xpixel_7" BEL "U4/Xpixel_6" BEL "U4/Xpixel_5" BEL "U4/Xpixel_4"
-        BEL "U4/Xpixel_3" BEL "U4/Xpixel_2" BEL "U4/Xpixel_1" BEL
-        "U4/Xpixel_0" BEL "U4/ClkDiv_1" BEL "U4/ClkDiv_0" BEL
-        "U5/WRstate_FSM_FFd1" BEL "U5/PS2BitCounter_3" BEL
-        "U5/PS2BitCounter_2" BEL "U5/PS2BitCounter_1" BEL "U5/PS2BitCounter_0"
-        BEL "U5/WRstate_FSM_FFd2" BEL "U5/PS2state_FSM_FFd1" BEL
-        "U5/PS2state_FSM_FFd2" BEL "U5/curposY_4" BEL "U5/curposY_3" BEL
-        "U5/curposY_2" BEL "U5/curposY_1" BEL "U5/curposY_0" BEL
-        "U5/curposX_5" BEL "U5/curposX_4" BEL "U5/curposX_3" BEL
-        "U5/curposX_2" BEL "U5/curposX_1" BEL "U5/curposX_0" BEL
-        "U5/PS2Data_sr_10" BEL "U5/PS2Data_sr_9" BEL "U5/PS2Data_sr_8" BEL
-        "U5/PS2Data_sr_7" BEL "U5/PS2Data_sr_6" BEL "U5/PS2Data_sr_5" BEL
-        "U5/PS2Data_sr_4" BEL "U5/PS2Data_sr_3" BEL "U5/PS2Data_sr_2" BEL
-        "U5/PS2Data_sr_1" BEL "U5/PS2Clk_Q1" BEL "U5/PS2Clk_Q2" BEL
-        "U5/PS2Clk" BEL "U5/PS2Data" BEL "HD/counter_r_17" BEL
-        "HD/counter_r_16" BEL "HD/counter_r_15" BEL "HD/counter_r_14" BEL
-        "HD/counter_r_13" BEL "HD/counter_r_12" BEL "HD/counter_r_11" BEL
-        "HD/counter_r_10" BEL "HD/counter_r_9" BEL "HD/counter_r_8" BEL
-        "HD/counter_r_7" BEL "HD/counter_r_6" BEL "HD/counter_r_5" BEL
-        "HD/counter_r_4" BEL "HD/counter_r_3" BEL "HD/counter_r_2" BEL
-        "HD/counter_r_1" BEL "HD/counter_r_0" BEL "HD/segments_6" BEL
-        "HD/segments_5" BEL "HD/segments_4" BEL "HD/segments_3" BEL
-        "HD/segments_2" BEL "HD/segments_1" BEL "HD/segments_0" BEL "HD/an_3"
-        BEL "HD/an_2" BEL "HD/an_1" BEL "HD/an_0" BEL "UL/us_rst" BEL
-        "UL/trigger" BEL "clk_BUFGP/BUFG" PIN "U3/Mram_pictMem_pins<22>" PIN
-        "U3/Mram_pictMem_pins<23>" PIN "U4_Mram_tileMem1_pins<11>";
+PIN U3/Mram_pictMem_pins<20> = BEL "U3/Mram_pictMem" PINNAME CLKAWRCLK;
+PIN U3/Mram_pictMem_pins<21> = BEL "U3/Mram_pictMem" PINNAME CLKBRDCLK;
+PIN U1/Mram_p_mem1_pins<20> = BEL "U1/Mram_p_mem1" PINNAME CLKA;
+PIN U1/Mram_p_mem1_pins<21> = BEL "U1/Mram_p_mem1" PINNAME CLKB;
+PIN U1/Mram_p_mem2_pins<20> = BEL "U1/Mram_p_mem2" PINNAME CLKA;
+PIN U1/Mram_p_mem2_pins<21> = BEL "U1/Mram_p_mem2" PINNAME CLKB;
+TIMEGRP sys_clk_pin = BEL "grxRW" BEL "collision_reset_s" BEL "PMin_0" BEL
+        "PMin_1" BEL "PMin_2" BEL "PMin_3" BEL "PMin_4" BEL "PMin_5" BEL
+        "PMin_6" BEL "PMin_7" BEL "PMin_8" BEL "PMin_9" BEL "PMin_10" BEL
+        "PMin_11" BEL "PMin_12" BEL "PMin_13" BEL "PMin_14" BEL "PMin_15" BEL
+        "PMin_16" BEL "PMin_17" BEL "PMin_18" BEL "PMin_19" BEL "PMin_20" BEL
+        "PMin_21" BEL "PMin_22" BEL "PMin_23" BEL "PMin_24" BEL "PMin_25" BEL
+        "PMin_26" BEL "PMin_27" BEL "PMin_28" BEL "PMin_29" BEL "PMin_30" BEL
+        "PMin_31" BEL "coll_s" BEL "data_s_0" BEL "data_s_1" BEL "data_s_2"
+        BEL "data_s_3" BEL "data_s_4" BEL "data_s_5" BEL "data_s_6" BEL
+        "data_s_7" BEL "addr_s_0" BEL "addr_s_1" BEL "addr_s_2" BEL "addr_s_3"
+        BEL "addr_s_4" BEL "addr_s_5" BEL "addr_s_6" BEL "addr_s_7" BEL
+        "addr_s_8" BEL "UL2/us_time_2" BEL "UL2/us_time_3" BEL "UL2/us_time_4"
+        BEL "UL2/us_time_5" BEL "UL2/us_time_6" BEL "UL2/us_time_7" BEL
+        "UL2/us_time_8" BEL "UL2/us_time_9" BEL "UL2/us_time_10" BEL
+        "UL2/us_counter_0" BEL "UL2/us_counter_1" BEL "UL2/us_counter_2" BEL
+        "UL2/us_counter_3" BEL "UL2/us_counter_4" BEL "UL2/us_counter_5" BEL
+        "UL2/us_counter_6" BEL "UL1/us_time_2" BEL "UL1/us_time_3" BEL
+        "UL1/us_time_4" BEL "UL1/us_time_5" BEL "UL1/us_time_6" BEL
+        "UL1/us_time_7" BEL "UL1/us_time_8" BEL "UL1/us_time_9" BEL
+        "UL1/us_time_10" BEL "UL1/us_counter_0" BEL "UL1/us_counter_1" BEL
+        "UL1/us_counter_2" BEL "UL1/us_counter_3" BEL "UL1/us_counter_4" BEL
+        "UL1/us_counter_5" BEL "UL1/us_counter_6" BEL
+        "U4/collision_addr_one_0" BEL "U4/collision_addr_one_1" BEL
+        "U4/collision_addr_one_2" BEL "U4/collision_addr_one_3" BEL
+        "U4/collision_addr_one_4" BEL "U4/collision_addr_one_5" BEL
+        "U4/collision_addr_one_6" BEL "U4/collision_addr_one_7" BEL
+        "U4/collision_addr_one_8" BEL "U4/collision_addr_one_9" BEL
+        "U4/collision_addr_two_0" BEL "U4/collision_addr_two_1" BEL
+        "U4/collision_addr_two_2" BEL "U4/collision_addr_two_3" BEL
+        "U4/collision_addr_two_4" BEL "U4/collision_addr_two_5" BEL
+        "U4/collision_addr_two_6" BEL "U4/collision_addr_two_7" BEL
+        "U4/collision_addr_two_8" BEL "U4/collision_addr_two_9" BEL
+        "UL2/avg8_0" BEL "UL2/avg8_1" BEL "UL2/avg8_2" BEL "UL2/avg8_3" BEL
+        "UL2/avg8_4" BEL "UL2/avg8_5" BEL "UL2/avg8_6" BEL "UL2/avg8_7" BEL
+        "UL2/avg8_8" BEL "UL1/avg8_0" BEL "UL1/avg8_1" BEL "UL1/avg8_2" BEL
+        "UL1/avg8_3" BEL "UL1/avg8_4" BEL "UL1/avg8_5" BEL "UL1/avg8_6" BEL
+        "UL1/avg8_7" BEL "UL1/avg8_8" BEL "uPC_0" BEL "uPC_1" BEL "uPC_2" BEL
+        "uPC_3" BEL "uPC_4" BEL "uPC_5" BEL "UL2/avg7_0" BEL "UL2/avg7_1" BEL
+        "UL2/avg7_2" BEL "UL2/avg7_3" BEL "UL2/avg7_4" BEL "UL2/avg7_5" BEL
+        "UL2/avg7_6" BEL "UL2/avg7_7" BEL "UL2/avg7_8" BEL "UL1/avg7_0" BEL
+        "UL1/avg7_1" BEL "UL1/avg7_2" BEL "UL1/avg7_3" BEL "UL1/avg7_4" BEL
+        "UL1/avg7_5" BEL "UL1/avg7_6" BEL "UL1/avg7_7" BEL "UL1/avg7_8" BEL
+        "U4/collision_two_0" BEL "U4/collision_two_1" BEL "U4/collision_two_2"
+        BEL "U4/collision_two_3" BEL "U4/collision_one_0" BEL
+        "U4/collision_one_1" BEL "U4/collision_one_2" BEL "U4/collision_one_3"
+        BEL "UL2/avg6_0" BEL "UL2/avg6_1" BEL "UL2/avg6_2" BEL "UL2/avg6_3"
+        BEL "UL2/avg6_4" BEL "UL2/avg6_5" BEL "UL2/avg6_6" BEL "UL2/avg6_7"
+        BEL "UL2/avg6_8" BEL "UL1/avg6_0" BEL "UL1/avg6_1" BEL "UL1/avg6_2"
+        BEL "UL1/avg6_3" BEL "UL1/avg6_4" BEL "UL1/avg6_5" BEL "UL1/avg6_6"
+        BEL "UL1/avg6_7" BEL "UL1/avg6_8" BEL "UL2/avg5_0" BEL "UL2/avg5_1"
+        BEL "UL2/avg5_2" BEL "UL2/avg5_3" BEL "UL2/avg5_4" BEL "UL2/avg5_5"
+        BEL "UL2/avg5_6" BEL "UL2/avg5_7" BEL "UL2/avg5_8" BEL "UL1/avg5_0"
+        BEL "UL1/avg5_1" BEL "UL1/avg5_2" BEL "UL1/avg5_3" BEL "UL1/avg5_4"
+        BEL "UL1/avg5_5" BEL "UL1/avg5_6" BEL "UL1/avg5_7" BEL "UL1/avg5_8"
+        BEL "grxDataIn_0" BEL "grxDataIn_1" BEL "grxDataIn_2" BEL
+        "grxDataIn_3" BEL "grxDataIn_4" BEL "grxDataIn_5" BEL "grxDataIn_6"
+        BEL "grxDataIn_7" BEL "grxDataIn_8" BEL "grxDataIn_9" BEL
+        "grxDataIn_10" BEL "grxDataIn_11" BEL "grxDataIn_12" BEL
+        "grxDataIn_13" BEL "grxDataIn_14" BEL "grxDataIn_15" BEL
+        "grxDataIn_16" BEL "grxDataIn_17" BEL "grxDataIn_18" BEL
+        "grxDataIn_19" BEL "grxDataIn_20" BEL "grxDataIn_21" BEL
+        "grxDataIn_22" BEL "grxDataIn_23" BEL "grxDataIn_24" BEL
+        "grxDataIn_25" BEL "grxDataIn_26" BEL "grxDataIn_27" BEL
+        "grxDataIn_28" BEL "grxDataIn_29" BEL "grxDataIn_30" BEL
+        "grxDataIn_31" BEL "IR_0" BEL "IR_1" BEL "IR_2" BEL "IR_3" BEL "IR_4"
+        BEL "IR_5" BEL "IR_6" BEL "IR_7" BEL "IR_8" BEL "IR_9" BEL "IR_10" BEL
+        "IR_11" BEL "IR_12" BEL "IR_13" BEL "IR_14" BEL "IR_15" BEL "IR_16"
+        BEL "IR_17" BEL "IR_18" BEL "IR_19" BEL "IR_20" BEL "IR_21" BEL
+        "IR_22" BEL "IR_23" BEL "IR_24" BEL "IR_25" BEL "IR_26" BEL "IR_27"
+        BEL "IR_28" BEL "IR_29" BEL "IR_30" BEL "IR_31" BEL "UL2/Xpixel_0" BEL
+        "UL2/Xpixel_1" BEL "UL2/Xpixel_2" BEL "UL2/Xpixel_3" BEL
+        "UL2/Xpixel_4" BEL "UL2/Xpixel_5" BEL "UL2/Xpixel_6" BEL
+        "UL2/Xpixel_7" BEL "UL2/Xpixel_8" BEL "UL2/Xpixel_9" BEL
+        "UL1/Xpixel_0" BEL "UL1/Xpixel_1" BEL "UL1/Xpixel_2" BEL
+        "UL1/Xpixel_3" BEL "UL1/Xpixel_4" BEL "UL1/Xpixel_5" BEL
+        "UL1/Xpixel_6" BEL "UL1/Xpixel_7" BEL "UL1/Xpixel_8" BEL
+        "UL1/Xpixel_9" BEL "tick_counter_s_0" BEL "tick_counter_s_1" BEL
+        "tick_counter_s_2" BEL "tick_counter_s_3" BEL "tick_counter_s_4" BEL
+        "tick_counter_s_5" BEL "tick_counter_s_6" BEL "tick_counter_s_7" BEL
+        "tick_counter_s_8" BEL "tick_counter_s_9" BEL "tick_counter_s_10" BEL
+        "tick_counter_s_11" BEL "tick_counter_s_12" BEL "tick_counter_s_13"
+        BEL "tick_counter_s_14" BEL "tick_counter_s_15" BEL
+        "tick_counter_s_16" BEL "tick_counter_s_17" BEL "tick_counter_s_18"
+        BEL "tick_counter_s_19" BEL "tick_counter_s_20" BEL
+        "tick_counter_s_21" BEL "tick_counter_s_22" BEL "tick_counter_s_23"
+        BEL "tick_counter_s_24" BEL "tick_counter_s_25" BEL
+        "tick_counter_s_26" BEL "tick_counter_s_27" BEL "tick_counter_s_28"
+        BEL "tick_counter_s_29" BEL "tick_counter_s_30" BEL
+        "tick_counter_s_31" BEL "UL2/us_0" BEL "UL2/us_1" BEL "UL2/us_2" BEL
+        "UL2/us_3" BEL "UL2/us_4" BEL "UL2/us_5" BEL "UL2/us_6" BEL "UL2/us_7"
+        BEL "UL2/us_8" BEL "UL2/us_9" BEL "UL2/us_10" BEL "UL2/us_11" BEL
+        "UL2/us_12" BEL "UL2/us_13" BEL "UL2/us_14" BEL "UL2/us_15" BEL
+        "UL2/q_FSM_FFd2" BEL "UL2/q_FSM_FFd1" BEL "UL1/q_FSM_FFd2" BEL
+        "UL1/q_FSM_FFd1" BEL "UL1/us_0" BEL "UL1/us_1" BEL "UL1/us_2" BEL
+        "UL1/us_3" BEL "UL1/us_4" BEL "UL1/us_5" BEL "UL1/us_6" BEL "UL1/us_7"
+        BEL "UL1/us_8" BEL "UL1/us_9" BEL "UL1/us_10" BEL "UL1/us_11" BEL
+        "UL1/us_12" BEL "UL1/us_13" BEL "UL1/us_14" BEL "UL1/us_15" BEL
+        "U4/Ypixel_0" BEL "U4/Ypixel_1" BEL "U4/Ypixel_2" BEL "U4/Ypixel_3"
+        BEL "U4/Ypixel_4" BEL "U4/Ypixel_5" BEL "U4/Ypixel_6" BEL
+        "U4/Ypixel_7" BEL "U4/Ypixel_8" BEL "U4/Ypixel_9" BEL "U4/ClkDiv_0"
+        BEL "U4/ClkDiv_1" BEL "U4/Xpixel_0" BEL "U4/Xpixel_1" BEL
+        "U4/Xpixel_2" BEL "U4/Xpixel_3" BEL "U4/Xpixel_4" BEL "U4/Xpixel_5"
+        BEL "U4/Xpixel_6" BEL "U4/Xpixel_7" BEL "U4/Xpixel_8" BEL
+        "U4/Xpixel_9" BEL "PC_0" BEL "PC_1" BEL "PC_2" BEL "PC_3" BEL "PC_4"
+        BEL "PC_5" BEL "PC_6" BEL "PC_7" BEL "PC_8" BEL "PC_9" BEL "PC_10" BEL
+        "PC_11" BEL "PC_12" BEL "PC_13" BEL "PC_14" BEL "PC_15" BEL "PC_16"
+        BEL "PC_17" BEL "PC_18" BEL "PC_19" BEL "PC_20" BEL "PC_21" BEL
+        "PC_22" BEL "PC_23" BEL "PC_24" BEL "PC_25" BEL "PC_26" BEL "PC_27"
+        BEL "PC_28" BEL "PC_29" BEL "PC_30" BEL "PC_31" BEL "GR/index_31" BEL
+        "GR/index_30" BEL "GR/index_29" BEL "GR/index_28" BEL "GR/index_27"
+        BEL "GR/index_26" BEL "GR/index_25" BEL "GR/index_24" BEL
+        "GR/index_23" BEL "GR/index_22" BEL "GR/index_21" BEL "GR/index_20"
+        BEL "GR/index_19" BEL "GR/index_18" BEL "GR/index_17" BEL
+        "GR/index_16" BEL "GR/index_15" BEL "GR/index_14" BEL "GR/index_13"
+        BEL "GR/index_12" BEL "GR/index_11" BEL "GR/index_10" BEL "GR/index_9"
+        BEL "GR/index_8" BEL "GR/index_7" BEL "GR/index_6" BEL "GR/index_5"
+        BEL "GR/index_4" BEL "GR/index_3" BEL "GR/index_2" BEL "GR/index_1"
+        BEL "GR/index_0" BEL "GR/grx_RW_s_8_31" BEL "GR/grx_RW_s_8_30" BEL
+        "GR/grx_RW_s_8_29" BEL "GR/grx_RW_s_8_28" BEL "GR/grx_RW_s_8_27" BEL
+        "GR/grx_RW_s_8_26" BEL "GR/grx_RW_s_8_25" BEL "GR/grx_RW_s_8_24" BEL
+        "GR/grx_RW_s_8_23" BEL "GR/grx_RW_s_8_22" BEL "GR/grx_RW_s_8_21" BEL
+        "GR/grx_RW_s_8_20" BEL "GR/grx_RW_s_8_19" BEL "GR/grx_RW_s_8_18" BEL
+        "GR/grx_RW_s_8_17" BEL "GR/grx_RW_s_8_16" BEL "GR/grx_RW_s_8_15" BEL
+        "GR/grx_RW_s_8_14" BEL "GR/grx_RW_s_8_13" BEL "GR/grx_RW_s_8_12" BEL
+        "GR/grx_RW_s_8_11" BEL "GR/grx_RW_s_8_10" BEL "GR/grx_RW_s_8_9" BEL
+        "GR/grx_RW_s_8_8" BEL "GR/grx_RW_s_8_7" BEL "GR/grx_RW_s_8_6" BEL
+        "GR/grx_RW_s_8_5" BEL "GR/grx_RW_s_8_4" BEL "GR/grx_RW_s_8_3" BEL
+        "GR/grx_RW_s_8_2" BEL "GR/grx_RW_s_8_1" BEL "GR/grx_RW_s_8_0" BEL
+        "GR/grx_RW_s_7_31" BEL "GR/grx_RW_s_7_30" BEL "GR/grx_RW_s_7_29" BEL
+        "GR/grx_RW_s_7_28" BEL "GR/grx_RW_s_7_27" BEL "GR/grx_RW_s_7_26" BEL
+        "GR/grx_RW_s_7_25" BEL "GR/grx_RW_s_7_24" BEL "GR/grx_RW_s_7_23" BEL
+        "GR/grx_RW_s_7_22" BEL "GR/grx_RW_s_7_21" BEL "GR/grx_RW_s_7_20" BEL
+        "GR/grx_RW_s_7_19" BEL "GR/grx_RW_s_7_18" BEL "GR/grx_RW_s_7_17" BEL
+        "GR/grx_RW_s_7_16" BEL "GR/grx_RW_s_7_15" BEL "GR/grx_RW_s_7_14" BEL
+        "GR/grx_RW_s_7_13" BEL "GR/grx_RW_s_7_12" BEL "GR/grx_RW_s_7_11" BEL
+        "GR/grx_RW_s_7_10" BEL "GR/grx_RW_s_7_9" BEL "GR/grx_RW_s_7_8" BEL
+        "GR/grx_RW_s_7_7" BEL "GR/grx_RW_s_7_6" BEL "GR/grx_RW_s_7_5" BEL
+        "GR/grx_RW_s_7_4" BEL "GR/grx_RW_s_7_3" BEL "GR/grx_RW_s_7_2" BEL
+        "GR/grx_RW_s_7_1" BEL "GR/grx_RW_s_7_0" BEL "GR/grx_RW_s_6_31" BEL
+        "GR/grx_RW_s_6_30" BEL "GR/grx_RW_s_6_29" BEL "GR/grx_RW_s_6_28" BEL
+        "GR/grx_RW_s_6_27" BEL "GR/grx_RW_s_6_26" BEL "GR/grx_RW_s_6_25" BEL
+        "GR/grx_RW_s_6_24" BEL "GR/grx_RW_s_6_23" BEL "GR/grx_RW_s_6_22" BEL
+        "GR/grx_RW_s_6_21" BEL "GR/grx_RW_s_6_20" BEL "GR/grx_RW_s_6_19" BEL
+        "GR/grx_RW_s_6_18" BEL "GR/grx_RW_s_6_17" BEL "GR/grx_RW_s_6_16" BEL
+        "GR/grx_RW_s_6_15" BEL "GR/grx_RW_s_6_14" BEL "GR/grx_RW_s_6_13" BEL
+        "GR/grx_RW_s_6_12" BEL "GR/grx_RW_s_6_11" BEL "GR/grx_RW_s_6_10" BEL
+        "GR/grx_RW_s_6_9" BEL "GR/grx_RW_s_6_8" BEL "GR/grx_RW_s_6_7" BEL
+        "GR/grx_RW_s_6_6" BEL "GR/grx_RW_s_6_5" BEL "GR/grx_RW_s_6_4" BEL
+        "GR/grx_RW_s_6_3" BEL "GR/grx_RW_s_6_2" BEL "GR/grx_RW_s_6_1" BEL
+        "GR/grx_RW_s_6_0" BEL "GR/grx_RW_s_5_31" BEL "GR/grx_RW_s_5_30" BEL
+        "GR/grx_RW_s_5_29" BEL "GR/grx_RW_s_5_28" BEL "GR/grx_RW_s_5_27" BEL
+        "GR/grx_RW_s_5_26" BEL "GR/grx_RW_s_5_25" BEL "GR/grx_RW_s_5_24" BEL
+        "GR/grx_RW_s_5_23" BEL "GR/grx_RW_s_5_22" BEL "GR/grx_RW_s_5_21" BEL
+        "GR/grx_RW_s_5_20" BEL "GR/grx_RW_s_5_19" BEL "GR/grx_RW_s_5_18" BEL
+        "GR/grx_RW_s_5_17" BEL "GR/grx_RW_s_5_16" BEL "GR/grx_RW_s_5_15" BEL
+        "GR/grx_RW_s_5_14" BEL "GR/grx_RW_s_5_13" BEL "GR/grx_RW_s_5_12" BEL
+        "GR/grx_RW_s_5_11" BEL "GR/grx_RW_s_5_10" BEL "GR/grx_RW_s_5_9" BEL
+        "GR/grx_RW_s_5_8" BEL "GR/grx_RW_s_5_7" BEL "GR/grx_RW_s_5_6" BEL
+        "GR/grx_RW_s_5_5" BEL "GR/grx_RW_s_5_4" BEL "GR/grx_RW_s_5_3" BEL
+        "GR/grx_RW_s_5_2" BEL "GR/grx_RW_s_5_1" BEL "GR/grx_RW_s_5_0" BEL
+        "GR/grx_RW_s_4_31" BEL "GR/grx_RW_s_4_30" BEL "GR/grx_RW_s_4_29" BEL
+        "GR/grx_RW_s_4_28" BEL "GR/grx_RW_s_4_27" BEL "GR/grx_RW_s_4_26" BEL
+        "GR/grx_RW_s_4_25" BEL "GR/grx_RW_s_4_24" BEL "GR/grx_RW_s_4_23" BEL
+        "GR/grx_RW_s_4_22" BEL "GR/grx_RW_s_4_21" BEL "GR/grx_RW_s_4_20" BEL
+        "GR/grx_RW_s_4_19" BEL "GR/grx_RW_s_4_18" BEL "GR/grx_RW_s_4_17" BEL
+        "GR/grx_RW_s_4_16" BEL "GR/grx_RW_s_4_15" BEL "GR/grx_RW_s_4_14" BEL
+        "GR/grx_RW_s_4_13" BEL "GR/grx_RW_s_4_12" BEL "GR/grx_RW_s_4_11" BEL
+        "GR/grx_RW_s_4_10" BEL "GR/grx_RW_s_4_9" BEL "GR/grx_RW_s_4_8" BEL
+        "GR/grx_RW_s_4_7" BEL "GR/grx_RW_s_4_6" BEL "GR/grx_RW_s_4_5" BEL
+        "GR/grx_RW_s_4_4" BEL "GR/grx_RW_s_4_3" BEL "GR/grx_RW_s_4_2" BEL
+        "GR/grx_RW_s_4_1" BEL "GR/grx_RW_s_4_0" BEL "GR/grx_RW_s_3_31" BEL
+        "GR/grx_RW_s_3_30" BEL "GR/grx_RW_s_3_29" BEL "GR/grx_RW_s_3_28" BEL
+        "GR/grx_RW_s_3_27" BEL "GR/grx_RW_s_3_26" BEL "GR/grx_RW_s_3_25" BEL
+        "GR/grx_RW_s_3_24" BEL "GR/grx_RW_s_3_23" BEL "GR/grx_RW_s_3_22" BEL
+        "GR/grx_RW_s_3_21" BEL "GR/grx_RW_s_3_20" BEL "GR/grx_RW_s_3_19" BEL
+        "GR/grx_RW_s_3_18" BEL "GR/grx_RW_s_3_17" BEL "GR/grx_RW_s_3_16" BEL
+        "GR/grx_RW_s_3_15" BEL "GR/grx_RW_s_3_14" BEL "GR/grx_RW_s_3_13" BEL
+        "GR/grx_RW_s_3_12" BEL "GR/grx_RW_s_3_11" BEL "GR/grx_RW_s_3_10" BEL
+        "GR/grx_RW_s_3_9" BEL "GR/grx_RW_s_3_8" BEL "GR/grx_RW_s_3_7" BEL
+        "GR/grx_RW_s_3_6" BEL "GR/grx_RW_s_3_5" BEL "GR/grx_RW_s_3_4" BEL
+        "GR/grx_RW_s_3_3" BEL "GR/grx_RW_s_3_2" BEL "GR/grx_RW_s_3_1" BEL
+        "GR/grx_RW_s_3_0" BEL "GR/grx_RW_s_2_31" BEL "GR/grx_RW_s_2_30" BEL
+        "GR/grx_RW_s_2_29" BEL "GR/grx_RW_s_2_28" BEL "GR/grx_RW_s_2_27" BEL
+        "GR/grx_RW_s_2_26" BEL "GR/grx_RW_s_2_25" BEL "GR/grx_RW_s_2_24" BEL
+        "GR/grx_RW_s_2_23" BEL "GR/grx_RW_s_2_22" BEL "GR/grx_RW_s_2_21" BEL
+        "GR/grx_RW_s_2_20" BEL "GR/grx_RW_s_2_19" BEL "GR/grx_RW_s_2_18" BEL
+        "GR/grx_RW_s_2_17" BEL "GR/grx_RW_s_2_16" BEL "GR/grx_RW_s_2_15" BEL
+        "GR/grx_RW_s_2_14" BEL "GR/grx_RW_s_2_13" BEL "GR/grx_RW_s_2_12" BEL
+        "GR/grx_RW_s_2_11" BEL "GR/grx_RW_s_2_10" BEL "GR/grx_RW_s_2_9" BEL
+        "GR/grx_RW_s_2_8" BEL "GR/grx_RW_s_2_7" BEL "GR/grx_RW_s_2_6" BEL
+        "GR/grx_RW_s_2_5" BEL "GR/grx_RW_s_2_4" BEL "GR/grx_RW_s_2_3" BEL
+        "GR/grx_RW_s_2_2" BEL "GR/grx_RW_s_2_1" BEL "GR/grx_RW_s_2_0" BEL
+        "GR/grx_RW_s_1_31" BEL "GR/grx_RW_s_1_30" BEL "GR/grx_RW_s_1_29" BEL
+        "GR/grx_RW_s_1_28" BEL "GR/grx_RW_s_1_27" BEL "GR/grx_RW_s_1_26" BEL
+        "GR/grx_RW_s_1_25" BEL "GR/grx_RW_s_1_24" BEL "GR/grx_RW_s_1_23" BEL
+        "GR/grx_RW_s_1_22" BEL "GR/grx_RW_s_1_21" BEL "GR/grx_RW_s_1_20" BEL
+        "GR/grx_RW_s_1_19" BEL "GR/grx_RW_s_1_18" BEL "GR/grx_RW_s_1_17" BEL
+        "GR/grx_RW_s_1_16" BEL "GR/grx_RW_s_1_15" BEL "GR/grx_RW_s_1_14" BEL
+        "GR/grx_RW_s_1_13" BEL "GR/grx_RW_s_1_12" BEL "GR/grx_RW_s_1_11" BEL
+        "GR/grx_RW_s_1_10" BEL "GR/grx_RW_s_1_9" BEL "GR/grx_RW_s_1_8" BEL
+        "GR/grx_RW_s_1_7" BEL "GR/grx_RW_s_1_6" BEL "GR/grx_RW_s_1_5" BEL
+        "GR/grx_RW_s_1_4" BEL "GR/grx_RW_s_1_3" BEL "GR/grx_RW_s_1_2" BEL
+        "GR/grx_RW_s_1_1" BEL "GR/grx_RW_s_1_0" BEL "GR/grx_RW_s_0_31" BEL
+        "GR/grx_RW_s_0_30" BEL "GR/grx_RW_s_0_29" BEL "GR/grx_RW_s_0_28" BEL
+        "GR/grx_RW_s_0_27" BEL "GR/grx_RW_s_0_26" BEL "GR/grx_RW_s_0_25" BEL
+        "GR/grx_RW_s_0_24" BEL "GR/grx_RW_s_0_23" BEL "GR/grx_RW_s_0_22" BEL
+        "GR/grx_RW_s_0_21" BEL "GR/grx_RW_s_0_20" BEL "GR/grx_RW_s_0_19" BEL
+        "GR/grx_RW_s_0_18" BEL "GR/grx_RW_s_0_17" BEL "GR/grx_RW_s_0_16" BEL
+        "GR/grx_RW_s_0_15" BEL "GR/grx_RW_s_0_14" BEL "GR/grx_RW_s_0_13" BEL
+        "GR/grx_RW_s_0_12" BEL "GR/grx_RW_s_0_11" BEL "GR/grx_RW_s_0_10" BEL
+        "GR/grx_RW_s_0_9" BEL "GR/grx_RW_s_0_8" BEL "GR/grx_RW_s_0_7" BEL
+        "GR/grx_RW_s_0_6" BEL "GR/grx_RW_s_0_5" BEL "GR/grx_RW_s_0_4" BEL
+        "GR/grx_RW_s_0_3" BEL "GR/grx_RW_s_0_2" BEL "GR/grx_RW_s_0_1" BEL
+        "GR/grx_RW_s_0_0" BEL "AL/ar_31" BEL "AL/ar_30" BEL "AL/ar_29" BEL
+        "AL/ar_28" BEL "AL/ar_27" BEL "AL/ar_26" BEL "AL/ar_25" BEL "AL/ar_24"
+        BEL "AL/ar_23" BEL "AL/ar_22" BEL "AL/ar_21" BEL "AL/ar_20" BEL
+        "AL/ar_19" BEL "AL/ar_18" BEL "AL/ar_17" BEL "AL/ar_16" BEL "AL/ar_15"
+        BEL "AL/ar_14" BEL "AL/ar_13" BEL "AL/ar_12" BEL "AL/ar_11" BEL
+        "AL/ar_10" BEL "AL/ar_9" BEL "AL/ar_8" BEL "AL/ar_7" BEL "AL/ar_6" BEL
+        "AL/ar_5" BEL "AL/ar_4" BEL "AL/ar_3" BEL "AL/ar_2" BEL "AL/ar_1" BEL
+        "AL/ar_0" BEL "we_s" BEL "spaceSelect" BEL "UL2/us_rst" BEL
+        "UL1/us_rst" BEL "tick_flag_s" BEL "U4/outPixel_0" BEL "U4/outPixel_1"
+        BEL "U4/outPixel_2" BEL "U4/outPixel_3" BEL "U4/outPixel_4" BEL
+        "U4/outPixel_5" BEL "U4/outPixel_6" BEL "U4/outPixel_7" BEL
+        "UL2/trigger" BEL "UL1/trigger" BEL "AL/status_1" BEL "AL/status_0"
+        BEL "PMrw" BEL "brt_flag" BEL "ASR_0" BEL "ASR_1" BEL "ASR_2" BEL
+        "ASR_3" BEL "ASR_4" BEL "ASR_5" BEL "ASR_6" BEL "ASR_7" BEL "ASR_8"
+        BEL "ASR_9" BEL "ASR_10" BEL "ASR_11" BEL "ASR_12" BEL "ASR_13" BEL
+        "ASR_14" BEL "ASR_15" BEL "ASR_16" BEL "ASR_17" BEL "ASR_18" BEL
+        "ASR_19" BEL "ASR_20" BEL "ASR_21" BEL "ASR_22" BEL "ASR_23" BEL
+        "ASR_24" BEL "ASR_25" BEL "ASR_26" BEL "ASR_27" BEL "ASR_28" BEL
+        "ASR_29" BEL "ASR_30" BEL "ASR_31" BEL "UL2/avg4_0" BEL "UL2/avg4_1"
+        BEL "UL2/avg4_2" BEL "UL2/avg4_3" BEL "UL2/avg4_4" BEL "UL2/avg4_5"
+        BEL "UL2/avg4_6" BEL "UL2/avg4_7" BEL "UL2/avg4_8" BEL "UL1/avg4_0"
+        BEL "UL1/avg4_1" BEL "UL1/avg4_2" BEL "UL1/avg4_3" BEL "UL1/avg4_4"
+        BEL "UL1/avg4_5" BEL "UL1/avg4_6" BEL "UL1/avg4_7" BEL "UL1/avg4_8"
+        BEL "UL2/avg3_0" BEL "UL2/avg3_1" BEL "UL2/avg3_2" BEL "UL2/avg3_3"
+        BEL "UL2/avg3_4" BEL "UL2/avg3_5" BEL "UL2/avg3_6" BEL "UL2/avg3_7"
+        BEL "UL2/avg3_8" BEL "UL1/avg3_0" BEL "UL1/avg3_1" BEL "UL1/avg3_2"
+        BEL "UL1/avg3_3" BEL "UL1/avg3_4" BEL "UL1/avg3_5" BEL "UL1/avg3_6"
+        BEL "UL1/avg3_7" BEL "UL1/avg3_8" BEL "UL2/avg2_0" BEL "UL2/avg2_1"
+        BEL "UL2/avg2_2" BEL "UL2/avg2_3" BEL "UL2/avg2_4" BEL "UL2/avg2_5"
+        BEL "UL2/avg2_6" BEL "UL2/avg2_7" BEL "UL2/avg2_8" BEL "UL1/avg2_0"
+        BEL "UL1/avg2_1" BEL "UL1/avg2_2" BEL "UL1/avg2_3" BEL "UL1/avg2_4"
+        BEL "UL1/avg2_5" BEL "UL1/avg2_6" BEL "UL1/avg2_7" BEL "UL1/avg2_8"
+        BEL "UL2/avg1_0" BEL "UL2/avg1_1" BEL "UL2/avg1_2" BEL "UL2/avg1_3"
+        BEL "UL2/avg1_4" BEL "UL2/avg1_5" BEL "UL2/avg1_6" BEL "UL2/avg1_7"
+        BEL "UL2/avg1_8" BEL "UL1/avg1_0" BEL "UL1/avg1_1" BEL "UL1/avg1_2"
+        BEL "UL1/avg1_3" BEL "UL1/avg1_4" BEL "UL1/avg1_5" BEL "UL1/avg1_6"
+        BEL "UL1/avg1_7" BEL "UL1/avg1_8" BEL "UL2/avg_sum_3" BEL
+        "UL2/avg_sum_4" BEL "UL2/avg_sum_5" BEL "UL2/avg_sum_6" BEL
+        "UL2/avg_sum_7" BEL "UL2/avg_sum_8" BEL "UL2/avg_sum_9" BEL
+        "UL2/avg_sum_10" BEL "UL2/avg_sum_11" BEL "UL1/avg_sum_3" BEL
+        "UL1/avg_sum_4" BEL "UL1/avg_sum_5" BEL "UL1/avg_sum_6" BEL
+        "UL1/avg_sum_7" BEL "UL1/avg_sum_8" BEL "UL1/avg_sum_9" BEL
+        "UL1/avg_sum_10" BEL "UL1/avg_sum_11" BEL "uPC_1_1" BEL "uPC_0_1" BEL
+        "uPC_2_1" BEL "uPC_3_1" BEL "uPC_4_1" BEL "uPC_5_1" BEL "uPC_1_2" BEL
+        "uPC_2_2" BEL "uPC_3_2" BEL "uPC_4_2" BEL "uPC_5_2" BEL "uPC_0_2" BEL
+        "clk_BUFGP/BUFG" PIN "U3/Mram_pictMem_pins<20>" PIN
+        "U3/Mram_pictMem_pins<21>" PIN "U1/Mram_p_mem1_pins<20>" PIN
+        "U1/Mram_p_mem1_pins<21>" PIN "U1/Mram_p_mem2_pins<20>" PIN
+        "U1/Mram_p_mem2_pins<21>";
 TS_sys_clk_pin = PERIOD TIMEGRP "sys_clk_pin" 100 MHz HIGH 50%;
 SCHEMATIC END;
 

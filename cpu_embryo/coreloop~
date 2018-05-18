@@ -1,0 +1,44 @@
+-- main loop
+-- once per logical tick
+-- (0) update ball pos
+-- (1) send reset signal to VGA_MOTOR
+-- as often as posible
+-- (2) collsion with padle
+-- (3) resolve collisions with blocks
+
+-- -----------------------------
+-- (0)
+-- Update ball 1
+UPD ball regitser 1
+
+-- Update ball 2
+UPD ball register 2
+-- ----------------------------
+-- (1)
+reset the flag somehow.
+
+-- ----------------------------
+-- (3)
+-- Ball 1 collision if it exists and is not allready dealt with.
+-- If dealt with continue otherwise reflect the ball and call block
+-- destructor (4).
+bra coll 1 
+-- hoppa annars till bra coll 2
+reflect 1
+set coll flag 1
+jmp (4) tile destructor
+
+-- Ball 2 collision if it exists and is not allready dealt with.
+-- If dealt with continue otherwise reflect the ball and call block
+-- destructor (4).
+bra coll 2
+reflect 1
+set coll flag 2
+jmp (4) tile destructor
+
+
+-- ----------------------------------------------------------------
+-- (4) Tile destructor
+ADD adress register + 1000
+STORE &adress registrer, 0
+jmp "start of loop" (2)

@@ -1,0 +1,20 @@
+Release 12.4 - xst M.81d (lin64)
+Copyright (c) 1995-2010 Xilinx, Inc.  All rights reserved.
+--> 
+Parameter TMPDIR set to tmpdir
+
+
+Total REAL time to Xst completion: 1.00 secs
+Total CPU time to Xst completion: 0.11 secs
+ 
+--> 
+ERROR:Xst:426 - Illegal command usage : run  
+--> 
+
+
+Total memory usage is 295800 kilobytes
+
+Number of errors   :    1 (   0 filtered)
+Number of warnings :    0 (   0 filtered)
+Number of infos    :    0 (   0 filtered)
+

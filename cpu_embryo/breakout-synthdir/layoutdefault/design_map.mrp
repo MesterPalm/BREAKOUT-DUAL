@@ -9,39 +9,39 @@ Target Device  : xc6slx16
 Target Package : csg324
 Target Speed   : -3
 Mapper Version : spartan6 -- $Revision: 1.52.76.2 $
-Mapped Date    : Mon Apr 16 14:25:23 2018
+Mapped Date    : Fri May 18 06:47:35 2018
 
 Design Summary
 --------------
 Number of errors:      0
-Number of warnings:    0
+Number of warnings:    2
 Slice Logic Utilization:
-  Number of Slice Registers:                   155 out of  18,224    1%
-    Number used as Flip Flops:                 154
+  Number of Slice Registers:                   928 out of  18,224    5%
+    Number used as Flip Flops:                 893
     Number used as Latches:                      0
     Number used as Latch-thrus:                  0
-    Number used as AND/OR logics:                1
-  Number of Slice LUTs:                        225 out of   9,112    2%
-    Number used as logic:                      214 out of   9,112    2%
-      Number using O6 output only:             114
-      Number using O5 output only:              64
-      Number using O5 and O6:                   36
+    Number used as AND/OR logics:               35
+  Number of Slice LUTs:                      1,617 out of   9,112   17%
+    Number used as logic:                    1,574 out of   9,112   17%
+      Number using O6 output only:           1,194
+      Number using O5 output only:              12
+      Number using O5 and O6:                  368
       Number used as ROM:                        0
     Number used as Memory:                       0 out of   2,176    0%
-    Number used exclusively as route-thrus:     11
-      Number with same-slice register load:      8
-      Number with same-slice carry load:         3
-      Number with other load:                    0
+    Number used exclusively as route-thrus:     43
+      Number with same-slice register load:     39
+      Number with same-slice carry load:         2
+      Number with other load:                    2
 
 Slice Logic Distribution:
-  Number of occupied Slices:                    85 out of   2,278    3%
-  Number of LUT Flip Flop pairs used:          250
-    Number with an unused Flip Flop:           106 out of     250   42%
-    Number with an unused LUT:                  25 out of     250   10%
-    Number of fully used LUT-FF pairs:         119 out of     250   47%
-    Number of unique control sets:              12
+  Number of occupied Slices:                   535 out of   2,278   23%
+  Number of LUT Flip Flop pairs used:        1,767
+    Number with an unused Flip Flop:           934 out of   1,767   52%
+    Number with an unused LUT:                 150 out of   1,767    8%
+    Number of fully used LUT-FF pairs:         683 out of   1,767   38%
+    Number of unique control sets:              32
     Number of slice register sites lost
-      to control set restrictions:              54 out of  18,224    1%
+      to control set restrictions:              67 out of  18,224    1%
 
   A LUT Flip Flop pair for this architecture represents one LUT paired with
   one Flip Flop within a slice.  A control set is a unique combination of
@@ -50,25 +50,23 @@ Slice Logic Distribution:
   over-mapped for a non-slice resource or if Placement fails.
 
 IO Utilization:
-  Number of bonded IOBs:                        33 out of     232   14%
-    Number of LOCed IOBs:                       33 out of      33  100%
-    IOB Flip Flops:                             16
+  Number of bonded IOBs:                        28 out of     232   12%
+    Number of LOCed IOBs:                       28 out of      28  100%
+    IOB Flip Flops:                              8
 
 Specific Feature Utilization:
   Number of RAMB16BWERs:                         2 out of      32    6%
-  Number of RAMB8BWERs:                          0 out of      64    0%
+  Number of RAMB8BWERs:                          1 out of      64    1%
   Number of BUFIO2/BUFIO2_2CLKs:                 0 out of      32    0%
   Number of BUFIO2FB/BUFIO2FB_2CLKs:             0 out of      32    0%
   Number of BUFG/BUFGMUXs:                       1 out of      16    6%
     Number used as BUFGs:                        1
     Number used as BUFGMUX:                      0
   Number of DCM/DCM_CLKGENs:                     0 out of       4    0%
-  Number of ILOGIC2/ISERDES2s:                   2 out of     248    1%
-    Number used as ILOGIC2s:                     2
-    Number used as ISERDES2s:                    0
+  Number of ILOGIC2/ISERDES2s:                   0 out of     248    0%
   Number of IODELAY2/IODRP2/IODRP2_MCBs:         0 out of     248    0%
-  Number of OLOGIC2/OSERDES2s:                  14 out of     248    5%
-    Number used as OLOGIC2s:                    14
+  Number of OLOGIC2/OSERDES2s:                   8 out of     248    3%
+    Number used as OLOGIC2s:                     8
     Number used as OSERDES2s:                    0
   Number of BSCANs:                              0 out of       4    0%
   Number of BUFHs:                               0 out of     128    0%
@@ -83,11 +81,11 @@ Specific Feature Utilization:
   Number of STARTUPs:                            0 out of       1    0%
   Number of SUSPEND_SYNCs:                       0 out of       1    0%
 
-Average Fanout of Non-Clock Nets:                3.30
+Average Fanout of Non-Clock Nets:                4.02
 
-Peak Memory Usage:  572 MB
-Total REAL time to MAP completion:  12 secs 
-Total CPU time to MAP completion:   9 secs 
+Peak Memory Usage:  605 MB
+Total REAL time to MAP completion:  58 secs 
+Total CPU time to MAP completion:   50 secs 
 
 Table of Contents
 -----------------
@@ -116,6 +114,10 @@ WARNING:Security:44 - No license file was found.
 WARNING:Security:42 - Your software subscription period has lapsed. Your current
 version of Xilinx tools will continue to function, but you no longer qualify for
 Xilinx software updates or new releases.
+WARNING:PhysDesignRules:367 - The signal <PS2KeyboardData_IBUF> is incomplete.
+   The signal does not drive any load pins in the design.
+WARNING:PhysDesignRules:367 - The signal <PS2KeyboardCLK_IBUF> is incomplete.
+   The signal does not drive any load pins in the design.
 
 Section 3 - Informational
 -------------------------
@@ -124,11 +126,8 @@ INFO:Security:50 - The XILINXD_LICENSE_FILE environment variable is set to
 INFO:Security:52 - The LM_LICENSE_FILE environment variable is set to
 '1704@mjukis.isy.liu.se:1706@license.isy.liu.se'.
 INFO:Security:54 - 'xc6slx16' is a WebPack part.
-INFO:LIT:243 - Logical network JB<1> has no load.
-INFO:LIT:243 - Logical network JA<1> has no load.
-INFO:LIT:243 - Logical network Led<7> has no load.
-INFO:LIT:243 - Logical network Led<6> has no load.
-INFO:LIT:243 - Logical network Led<5> has no load.
+INFO:LIT:243 - Logical network PS2KeyboardCLK_IBUF has no load.
+INFO:LIT:243 - Logical network PS2KeyboardData_IBUF has no load.
 INFO:MapLib:562 - No environment variables are currently set.
 INFO:LIT:244 - All of the single ended outputs in this design are using slew
    rate limited output drivers. The delay on speed critical single ended outputs
@@ -143,85 +142,56 @@ INFO:Pack:1650 - Map created a placed design.
 
 Section 4 - Removed Logic Summary
 ---------------------------------
-   2 block(s) optimized away
-  66 Block(s) redundant
+   2 block(s) removed
+  10 block(s) optimized away
+  15 Block(s) redundant
 
 Section 5 - Removed Logic
 -------------------------
 
+The trimmed logic report below shows the logic removed from your design due to
+sourceless or loadless signals, and VCC or ground connections.  If the removal
+of a signal or symbol results in the subsequent removal of an additional signal
+or symbol, the message explaining that second removal will be indented.  This
+indentation will be repeated as a chain of related logic is removed.
+
+To quickly locate the original cause for the removal of a chain of logic, look
+above the place where that logic is listed in the trimming report, then locate
+the lines that are least indented (begin at the leftmost edge).
+
+Loadless block "ADDERTREE_INTERNAL_Madd211" (ROM) removed.
+Loadless block "ADDERTREE_INTERNAL_Madd911" (ROM) removed.
+
 Optimized Block(s):
 TYPE 		BLOCK
+LUT3 		ADDERTREE_INTERNAL_Madd210
+LUT3 		ADDERTREE_INTERNAL_Madd29
+LUT4 		ADDERTREE_INTERNAL_Madd2_lut<0>10
+LUT4 		ADDERTREE_INTERNAL_Madd2_lut<0>11
+LUT3 		ADDERTREE_INTERNAL_Madd910
+LUT3 		ADDERTREE_INTERNAL_Madd99
+LUT4 		ADDERTREE_INTERNAL_Madd9_lut<0>10
+LUT4 		ADDERTREE_INTERNAL_Madd9_lut<0>11
 GND 		XST_GND
 VCC 		XST_VCC
 
 Redundant Block(s):
 TYPE 		BLOCK
-LUT1 		Mcount_counter_temp_cy<1>_rt
-LUT1 		Mcount_counter_temp_cy<2>_rt
-LUT1 		Mcount_counter_temp_cy<3>_rt
-LUT1 		Mcount_counter_temp_cy<4>_rt
-LUT1 		Mcount_counter_temp_cy<5>_rt
-LUT1 		Mcount_counter_temp_cy<6>_rt
-LUT1 		Mcount_counter_temp_cy<7>_rt
-LUT1 		Mcount_counter_temp_cy<8>_rt
-LUT1 		Mcount_counter_temp_cy<9>_rt
-LUT1 		Mcount_counter_temp_cy<10>_rt
-LUT1 		Mcount_counter_temp_cy<11>_rt
-LUT1 		Mcount_counter_temp_cy<12>_rt
-LUT1 		Mcount_counter_temp_cy<13>_rt
-LUT1 		Mcount_counter_temp_cy<14>_rt
-LUT1 		Mcount_counter_temp_cy<15>_rt
-LUT1 		Mcount_counter_temp_cy<16>_rt
-LUT1 		Mcount_counter_temp_cy<17>_rt
-LUT1 		Mcount_counter_temp_cy<18>_rt
-LUT1 		Mcount_counter_temp_cy<19>_rt
-LUT1 		Mcount_counter_temp_cy<20>_rt
-LUT1 		Mcount_counter_temp_cy<21>_rt
-LUT1 		Mcount_counter_temp_cy<22>_rt
-LUT1 		UL/Mcount_us_cy<14>_rt
-LUT1 		UL/Mcount_us_cy<13>_rt
-LUT1 		UL/Mcount_us_cy<12>_rt
-LUT1 		UL/Mcount_us_cy<11>_rt
-LUT1 		UL/Mcount_us_cy<10>_rt
-LUT1 		UL/Mcount_us_cy<9>_rt
-LUT1 		UL/Mcount_us_cy<8>_rt
-LUT1 		UL/Mcount_us_cy<7>_rt
-LUT1 		UL/Mcount_us_cy<6>_rt
-LUT1 		UL/Mcount_us_cy<5>_rt
-LUT1 		UL/Mcount_us_cy<4>_rt
-LUT1 		UL/Mcount_us_cy<3>_rt
-LUT1 		UL/Mcount_us_cy<2>_rt
-LUT1 		UL/Mcount_us_cy<1>_rt
-LUT1 		U4/Maddsub_PWR_9_o_Ypixel[8]_MuLt_28_OUT_Madd1_cy<7>_rt
-LUT1 		U4/Maddsub_PWR_9_o_Ypixel[8]_MuLt_28_OUT_Madd1_cy<6>_rt
-LUT1 		U5/Maddsub_PWR_10_o_curposY[4]_MuLt_99_OUT_Madd_cy<9>_rt
-LUT1 		U5/Maddsub_PWR_10_o_curposY[4]_MuLt_99_OUT_Madd_cy<8>_rt
-LUT1 		U5/Maddsub_PWR_10_o_curposY[4]_MuLt_99_OUT_Madd_cy<7>_rt
-LUT1 		U5/Maddsub_PWR_10_o_curposY[4]_MuLt_99_OUT_Madd_cy<6>_rt
-LUT1 		U5/Maddsub_PWR_10_o_curposY[4]_MuLt_99_OUT_Madd1_cy<8>_rt
-LUT1 		U5/Maddsub_PWR_10_o_curposY[4]_MuLt_99_OUT_Madd1_cy<7>_rt
-LUT1 		HD/Mcount_counter_r_cy<16>_rt
-LUT1 		HD/Mcount_counter_r_cy<15>_rt
-LUT1 		HD/Mcount_counter_r_cy<14>_rt
-LUT1 		HD/Mcount_counter_r_cy<13>_rt
-LUT1 		HD/Mcount_counter_r_cy<12>_rt
-LUT1 		HD/Mcount_counter_r_cy<11>_rt
-LUT1 		HD/Mcount_counter_r_cy<10>_rt
-LUT1 		HD/Mcount_counter_r_cy<9>_rt
-LUT1 		HD/Mcount_counter_r_cy<8>_rt
-LUT1 		HD/Mcount_counter_r_cy<7>_rt
-LUT1 		HD/Mcount_counter_r_cy<6>_rt
-LUT1 		HD/Mcount_counter_r_cy<5>_rt
-LUT1 		HD/Mcount_counter_r_cy<4>_rt
-LUT1 		HD/Mcount_counter_r_cy<3>_rt
-LUT1 		HD/Mcount_counter_r_cy<2>_rt
-LUT1 		HD/Mcount_counter_r_cy<1>_rt
-LUT1 		Mcount_counter_temp_xor<23>_rt
-LUT1 		UL/Mcount_us_xor<15>_rt
-LUT1 		HD/Mcount_counter_r_xor<17>_rt
-LUT1 		U4/Mcount_Ypixel_cy<6>_rt
-LUT1 		U4/Mcount_Ypixel_cy<5>_rt
+LUT5 		U4/transparent_one2
+LUT5 		U4/transparent_two2
+LUT1 		U4/Maddsub_PWR_14_o_Ypixel[8]_MuLt_25_OUT_Madd1_cy<6>_rt
+LUT1 		U4/Maddsub_PWR_14_o_Ypixel[8]_MuLt_25_OUT_Madd1_cy<7>_rt
 LUT1 		U4/Mcount_Ypixel_cy<0>_rt
+LUT1 		U4/Mcount_Ypixel_cy<1>_rt
+LUT1 		U4/Mcount_Ypixel_cy<2>_rt
+LUT1 		U4/Mcount_Ypixel_cy<4>_rt
+INV 		write_ctrl_INV_0
+INV 		U4/Madd_paddle_two_pos_end_xor<0>11_INV_0
+INV 		U4/Madd_paddle_one_pos_end_xor<0>11_INV_0
+INV 		U4/Madd_ball_two_posY_end_xor<0>11_INV_0
+INV 		U4/Madd_ball_two_posX_end_xor<0>11_INV_0
+INV 		U4/Madd_ball_one_posY_end_xor<0>11_INV_0
+INV 		U4/Madd_ball_one_posX_end_xor<0>11_INV_0
 
 Section 6 - IOB Properties
 --------------------------
@@ -232,37 +202,32 @@ Section 6 - IOB Properties
 +---------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Hsync                              | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW |              |          |          |
 | JA<0>                              | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW |              |          |          |
+| JA<1>                              | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW |              |          |          |
 | JB<0>                              | IOB              | INPUT     | LVCMOS33             |       |          |      |              |          |          |
+| JB<1>                              | IOB              | INPUT     | LVCMOS33             |       |          |      |              |          |          |
 | Led<0>                             | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW |              |          |          |
 | Led<1>                             | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW |              |          |          |
-| Led<2>                             | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW | OFF          |          |          |
-| Led<3>                             | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW | OFF          |          |          |
-| Led<4>                             | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW | OFF          |          |          |
-| PS2KeyboardCLK                     | IOB              | INPUT     | LVCMOS33             |       |          |      | IFF          | PULLUP   |          |
-| PS2KeyboardData                    | IOB              | INPUT     | LVCMOS33             |       |          |      | IFF          | PULLUP   |          |
+| Led<2>                             | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW |              |          |          |
+| Led<3>                             | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW |              |          |          |
+| Led<4>                             | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW |              |          |          |
+| Led<5>                             | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW |              |          |          |
+| Led<6>                             | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW |              |          |          |
+| Led<7>                             | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW |              |          |          |
+| PS2KeyboardCLK                     | IOB              | INPUT     | LVCMOS33             |       |          |      |              | PULLUP   |          |
+| PS2KeyboardData                    | IOB              | INPUT     | LVCMOS33             |       |          |      |              | PULLUP   |          |
 | Vsync                              | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW |              |          |          |
-| an<0>                              | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW | OFF          |          |          |
-| an<1>                              | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW | OFF          |          |          |
-| an<2>                              | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW | OFF          |          |          |
-| an<3>                              | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW | OFF          |          |          |
+| btnd                               | IOB              | INPUT     | LVCMOS33             |       |          |      |              |          |          |
 | btns                               | IOB              | INPUT     | LVCMOS33             |       |          |      |              |          |          |
+| btnu                               | IOB              | INPUT     | LVCMOS33             |       |          |      |              |          |          |
 | clk                                | IOB              | INPUT     | LVCMOS33             |       |          |      |              |          |          |
-| seg<0>                             | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW | OFF          |          |          |
-| seg<1>                             | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW | OFF          |          |          |
-| seg<2>                             | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW | OFF          |          |          |
-| seg<3>                             | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW | OFF          |          |          |
-| seg<4>                             | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW | OFF          |          |          |
-| seg<5>                             | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW | OFF          |          |          |
-| seg<6>                             | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW | OFF          |          |          |
-| seg<7>                             | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW |              |          |          |
-| vgaBlue<1>                         | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW |              |          |          |
-| vgaBlue<2>                         | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW |              |          |          |
-| vgaGreen<0>                        | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW |              |          |          |
-| vgaGreen<1>                        | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW |              |          |          |
-| vgaGreen<2>                        | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW |              |          |          |
-| vgaRed<0>                          | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW |              |          |          |
-| vgaRed<1>                          | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW |              |          |          |
-| vgaRed<2>                          | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW |              |          |          |
+| vgaBlue<1>                         | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW | OFF          |          |          |
+| vgaBlue<2>                         | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW | OFF          |          |          |
+| vgaGreen<0>                        | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW | OFF          |          |          |
+| vgaGreen<1>                        | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW | OFF          |          |          |
+| vgaGreen<2>                        | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW | OFF          |          |          |
+| vgaRed<0>                          | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW | OFF          |          |          |
+| vgaRed<1>                          | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW | OFF          |          |          |
+| vgaRed<2>                          | IOB              | OUTPUT    | LVCMOS33             |       | 12       | SLOW | OFF          |          |          |
 +---------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 Section 7 - RPMs
@@ -306,34 +271,58 @@ Section 11 - Configuration String Details
 
 Section 12 - Control Set Information
 ------------------------------------
-+----------------------------------------------------------------------------------------------------------------------------------+
-| Clock Signal | Reset Signal                | Set Signal | Enable Signal                      | Slice Load Count | Bel Load Count |
-+----------------------------------------------------------------------------------------------------------------------------------+
-| clk_BUFGP    |                             |            |                                    | 5                | 18             |
-| clk_BUFGP    |                             |            | UL/_n0102_inv                      | 3                | 16             |
-| clk_BUFGP    |                             |            | _n0106_inv                         | 3                | 16             |
-| clk_BUFGP    | Led_1_OBUF                  |            |                                    | 13               | 41             |
-| clk_BUFGP    | Led_1_OBUF                  |            | U4/Clk25                           | 3                | 10             |
-| clk_BUFGP    | Led_1_OBUF                  |            | U4/_n0092_inv                      | 3                | 10             |
-| clk_BUFGP    | Led_1_OBUF                  |            | U5/PS2Clk_op                       | 3                | 10             |
-| clk_BUFGP    | Led_1_OBUF                  |            | U5/WRstate_FSM_FFd2                | 7                | 10             |
-| clk_BUFGP    | Led_1_OBUF                  |            | U5/_n0742_inv                      | 1                | 1              |
-| clk_BUFGP    | U5/_n0704                   |            |                                    | 1                | 2              |
-| clk_BUFGP    | U5/rst_CounterClear_OR_37_o |            | U5/PS2Clk_op                       | 1                | 4              |
-| clk_BUFGP    | UL/Mcount_us_val            |            | UL/us_counter[6]_PWR_7_o_equal_1_o | 4                | 16             |
-+----------------------------------------------------------------------------------------------------------------------------------+
++---------------------------------------------------------------------------------------------------------------------------------------------------+
+| Clock Signal | Reset Signal                   | Set Signal | Enable Signal                                    | Slice Load Count | Bel Load Count |
++---------------------------------------------------------------------------------------------------------------------------------------------------+
+| clk_BUFGP    |                                |            |                                                  | 22               | 94             |
+| clk_BUFGP    |                                |            | AL/_n0283_inv                                    | 21               | 32             |
+| clk_BUFGP    |                                |            | GR/_n0136_inv                                    | 8                | 32             |
+| clk_BUFGP    |                                |            | GR/_n0142_inv                                    | 10               | 32             |
+| clk_BUFGP    |                                |            | GR/_n0148_inv                                    | 9                | 32             |
+| clk_BUFGP    |                                |            | GR/_n0154_inv                                    | 11               | 32             |
+| clk_BUFGP    |                                |            | GR/_n0160_inv                                    | 8                | 32             |
+| clk_BUFGP    |                                |            | GR/_n0166_inv                                    | 8                | 32             |
+| clk_BUFGP    |                                |            | GR/_n0172_inv                                    | 8                | 32             |
+| clk_BUFGP    |                                |            | GR/_n0178_inv                                    | 8                | 32             |
+| clk_BUFGP    |                                |            | GR/_n0184_inv                                    | 6                | 32             |
+| clk_BUFGP    |                                |            | GR/_n0187_inv                                    | 10               | 32             |
+| clk_BUFGP    |                                |            | U4/_n0273_inv                                    | 2                | 10             |
+| clk_BUFGP    |                                |            | U4/_n0277_inv                                    | 3                | 10             |
+| clk_BUFGP    |                                |            | UL1/_n0218_inv                                   | 3                | 9              |
+| clk_BUFGP    |                                |            | UL1/_n0237_inv                                   | 7                | 36             |
+| clk_BUFGP    |                                |            | UL2/_n0218_inv                                   | 2                | 9              |
+| clk_BUFGP    |                                |            | UL2/_n0237_inv                                   | 8                | 36             |
+| clk_BUFGP    |                                |            | btns_inv                                         | 4                | 20             |
+| clk_BUFGP    | FB[3]_GND_4_o_equal_6_o_inv1_0 |            |                                                  | 4                | 8              |
+| clk_BUFGP    | btns_IBUF                      |            |                                                  | 48               | 112            |
+| clk_BUFGP    | btns_IBUF                      |            | FB[3]_GND_4_o_equal_2_o                          | 14               | 32             |
+| clk_BUFGP    | btns_IBUF                      |            | FB[3]_GND_4_o_equal_35_o                         | 9                | 32             |
+| clk_BUFGP    | btns_IBUF                      |            | Mcompar_DATA_BUS[31]_GND_4_o_LessThan_23_o_cy<5> | 4                | 9              |
+| clk_BUFGP    | btns_IBUF                      |            | U4/Clk25                                         | 3                | 10             |
+| clk_BUFGP    | btns_IBUF                      |            | U4/_n0285_inv                                    | 3                | 10             |
+| clk_BUFGP    | btns_IBUF                      |            | UL1/_n0253_inv                                   | 4                | 16             |
+| clk_BUFGP    | btns_IBUF                      |            | UL2/_n0253_inv                                   | 4                | 16             |
+| clk_BUFGP    | btns_IBUF                      |            | _n0409_inv                                       | 9                | 32             |
+| clk_BUFGP    | btns_IBUF                      |            | _n0412_inv                                       | 8                | 32             |
+| clk_BUFGP    | collision_reset_s              |            | U4/collision_one[3]_BUS_0035_AND_101_o           | 1                | 4              |
+| clk_BUFGP    | collision_reset_s              |            | U4/collision_two[3]_BUS_0048_AND_105_o           | 2                | 4              |
++---------------------------------------------------------------------------------------------------------------------------------------------------+
 
 Section 13 - Utilization by Hierarchy
 -------------------------------------
 +---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Module             | Partition | Slices*       | Slice Reg     | LUTs          | LUTRAM        | BRAM/FIFO | DSP48A1 | BUFG  | BUFIO | BUFR  | DCM   | PLL_ADV   | Full Hierarchical  |
 +---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| breakout/          |           | 21/92         | 40/154        | 10/148        | 0/0           | 1/2       | 0/0     | 1/1   | 0/0   | 0/0   | 0/0   | 0/0       | breakout           |
-| +HD                |           | 11/11         | 18/18         | 11/11         | 0/0           | 0/0       | 0/0     | 0/0   | 0/0   | 0/0   | 0/0   | 0/0       | breakout/HD        |
+| breakout/          |           | 310/731       | 235/893       | 754/1535      | 0/0           | 0/3       | 0/0     | 1/1   | 0/0   | 0/0   | 0/0   | 0/0       | breakout           |
+| +AL                |           | 124/124       | 34/34         | 302/302       | 0/0           | 0/0       | 0/0     | 0/0   | 0/0   | 0/0   | 0/0   | 0/0       | breakout/AL        |
+| +GR                |           | 87/87         | 320/320       | 5/5           | 0/0           | 0/0       | 0/0     | 0/0   | 0/0   | 0/0   | 0/0   | 0/0       | breakout/GR        |
+| +ID                |           | 3/3           | 0/0           | 4/4           | 0/0           | 0/0       | 0/0     | 0/0   | 0/0   | 0/0   | 0/0   | 0/0       | breakout/ID        |
+| +U0                |           | 15/15         | 0/0           | 17/17         | 0/0           | 0/0       | 0/0     | 0/0   | 0/0   | 0/0   | 0/0   | 0/0       | breakout/U0        |
+| +U1                |           | 0/0           | 0/0           | 0/0           | 0/0           | 2/2       | 0/0     | 0/0   | 0/0   | 0/0   | 0/0   | 0/0       | breakout/U1        |
 | +U3                |           | 0/0           | 0/0           | 0/0           | 0/0           | 1/1       | 0/0     | 0/0   | 0/0   | 0/0   | 0/0   | 0/0       | breakout/U3        |
-| +U4                |           | 16/16         | 22/22         | 40/40         | 0/0           | 0/0       | 0/0     | 0/0   | 0/0   | 0/0   | 0/0   | 0/0       | breakout/U4        |
-| +U5                |           | 29/29         | 31/31         | 67/67         | 0/0           | 0/0       | 0/0     | 0/0   | 0/0   | 0/0   | 0/0   | 0/0       | breakout/U5        |
-| +UL                |           | 15/15         | 43/43         | 20/20         | 0/0           | 0/0       | 0/0     | 0/0   | 0/0   | 0/0   | 0/0   | 0/0       | breakout/UL        |
+| +U4                |           | 117/117       | 50/50         | 286/286       | 0/0           | 0/0       | 0/0     | 0/0   | 0/0   | 0/0   | 0/0   | 0/0       | breakout/U4        |
+| +UL1               |           | 37/37         | 127/127       | 83/83         | 0/0           | 0/0       | 0/0     | 0/0   | 0/0   | 0/0   | 0/0   | 0/0       | breakout/UL1       |
+| +UL2               |           | 38/38         | 127/127       | 84/84         | 0/0           | 0/0       | 0/0     | 0/0   | 0/0   | 0/0   | 0/0   | 0/0       | breakout/UL2       |
 +---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 * Slices can be packed with basic elements from multiple hierarchies.

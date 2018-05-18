@@ -53,7 +53,7 @@ begin  -- Behavioral
   grxDataOut <= index when (grxRW = '1' and grxAddr = 15) else
                 grx_RO_s(to_integer(grxAddr)) when (grxRW = '1' and grxAddr > 8) else
                 grx_RW_s(to_integer(grxAddr)) when (grxRW = '1') else
-                (others => '1');
+                (others => '0');
   
   process (clk)
   begin
