@@ -5,7 +5,7 @@ Loading device for application Rf_Device from file '6slx16.nph' in environment
    "breakout" is an NCD, version 3.2, device xc6slx16, package csg324, speed -3
 Opened constraints file design.pcf.
 
-Fri May 18 06:49:09 2018
+Fri May 18 09:34:06 2018
 
 /sw/xilinx/ise_12.4i/ISE_DS/ISE/bin/lin64/unwrapped/bitgen -w design.ncd 
 

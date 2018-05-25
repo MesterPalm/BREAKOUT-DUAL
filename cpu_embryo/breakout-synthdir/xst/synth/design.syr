@@ -4,7 +4,7 @@ Copyright (c) 1995-2010 Xilinx, Inc.  All rights reserved.
 Parameter TMPDIR set to tmpdir
 
 
-Total REAL time to Xst completion: 6.00 secs
+Total REAL time to Xst completion: 1.00 secs
 Total CPU time to Xst completion: 0.14 secs
  
 --> 
@@ -355,10 +355,10 @@ WARNING:Xst:653 - Signal <status<6:2>> is used but never assigned. This sourcele
 	inferred   2 Comparator(s).
 	inferred  22 Multiplexer(s).
 Unit <alu> synthesized.
-RTL-Simplification CPUSTAT: 0.29 
-RTL-BasicInf CPUSTAT: 2.59 
+RTL-Simplification CPUSTAT: 0.31 
+RTL-BasicInf CPUSTAT: 2.55 
 RTL-BasicOpt CPUSTAT: 0.00 
-RTL-Remain-Bus CPUSTAT: 0.00 
+RTL-Remain-Bus CPUSTAT: 0.02 
 
 =========================================================================
 HDL Synthesis Report
@@ -946,13 +946,13 @@ clk            |   10.985|         |         |         |
 =========================================================================
 
 
-Total REAL time to Xst completion: 51.00 secs
-Total CPU time to Xst completion: 41.56 secs
+Total REAL time to Xst completion: 42.00 secs
+Total CPU time to Xst completion: 40.10 secs
  
 --> 
 
 
-Total memory usage is 487976 kilobytes
+Total memory usage is 487904 kilobytes
 
 Number of errors   :    0 (   0 filtered)
 Number of warnings :   75 (   0 filtered)
