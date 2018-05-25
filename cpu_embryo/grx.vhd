@@ -33,14 +33,14 @@ signal grx_RW_s : grx_RW;
 signal grx_RO_s : grx_RO;
 signal index : unsigned(31 downto 0);
 
-begin  -- Behavioral
+begin -- Behavioral
+  -- read write special registers 6 to 8
+  alreadyCollided <= grx_RW_s(6)(1 downto 0);
   ballx1 <= grx_RW_s(7)(31 downto 22);
   bally1 <= grx_RW_s(7)(21 downto 12);
   ballx2 <= grx_RW_s(8)(31 downto 22);
   bally2 <= grx_RW_s(8)(21 downto 12);
-
-  alreadyCollided <= grx_RW_s(6)(1 downto 0);
-    
+  -- read only special registrer 9 to 14
   grx_RO_s(9)  <= "0000000000000000000000" & paddle1;
   grx_RO_s(10) <= "0000000000000000000000" & paddle2;
   
@@ -49,7 +49,7 @@ begin  -- Behavioral
 
   grx_RO_s(13) <= "000000000000000000000" & collisAddr1;
   grx_RO_s(14) <= "000000000000000000000" & collisAddr2;
-
+  
   grxDataOut <= index when (grxRW = '1' and grxAddr = 15) else
                 grx_RO_s(to_integer(grxAddr)) when (grxRW = '1' and grxAddr > 8) else
                 grx_RW_s(to_integer(grxAddr)) when (grxRW = '1') else

@@ -6,11 +6,8 @@ use IEEE.NUMERIC_STD.ALL;
 entity ultra is
   Port (
     clk : in STD_LOGIC;
-    --JA : out unsigned(1 downto 0);
-    --JB : in unsigned(1 downto 0);
     trigger : buffer STD_LOGIC;    
     echo : in STD_LOGIC;
-    --us_time : buffer unsigned (15 downto 0);
     Xpixel  : buffer unsigned (9 downto 0);
     rst : in std_logic);
 end ultra;
@@ -22,11 +19,9 @@ architecture ultra_behavior of ultra is
   signal us : unsigned (15 downto 0);
   signal us_time : unsigned (15 downto 0);
   signal us_rst : std_logic;
-  signal trig_counter : unsigned (3 downto 0);
-  --signal trigger :STD_LOGIC;    
-  --signal echo : STD_LOGIC;
+  signal trig_counter : unsigned (3 downto 0);;
+  -- help signals for the generation of a "smooth" signal.
   signal diff : unsigned(11 downto 0);
-  signal Xpixel_temp : unsigned(11 downto 0);
   signal avg1 : unsigned(11 downto 0);
   signal avg2 : unsigned(11 downto 0);
   signal avg3 : unsigned(11 downto 0);
@@ -37,11 +32,10 @@ architecture ultra_behavior of ultra is
   signal avg8 : unsigned(11 downto 0);
   signal avg_sum : unsigned(11 downto 0);
   signal temp_sum : unsigned(11 downto 0);
+  signal Xpixel_temp : unsigned(11 downto 0);
 
 begin
-  --JA(0) <= trigger; 
-  --echo <= JB(0);
-
+ 
   process (clk) begin
     if rising_edge(clk) then
       if (rst = '1') then

@@ -1,14 +1,9 @@
 Release 12.4 - par M.81d (lin64)
 Copyright (c) 1995-2010 Xilinx, Inc.  All rights reserved.
 
-Fri May 18 09:34:02 2018
+Fri May 25 14:06:07 2018
 
 All signals are completely routed.
 
-WARNING:ParHelpers:361 - There are 2 loadless signals in this design. This design will cause Bitgen to issue DRC
-   warnings.
-
-   PS2KeyboardCLK_IBUF
-   PS2KeyboardData_IBUF
 
 

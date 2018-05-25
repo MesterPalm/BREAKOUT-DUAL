@@ -8,19 +8,14 @@ entity breakout is
        btns: in std_logic;             --rst
        JA: out unsigned(1 downto 0); -- trigger
        JB: in unsigned(1 downto 0); -- echo
-       Led : out unsigned(7 downto 0);
-       --seg : out unsigned (7 downto 0);
-       --an : out unsigned (3 downto 0);
        Hsync : out std_logic;                        -- horizontal sync
        Vsync : out std_logic;                        -- vertical sync
        vgaRed : out	std_logic_vector(2 downto 0);   -- VGA red
        vgaGreen : out std_logic_vector(2 downto 0);     -- VGA green
        vgaBlue : out std_logic_vector(2 downto 1);     -- VGA blue
-       PS2KeyboardCLK	        : in std_logic;                         -- PS2 clock
-       PS2KeyboardData        : in std_logic;
-       btnu: in std_logic;
-       btnd: in std_logic
-       );                        -- PS2 data
+       btnu: in std_logic;              -- part of pause signal
+       btnd: in std_logic              -- part of pause signal
+       );
 end breakout ;
 
 architecture Behavioral of breakout is
@@ -75,12 +70,9 @@ architecture Behavioral of breakout is
     -- Ultra module component
   component ultra
     port(clk : in std_logic;
-	 --JA : out unsigned(1 downto 0); -- vcc, trigger, gnd
-	 --JB: in unsigned(1 downto 0); -- echo
          trigger : buffer std_logic;
          echo : in std_logic;
          Xpixel : buffer unsigned(9 downto 0);
-         --us_time : buffer unsigned(15 downto 0);
          rst : in std_logic
     );
   end component;
@@ -95,40 +87,22 @@ architecture Behavioral of breakout is
          );
   end component;
      -- PS2 keyboard encoder component
-
-   component KBD_ENC
-    port ( clk		        : in std_logic;				-- system clock
-	   rst		        : in std_logic;				-- reset signal
-	   PS2KeyboardCLK       : in std_logic;				-- PS2 clock
-	   PS2KeyboardData      : in std_logic;				-- PS2 data
-	   data		        : out unsigned(7 downto 0);	-- tile data
-	   addr			: out unsigned(10 downto 0);	        -- tile address
-	   we			: out std_logic);	                -- write enable
-  end component;
   
   -- picture memory component
   component PICT_MEM
-    port ( clk			: in std_logic;                         -- system clock
+    port ( clk			: in std_logic;                  -- system clock
 	 -- port 1
-           we1		        : in std_logic;                         -- write enable
+           we1		        : in std_logic;                 -- write enable
            data_in1	        : in unsigned(7 downto 0);      -- data in
            data_out1	        : out unsigned(7 downto 0);     -- data out
-           addr1	        : in unsigned(10 downto 0);             -- address
+           addr1	        : in unsigned(10 downto 0);     -- address
 	 -- port 2
-           we2			: in std_logic;                         -- write enable
+           we2			: in std_logic;                 -- write enable
            data_in2	        : in unsigned(7 downto 0);      -- data in
            data_out2	        : out unsigned(7 downto 0);     -- data out
-           addr2		: in unsigned(10 downto 0));            -- address
+           addr2		: in unsigned(10 downto 0));    -- address
   end component;
 
-  component leddriver
-    Port ( clk,rst : in  STD_LOGIC;
-           seg : out  UNSIGNED(7 downto 0);
-           an : out  UNSIGNED (3 downto 0);
-           value : in  UNSIGNED (15 downto 0)
-           );
-  end component;
-  
   -- VGA motor component
   component VGA_MOTOR is
   port ( clk			: in std_logic;
@@ -201,17 +175,14 @@ architecture Behavioral of breakout is
   signal IR : unsigned(31 downto 0); -- Instruction Register
   signal DATA_BUS : unsigned(31 downto 0); -- Data Bus
 
-  signal us_time_temp  : unsigned(15 downto 0);
-  signal counter_temp : unsigned(23 downto 0);
-  
-  signal us_time : unsigned (15 downto 0);
+  -- system reset signal.
   signal rst : std_logic;
 
 
   --VGA_MOTOR
   -- intermediate signals between KBD_ENC and PICT_MEM
   signal        data_s	        : unsigned(7 downto 0);         -- data
-  signal	addr_s	        : unsigned(10 downto 0);                -- address
+  signal	ASR_PICT	        : unsigned(10 downto 0);                -- address
   signal	we_s		: std_logic;                            -- write enable
   signal        data_out_s      : unsigned(7 downto 0);
 	
@@ -224,15 +195,16 @@ architecture Behavioral of breakout is
   signal collision_two_s          : unsigned(3 downto 0);
   signal collision_addr_one_s     : unsigned(10 downto 0);
   signal collision_addr_two_s     : unsigned(10 downto 0);
-         -- The balls start_stop X and start_stop Y.
+  -- The balls and paddles start X and start Y.
   signal ball_one_posX_s          : unsigned(9 downto 0);
   signal ball_one_posY_s          : unsigned(9 downto 0);
   signal ball_two_posX_s          : unsigned(9 downto 0);
   signal ball_two_posY_s          : unsigned(9 downto 0);
-  signal collision_reset_s        : std_logic;
   signal paddle_one_pos_s         : unsigned(9 downto 0);
   signal paddle_two_pos_s         : unsigned(9 downto 0);
-
+  -- reset the collsisions in the VGA motor if 1.
+  signal collision_reset_s        : std_logic;
+  
   -- Ultra signals
   signal trigger1_s : std_logic;
   signal trigger2_s : std_logic;
@@ -250,15 +222,16 @@ architecture Behavioral of breakout is
     
 begin
 
+  -- reset with center buton.
   rst <= btns;
+  -- forward the pause butons to the pause signal.
+  pause <= btnu or btnd;
+  -- forward the ports to the two ultra modules
   JA(0) <= trigger1_s;
   JA(1) <= trigger2_s;
   echo1_s <= JB(0);
   echo2_s <= JB(1);
-
-  pause <= btnu or btnd;
-
-  Led(7 downto 0) <= "00000000";
+ 
    
   -- IR : Instruction Register
   process(clk)
@@ -320,13 +293,13 @@ begin
       if rst = '1' then
         spaceSelect <= '0';
         ASR <= (others => '0');
-        addr_s <= (others => '0');
+        ASR_PICT <= (others => '0');
       elsif FB = "0100" then
         if DATA_BUS < spaceBorder then
           ASR <= DATA_BUS;
           spaceSelect <= '0';
         elsif DATA_BUS >= spaceBorder then
-          addr_s <= DATA_BUS(10 downto 0) - spaceBorder(10 downto 0);
+          ASR_PICT <= DATA_BUS(10 downto 0) - spaceBorder(10 downto 0);
           spaceSelect <= '1';
         end if;
       end if;
@@ -486,14 +459,11 @@ begin
   UL2 : ultra port map(clk=>clk, trigger=>trigger2_s, echo=>echo2_s, Xpixel=>paddle_two_pos_s, rst=>rst);
   
    -- picture memory component connection
-   U3 : PICT_MEM port map(clk=>clk, we1=>we_s, data_in1=>data_s, data_out1 => data_out_s, addr1=>addr_s, we2=>'0', data_in2=>"00000000", data_out2=>data_out2_s, addr2=>addr2_s);
+   U3 : PICT_MEM port map(clk=>clk, we1=>we_s, data_in1=>data_s, data_out1 => data_out_s, addr1=>ASR_PICT, we2=>'0', data_in2=>"00000000", data_out2=>data_out2_s, addr2=>addr2_s);
 
   -- VGA motor component connection
   U4 : VGA_MOTOR port map(clk=>clk, rst=>rst, data=>data_out2_s, addr=>addr2_s, vgaRed=>vgaRed, vgaGreen=>vgaGreen, vgaBlue=>vgaBlue, Hsync=>Hsync, Vsync=>Vsync, collision_one=>collision_one_s, collision_two=>collision_two_s, ball_one_posX=>ball_one_posX_s, ball_one_posY=>ball_one_posY_s, ball_two_posX=>ball_two_posX_s, ball_two_posY=>ball_two_posY_s, collision_reset=>collision_reset_s, paddle_one_pos=>paddle_one_pos_s, paddle_two_pos=>paddle_two_pos_s, collision_addr_one=>collision_addr_one_s, collision_addr_two=>collision_addr_two_s);
 
-  -- keyboard encoder component connection
- --U5 : KBD_ENC port map(clk=>clk, rst=>rst, PS2KeyboardCLK=>PS2KeyboardCLK, PS2KeyboardData=>PS2KeyboardData, data=>data_s, addr=>addr_s, we=>we_s);
-  
   AL : alu port map(clk, alu_data=>ALUd, alu_opcode=>ALU_op, ar=>AR, status=>SR);
   
   -- micro memory signal assignment

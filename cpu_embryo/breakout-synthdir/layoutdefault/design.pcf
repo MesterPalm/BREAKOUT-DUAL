@@ -1,5 +1,5 @@
 //! **************************************************************************
-// Written by: Map M.81d on Fri May 18 09:33:31 2018
+// Written by: Map M.81d on Fri May 25 14:05:34 2018
 //! **************************************************************************
 
 SCHEMATIC START;
@@ -8,29 +8,11 @@ COMP "JA<0>" LOCATE = SITE "T12" LEVEL 1;
 COMP "JA<1>" LOCATE = SITE "V12" LEVEL 1;
 COMP "JB<0>" LOCATE = SITE "K2" LEVEL 1;
 COMP "JB<1>" LOCATE = SITE "K1" LEVEL 1;
-COMP "Led<0>" LOCATE = SITE "U16" LEVEL 1;
-COMP "Led<1>" LOCATE = SITE "V16" LEVEL 1;
-COMP "Led<2>" LOCATE = SITE "U15" LEVEL 1;
-COMP "Led<3>" LOCATE = SITE "V15" LEVEL 1;
-COMP "Led<4>" LOCATE = SITE "M11" LEVEL 1;
-COMP "Led<5>" LOCATE = SITE "N11" LEVEL 1;
-COMP "Led<6>" LOCATE = SITE "R11" LEVEL 1;
-COMP "Led<7>" LOCATE = SITE "T11" LEVEL 1;
-COMP "vgaRed<0>" LOCATE = SITE "U7" LEVEL 1;
-COMP "vgaRed<1>" LOCATE = SITE "V7" LEVEL 1;
-COMP "vgaRed<2>" LOCATE = SITE "N7" LEVEL 1;
-COMP "PS2KeyboardData" LOCATE = SITE "J13" LEVEL 1;
 COMP "btnd" LOCATE = SITE "C9" LEVEL 1;
 COMP "btns" LOCATE = SITE "B8" LEVEL 1;
 COMP "btnu" LOCATE = SITE "A8" LEVEL 1;
-COMP "PS2KeyboardCLK" LOCATE = SITE "L12" LEVEL 1;
 COMP "clk" LOCATE = SITE "V10" LEVEL 1;
 COMP "Hsync" LOCATE = SITE "N6" LEVEL 1;
-COMP "vgaGreen<0>" LOCATE = SITE "P8" LEVEL 1;
-COMP "vgaGreen<1>" LOCATE = SITE "T6" LEVEL 1;
-COMP "vgaGreen<2>" LOCATE = SITE "V6" LEVEL 1;
-COMP "vgaBlue<1>" LOCATE = SITE "R7" LEVEL 1;
-COMP "vgaBlue<2>" LOCATE = SITE "T7" LEVEL 1;
 PIN U3/Mram_pictMem_pins<20> = BEL "U3/Mram_pictMem" PINNAME CLKAWRCLK;
 PIN U3/Mram_pictMem_pins<21> = BEL "U3/Mram_pictMem" PINNAME CLKBRDCLK;
 PIN U1/Mram_p_mem1_pins<20> = BEL "U1/Mram_p_mem1" PINNAME CLKA;
@@ -46,19 +28,19 @@ TIMEGRP sys_clk_pin = BEL "grxRW" BEL "collision_reset_s" BEL "PMin_0" BEL
         "PMin_26" BEL "PMin_27" BEL "PMin_28" BEL "PMin_29" BEL "PMin_30" BEL
         "PMin_31" BEL "coll_s" BEL "data_s_0" BEL "data_s_1" BEL "data_s_2"
         BEL "data_s_3" BEL "data_s_4" BEL "data_s_5" BEL "data_s_6" BEL
-        "data_s_7" BEL "addr_s_0" BEL "addr_s_1" BEL "addr_s_2" BEL "addr_s_3"
-        BEL "addr_s_4" BEL "addr_s_5" BEL "addr_s_6" BEL "addr_s_7" BEL
-        "addr_s_8" BEL "UL2/us_time_2" BEL "UL2/us_time_3" BEL "UL2/us_time_4"
-        BEL "UL2/us_time_5" BEL "UL2/us_time_6" BEL "UL2/us_time_7" BEL
-        "UL2/us_time_8" BEL "UL2/us_time_9" BEL "UL2/us_time_10" BEL
-        "UL2/us_counter_0" BEL "UL2/us_counter_1" BEL "UL2/us_counter_2" BEL
-        "UL2/us_counter_3" BEL "UL2/us_counter_4" BEL "UL2/us_counter_5" BEL
-        "UL2/us_counter_6" BEL "UL1/us_time_2" BEL "UL1/us_time_3" BEL
-        "UL1/us_time_4" BEL "UL1/us_time_5" BEL "UL1/us_time_6" BEL
-        "UL1/us_time_7" BEL "UL1/us_time_8" BEL "UL1/us_time_9" BEL
-        "UL1/us_time_10" BEL "UL1/us_counter_0" BEL "UL1/us_counter_1" BEL
-        "UL1/us_counter_2" BEL "UL1/us_counter_3" BEL "UL1/us_counter_4" BEL
-        "UL1/us_counter_5" BEL "UL1/us_counter_6" BEL
+        "data_s_7" BEL "ASR_PICT_0" BEL "ASR_PICT_1" BEL "ASR_PICT_2" BEL
+        "ASR_PICT_3" BEL "ASR_PICT_4" BEL "ASR_PICT_5" BEL "ASR_PICT_6" BEL
+        "ASR_PICT_7" BEL "ASR_PICT_8" BEL "UL2/us_time_2" BEL "UL2/us_time_3"
+        BEL "UL2/us_time_4" BEL "UL2/us_time_5" BEL "UL2/us_time_6" BEL
+        "UL2/us_time_7" BEL "UL2/us_time_8" BEL "UL2/us_time_9" BEL
+        "UL2/us_time_10" BEL "UL2/us_counter_0" BEL "UL2/us_counter_1" BEL
+        "UL2/us_counter_2" BEL "UL2/us_counter_3" BEL "UL2/us_counter_4" BEL
+        "UL2/us_counter_5" BEL "UL2/us_counter_6" BEL "UL1/us_time_2" BEL
+        "UL1/us_time_3" BEL "UL1/us_time_4" BEL "UL1/us_time_5" BEL
+        "UL1/us_time_6" BEL "UL1/us_time_7" BEL "UL1/us_time_8" BEL
+        "UL1/us_time_9" BEL "UL1/us_time_10" BEL "UL1/us_counter_0" BEL
+        "UL1/us_counter_1" BEL "UL1/us_counter_2" BEL "UL1/us_counter_3" BEL
+        "UL1/us_counter_4" BEL "UL1/us_counter_5" BEL "UL1/us_counter_6" BEL
         "U4/collision_addr_one_0" BEL "U4/collision_addr_one_1" BEL
         "U4/collision_addr_one_2" BEL "U4/collision_addr_one_3" BEL
         "U4/collision_addr_one_4" BEL "U4/collision_addr_one_5" BEL

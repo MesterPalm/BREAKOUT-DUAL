@@ -1,4 +1,3 @@
-
 library IEEE;
 use IEEE.STD_LOGIC_1164.all;
 use IEEE.NUMERIC_STD.all;
@@ -18,8 +17,6 @@ architecture Behavioral of pMem is
 -- program Memory
 type p_mem_t is array (0 to 542) of unsigned(31 downto 0);
 constant p_mem_c : p_mem_t :=(
---b"0010110111_0010111110_10000_0001_001",
---b"1000100000_0100010110_00000_0001_101",
 b"00000_00_0000_0000_00000000000000000",
 b"00010_01_0111_0000_00000000000000000",
 b"00101_10_1110_0101_11110100000011010",
@@ -567,13 +564,14 @@ b"00000_00_0000_0000_00000000000010101"
 
    signal p_mem : p_mem_t := p_mem_c;
 
-begin  -- pMem
+begin
+  -- pMem
   -- purpose: data in or data out 
   pDataOut <= p_mem(to_integer(pAddr)) when (readWrite = '1') else
                     (others => '0');
   
   process (clk)
-  begin  -- process
+  begin
     if(rising_edge(clk)) then
       if (readWrite = '0') then
         p_mem(to_integer(pAddr)) <= pDataIn;

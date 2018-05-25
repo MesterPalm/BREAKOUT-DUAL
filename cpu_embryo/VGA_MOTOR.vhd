@@ -1,11 +1,3 @@
---------------------------------------------------------------------------------
--- VGA MOTOR
--- Anders Nilsson
--- 16-feb-2016
--- Version 1.1
-
-
--- library declaration
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;            -- basic IEEE library
 use IEEE.NUMERIC_STD.ALL;               -- IEEE library for the unsigned type
@@ -47,11 +39,12 @@ architecture Behavioral of VGA_MOTOR is
   signal	ClkDiv	        : unsigned(1 downto 0);		-- Clock divisor, to generate 25 MHz signal
   signal	Clk25		: std_logic;			-- One pulse width 25 MHz signal
 		
-  signal 	outPixel        : unsigned(7 downto 0);	-- output pixel data
+  signal 	outPixel        : unsigned(7 downto 0);	        -- output pixel data
   signal	tileAddr	: unsigned(10 downto 0);	-- Tile address
 
   signal        blank           : std_logic;                    -- blanking signal
 
+  -- help signals that hold the end coordinate of a sprite
   signal paddle_one_pos_end     : unsigned(9 downto 0);
   signal paddle_two_pos_end     : unsigned(9 downto 0);
   signal ball_one_posX_end      : unsigned(9 downto 0);
@@ -59,11 +52,19 @@ architecture Behavioral of VGA_MOTOR is
   signal ball_two_posX_end      : unsigned(9 downto 0);
   signal ball_two_posY_end      : unsigned(9 downto 0);
 
+  -- adress to a pixel in the to ball- and the two paddle- sprites respectively.
   signal addr_one : unsigned(5 downto 0);
   signal addr_two : unsigned(5 downto 0);
   signal addr_paddle_one: unsigned(1 downto 0);
   signal addr_paddle_two: unsigned(1 downto 0);
-
+  -- help signals for generating the above four.
+  signal sub_oneY : unsigned(9 downto 0);
+  signal sub_oneX : unsigned(9 downto 0);
+  signal sub_twoY : unsigned(9 downto 0);
+  signal sub_twoX : unsigned(9 downto 0);
+  signal sub_paddle_one : unsigned(9 downto 0);
+  signal sub_paddle_two : unsigned(9 downto 0);
+  -- halp signals for finding collisions and choosing the pixel that is in front.
   signal inside_paddle_one : std_logic;
   signal inside_paddle_two : std_logic;
   signal inside_one : std_logic;
@@ -72,29 +73,14 @@ architecture Behavioral of VGA_MOTOR is
   signal transparent_two : std_logic;
   signal transparent_paddle_one : std_logic;
   signal transparent_paddle_two : std_logic;
-  signal sub_oneY : unsigned(9 downto 0);
-  signal sub_oneX : unsigned(9 downto 0);
-  signal sub_twoY : unsigned(9 downto 0);
-  signal sub_twoX : unsigned(9 downto 0);
-  signal sub_paddle_one : unsigned(9 downto 0);
-  signal sub_paddle_two : unsigned(9 downto 0);
-
-  signal collision_one_temp : unsigned(3 downto 0);
-  
-  signal temp : std_logic;
-
-  signal temp_addr : unsigned(10 downto 0);
-	
 
   -- Tile memory type
   type ram_t is array (0 to 2047) of unsigned(11 downto 0);
 
--- Tile memory
--- colour chart http://www.fountainware.com/EXPL/vga_color_palettes.htm
+  -- Tile memory
   signal tileMem : ram_t := 
 		( 
-                  -- Tile start
-
+-- Tile start
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
@@ -103,11 +89,9 @@ x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000",
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
-
 
 
 -- Tile start
-
 x"0FF",x"0FF",x"0FF",x"0FF",x"000",x"000",x"000",x"000", 
 x"000",x"000",x"000",x"0FF",x"000",x"000",x"000",x"000", 
 x"000",x"000",x"000",x"0FF",x"000",x"000",x"000",x"000", 
@@ -118,9 +102,7 @@ x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000",
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 
 
-
 -- Tile start
-
 x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
@@ -131,9 +113,7 @@ x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000",
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 
 
-
 -- Tile start
-
 x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
@@ -144,9 +124,7 @@ x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000",
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 
 
-
 -- Tile start
-
 x"0FF",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
 x"0FF",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
 x"0FF",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
@@ -157,9 +135,7 @@ x"000",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000",
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 
 
-
 -- Tile start
-
 x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000", 
 x"0FF",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 x"0FF",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
@@ -170,9 +146,7 @@ x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000",
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 
 
-
 -- Tile start
-
 x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000", 
 x"0FF",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 x"0FF",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
@@ -183,9 +157,7 @@ x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000",
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 
 
-
 -- Tile start
-
 x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
@@ -196,9 +168,7 @@ x"000",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000",
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 
 
-
 -- Tile start
-
 x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000", 
 x"0FF",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
 x"0FF",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
@@ -209,9 +179,7 @@ x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000",
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 
 
-
 -- Tile start
-
 x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000", 
 x"0FF",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
 x"0FF",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
@@ -222,9 +190,7 @@ x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000",
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 
 
-
 -- Tile start
-
 x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000", 
 x"0FF",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
 x"0FF",x"000",x"000",x"000",x"000",x"000",x"0FF",x"000", 
@@ -235,9 +201,7 @@ x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000",
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 
 
-
 -- Tile start
-
 x"B25",x"A25",x"A25",x"A25",x"A25",x"A25",x"A25",x"925", 
 x"C25",x"025",x"025",x"025",x"025",x"025",x"025",x"825", 
 x"C25",x"025",x"025",x"025",x"025",x"025",x"025",x"825", 
@@ -248,9 +212,7 @@ x"C25",x"025",x"025",x"025",x"025",x"025",x"025",x"825",
 x"D25",x"E25",x"E25",x"E25",x"E25",x"E25",x"E25",x"F25", 
 
 
-
 -- Tile start
-
 x"B27",x"A27",x"A27",x"A27",x"A27",x"A27",x"A27",x"F27", 
 x"C27",x"027",x"027",x"027",x"027",x"027",x"F27",x"000", 
 x"C27",x"027",x"027",x"027",x"027",x"F27",x"000",x"000", 
@@ -261,9 +223,7 @@ x"C27",x"F27",x"000",x"000",x"000",x"000",x"000",x"000",
 x"F27",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 
 
-
 -- Tile start
-
 x"D27",x"A27",x"A27",x"A27",x"A27",x"A27",x"A27",x"927", 
 x"000",x"D27",x"027",x"027",x"027",x"027",x"027",x"827", 
 x"000",x"000",x"D27",x"027",x"027",x"027",x"027",x"827", 
@@ -274,9 +234,7 @@ x"000",x"000",x"000",x"000",x"000",x"000",x"D27",x"827",
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"D27", 
 
 
-
 -- Tile start
-
 x"927",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 x"C27",x"927",x"000",x"000",x"000",x"000",x"000",x"000", 
 x"C27",x"027",x"927",x"000",x"000",x"000",x"000",x"000", 
@@ -287,9 +245,7 @@ x"C27",x"027",x"027",x"027",x"027",x"027",x"927",x"000",
 x"D27",x"E27",x"E27",x"E27",x"E27",x"E27",x"E27",x"927", 
 
 
-
 -- Tile start
-
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"B27", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"B27",x"827", 
 x"000",x"000",x"000",x"000",x"000",x"B27",x"027",x"827", 
@@ -300,9 +256,7 @@ x"000",x"B27",x"027",x"027",x"027",x"027",x"027",x"827",
 x"B27",x"E27",x"E27",x"E27",x"E27",x"E27",x"E27",x"F27", 
 
 
-
 -- Tile start
-
 x"B4A",x"A4A",x"A4A",x"A4A",x"A4A",x"A4A",x"A4A",x"94A", 
 x"C4A",x"04A",x"04A",x"04A",x"04A",x"04A",x"04A",x"84A", 
 x"C4A",x"04A",x"04A",x"04A",x"04A",x"04A",x"04A",x"84A", 
@@ -313,9 +267,7 @@ x"C4A",x"04A",x"04A",x"04A",x"04A",x"04A",x"04A",x"84A",
 x"D4A",x"E4A",x"E4A",x"E4A",x"E4A",x"E4A",x"E4A",x"F4A", 
 
 
-
 -- Tile start
-
 x"B0C",x"A0C",x"A0C",x"A0C",x"A0C",x"A0C",x"A0C",x"90C", 
 x"C0C",x"00C",x"00C",x"00C",x"00C",x"00C",x"00C",x"80C", 
 x"C0C",x"00C",x"00C",x"00C",x"00C",x"00C",x"00C",x"80C", 
@@ -327,46 +279,28 @@ x"D0C",x"E0C",x"E0C",x"E0C",x"E0C",x"E0C",x"E0C",x"F0C",
 
 
 -- Tile start
-
-x"810", x"000", x"000", x"000", x"000", x"000", x"000", x"000", 
-
-x"810", x"000", x"000", x"000", x"000", x"000", x"000", x"000", 
-
-x"810", x"000", x"000", x"000", x"000", x"000", x"000", x"000", 
-
-x"810", x"000", x"000", x"000", x"000", x"000", x"000", x"000", 
-
-x"810", x"000", x"000", x"000", x"000", x"000", x"000", x"000", 
-
-x"810", x"000", x"000", x"000", x"000", x"000", x"000", x"000", 
-
-x"810", x"000", x"000", x"000", x"000", x"000", x"000", x"000", 
-
-x"810", x"000", x"000", x"000", x"000", x"000", x"000", x"000", 
-
+x"810",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"810",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"810",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"810",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"810",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"810",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"810",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
+x"810",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 
 
 -- Tile start
-
-x"000", x"000", x"000", x"000", x"000", x"000", x"000", x"C10", 
-
-x"000", x"000", x"000", x"000", x"000", x"000", x"000", x"C10", 
-
-x"000", x"000", x"000", x"000", x"000", x"000", x"000", x"C10", 
-
-x"000", x"000", x"000", x"000", x"000", x"000", x"000", x"C10", 
-
-x"000", x"000", x"000", x"000", x"000", x"000", x"000", x"C10", 
-
-x"000", x"000", x"000", x"000", x"000", x"000", x"000", x"C10", 
-
-x"000", x"000", x"000", x"000", x"000", x"000", x"000", x"C10", 
-
-x"000", x"000", x"000", x"000", x"000", x"000", x"000", x"C10", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"C10", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"C10", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"C10", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"C10", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"C10", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"C10", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"C10", 
+x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"C10", 
 
 
 -- Tile start
-
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
@@ -377,9 +311,7 @@ x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000",
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 
 
-
 -- Tile start
-
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
@@ -390,9 +322,7 @@ x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000",
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 
 
-
 -- Tile start
-
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
@@ -403,9 +333,7 @@ x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000",
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 
 
-
 -- Tile start
-
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
@@ -416,9 +344,7 @@ x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000",
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 
 
-
 -- Tile start
-
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
@@ -429,9 +355,7 @@ x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000",
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 
 
-
 -- Tile start
-
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
@@ -442,9 +366,7 @@ x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000",
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 
 
-
 -- Tile start
-
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
@@ -455,9 +377,7 @@ x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000",
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 
 
-
 -- Tile start
-
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
@@ -468,9 +388,7 @@ x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000",
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 
 
-
 -- Tile start
-
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
@@ -481,9 +399,7 @@ x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000",
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 
 
-
 -- Tile start
-
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 x"000",x"000",x"000",x"0B0",x"000",x"000",x"000",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
@@ -493,8 +409,8 @@ x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000",
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000",
 
--- Tile start
 
+-- Tile start
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
@@ -504,8 +420,8 @@ x"000",x"000",x"000",x"0A0",x"000",x"000",x"000",x"000",
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000",
 
--- Tile start
 
+-- Tile start
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000", 
@@ -516,6 +432,7 @@ x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000",
 x"000",x"000",x"000",x"000",x"000",x"000",x"000",x"000"
                   
                   );
+
   
   -- Ball memory type
   type balls is array (0 to 63) of unsigned(11 downto 0);
@@ -533,6 +450,7 @@ x"000",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"0FF",x"000",
 x"000",x"000",x"EFF",x"EFF",x"EFF",x"EFF",x"000",x"000"
 
                   );
+
   
   -- Paddle memory type
   type paddles is array (0 to 3) of unsigned(11 downto 0);
@@ -540,7 +458,7 @@ x"000",x"000",x"EFF",x"EFF",x"EFF",x"EFF",x"000",x"000"
   signal paddleSprite : paddles := 
 		(
                   
-                  x"0FF", x"0FF", x"0FF", x"0FF"
+                  x"0FF",x"0FF",x"0FF",x"0FF"
                   
                   );
 		  
@@ -652,14 +570,6 @@ begin
   -- Picture memory address composite
   addr <= to_unsigned(20, 7) * Ypixel(8 downto 5) + Xpixel(9 downto 5);
 
-  process(clk)
-  begin
-    if rising_edge(clk) then
-      temp_addr <= addr;
-    end if;
-  end process;
-
-
   -- VGA generation
   vgaRed(2) 	<= outPixel(7);
   vgaRed(1) 	<= outPixel(6);
@@ -671,40 +581,29 @@ begin
   vgaBlue(1) 	<= outPixel(0);
   
   -----------------------------------------------------------------------------
-  -- Start of K-nät for the muxing of tiles and sprites.
+  -- Start of K-net generating signals for finding what pixel to show and
+  -- signaling if something collided.
   -----------------------------------------------------------------------------
   -- Inside sprites
   -- paddle one
   paddle_one_pos_end <= paddle_one_pos + 91;
   inside_paddle_one <= '1' when Xpixel >= paddle_one_pos(9 downto 0) and Xpixel <= paddle_one_pos_end(9 downto 0) and Ypixel >= 0 and Ypixel <= 7 else '0';
-
-  --Led(2 downto 0) <= "000";
-  
-  
   
   -- paddle two
   paddle_two_pos_end <= paddle_two_pos + 91;
   inside_paddle_two <= '1' when Xpixel >= paddle_two_pos(9 downto 0) and Xpixel <= paddle_two_pos_end(9 downto 0) and Ypixel <= 480 and Ypixel >= 473 else '0';
   
-  -- one
+  -- ball one
   ball_one_posX_end <= ball_one_posX + 7;
   ball_one_posY_end <= ball_one_posY + 7;
   inside_one <= '1' when Xpixel >= ball_one_posX(9 downto 0) and Xpixel <= ball_one_posX_end(9 downto 0) and Ypixel >= ball_one_posY(9 downto 0) and Ypixel <= ball_one_posY_end(9 downto 0) else '0';
 
--- two
+  -- ball two
   ball_two_posX_end <= ball_two_posX + 7;
   ball_two_posY_end <= ball_two_posY + 7;
   inside_two <= '1' when Xpixel >= ball_two_posX(9 downto 0) and Xpixel <= ball_two_posX_end(9 downto 0) and Ypixel >= ball_two_posY(9 downto 0) and Ypixel <= ball_two_posY_end(9 downto 0) else '0';
 
-  --Sprite adress (6-bit)
-  -- paddle one
-  --sub_paddle_one <= Xpixel - paddle_one_pos;
-  --addr_paddle_one <= sub_paddle_one(5 downto 4);
-  
-  -- paddle two
-  --sub_paddle_two <= Xpixel - paddle_two_pos;
-  --addr_paddle_two <= sub_paddle_two(5 downto 4);
-  
+  -- sprite adress for balls
   -- one
   sub_oneY <= Ypixel - ball_one_posY;
   sub_oneX <= Xpixel - ball_one_posX; 
@@ -715,16 +614,14 @@ begin
   addr_two <= sub_twoY(2 downto 0) & sub_twoX(2 downto 0);
   
   -- Transparent
+  -- paddles
   transparent_paddle_one <= '1' when inside_paddle_one = '0' else '0';
-
   transparent_paddle_two <= '1' when inside_paddle_two = '0' else '0';
-    
+  -- balls
   transparent_one <= '1' when (inside_one = '1' and ballSprite(to_integer(addr_one)) = x"000") or inside_one = '0' else '0';
   transparent_two <= '1' when (inside_two = '1' and ballSprite(to_integer(addr_two)) = x"000") or inside_two = '0' else '0';
 
-  -- Kollision kanske ska lösas med process sats då vi inte vill skriva över en
-  -- kollision. Collision behöver vara inout eller kollisionsflaggan behövs för
-  -- att inte skriva över tidigare resultat.
+  
   -- Collision
   -- one
   process(clk)
@@ -739,8 +636,6 @@ begin
       end if;
     end if;
   end process;
-  
-  --Led(3 downto 0) <= collision_one(3 downto 0);
  
   --two
   process(clk)
@@ -784,12 +679,6 @@ begin
       end if;
     end if;
   end process;
-
-  
-  
-
-  
-
   
 end Behavioral;
 

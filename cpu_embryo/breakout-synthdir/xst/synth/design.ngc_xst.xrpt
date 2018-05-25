@@ -5,7 +5,7 @@
     The structure and the elements are likely to change over the next few releases.
     This means code written to parse this file will need to be revisited each subsequent release.-->
 
-  <application stringID="Xst" timeStamp="Fri May 18 09:31:44 2018">
+  <application stringID="Xst" timeStamp="Fri May 25 14:03:39 2018">
     <section stringID="User_Env">
       <table stringID="User_EnvVar">
         <column stringID="variable"/>
@@ -28,7 +28,7 @@
         </row>
         <row stringID="row" value="4">
           <item stringID="variable" value="PATH"/>
-          <item stringID="value" value="/sw/xilinx/ise_12.4i/ISE_DS/ISE//bin/lin64:/sw/xilinx/ise_12.4i/ISE_DS/common/bin/lin64:/sw/xilinx/ise_12.4i/ISE_DS/PlanAhead/bin:/sw/xilinx/ise_12.4i/ISE_DS/ISE/bin/lin64:/sw/xilinx/ise_12.4i/ISE_DS/ISE/sysgen/util:/sw/xilinx/ise_12.4i/ISE_DS/EDK/bin/lin64:/site/edu/da/sw/c6/bin:/site/edu/da/mia/bin:/sw/mentor/modelsim_6.5e/modeltech/bin:/sw/xilinx/ise_12.4i/ISE_DS/ISE/../EDK/bin/lin64:/sw/texlive/2016/bin/x86_64-pc-linux-gnu:/sw/texlive/JabRef:/sw/java/jdk-current-x86_64/bin:/sw/matlab/9.3/bin:/usr/kerberos/bin:/bin:/usr/bin:/usr/X11R6/bin:/sw/local5/bin:/sw/local/bin:/sw/mentor/modelsim_10.0/modeltech/bin:/usr/local/bin"/>
+          <item stringID="value" value="/sw/xilinx/ise_12.4i/ISE_DS/ISE//bin/lin64:/sw/xilinx/ise_12.4i/ISE_DS/common/bin/lin64:/sw/xilinx/ise_12.4i/ISE_DS/PlanAhead/bin:/sw/xilinx/ise_12.4i/ISE_DS/ISE/bin/lin64:/sw/xilinx/ise_12.4i/ISE_DS/ISE/sysgen/util:/sw/xilinx/ise_12.4i/ISE_DS/EDK/bin/lin64:/site/edu/da/mia/bin:/sw/mentor/modelsim_6.5e/modeltech/bin:/sw/xilinx/ise_12.4i/ISE_DS/ISE/../EDK/bin/lin64:/site/edu/da/sw/c6/bin:/sw/texlive/2016/bin/x86_64-pc-linux-gnu:/sw/texlive/JabRef:/sw/java/jdk-current-x86_64/bin:/sw/matlab/9.3/bin:/usr/kerberos/bin:/bin:/usr/bin:/usr/X11R6/bin:/sw/local5/bin:/sw/local/bin:/sw/mentor/modelsim_10.0/modeltech/bin:/usr/local/bin"/>
         </row>
         <row stringID="row" value="5">
           <item stringID="variable" value="LMC_HOME"/>
@@ -183,9 +183,9 @@
         <item dataType="int" stringID="XST_CLOCK_BUFFERS" value="1">
           <item dataType="int" stringID="XST_BUFGP" value="1"/>
         </item>
-        <item dataType="int" stringID="XST_IO_BUFFERS" value="25">
+        <item dataType="int" stringID="XST_IO_BUFFERS" value="17">
           <item dataType="int" stringID="XST_IBUF" value="5"/>
-          <item dataType="int" stringID="XST_OBUF" value="20"/>
+          <item dataType="int" stringID="XST_OBUF" value="12"/>
         </item>
       </section>
     </section>
@@ -199,8 +199,8 @@
       <item AVAILABLE="2307" dataType="int" label="Number with an unused LUT" stringID="XST_NUMBER_WITH_AN_UNUSED_LUT" value="483"/>
       <item AVAILABLE="2307" dataType="int" label="Number of fully used LUT-FF pairs" stringID="XST_NUMBER_OF_FULLY_USED_LUTFF_PAIRS" value="418"/>
       <item dataType="int" label="Number of unique control sets" stringID="XST_NUMBER_OF_UNIQUE_CONTROL_SETS" value="33"/>
-      <item dataType="int" label="Number of IOs" stringID="XST_NUMBER_OF_IOS" value="28"/>
-      <item AVAILABLE="232" dataType="int" label="Number of bonded IOBs" stringID="XST_NUMBER_OF_BONDED_IOBS" value="26"/>
+      <item dataType="int" label="Number of IOs" stringID="XST_NUMBER_OF_IOS" value="18"/>
+      <item AVAILABLE="232" dataType="int" label="Number of bonded IOBs" stringID="XST_NUMBER_OF_BONDED_IOBS" value="18"/>
       <item AVAILABLE="32" dataType="int" label="Number of Block RAM/FIFO" stringID="XST_NUMBER_OF_BLOCK_RAMFIFO" value="3"/>
       <item dataType="int" label="Number using Block RAM only" stringID="XST_NUMBER_USING_BLOCK_RAM_ONLY" value="3"/>
       <item AVAILABLE="16" dataType="int" label="Number of BUFG/BUFGCTRLs" stringID="XST_NUMBER_OF_BUFGBUFGCTRLS" value="1"/>
@@ -210,7 +210,7 @@
     </section>
     <section stringID="XST_ERRORS_STATISTICS">
       <item dataType="int" filtered="0" stringID="XST_NUMBER_OF_ERRORS" value="0"/>
-      <item dataType="int" filtered="0" stringID="XST_NUMBER_OF_WARNINGS" value="75"/>
+      <item dataType="int" filtered="0" stringID="XST_NUMBER_OF_WARNINGS" value="72"/>
       <item dataType="int" filtered="0" stringID="XST_NUMBER_OF_INFOS" value="11"/>
     </section>
   </application>

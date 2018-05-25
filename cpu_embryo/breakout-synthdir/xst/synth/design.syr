@@ -5,7 +5,7 @@ Parameter TMPDIR set to tmpdir
 
 
 Total REAL time to Xst completion: 1.00 secs
-Total CPU time to Xst completion: 0.14 secs
+Total CPU time to Xst completion: 0.12 secs
  
 --> 
 
@@ -67,18 +67,12 @@ Parsing architecture <Behavioral> of entity <pmem>.
 Parsing VHDL file "/edu/andry954/TSEA83/BREAKOUT-DUAL/cpu_embryo/breakout-synthdir/xst/synth/../../../ultra.vhd" into library work
 Parsing entity <ultra>.
 Parsing architecture <ultra_behavior> of entity <ultra>.
-Parsing VHDL file "/edu/andry954/TSEA83/BREAKOUT-DUAL/cpu_embryo/breakout-synthdir/xst/synth/../../../leddriver.vhd" into library work
-Parsing entity <leddriver>.
-Parsing architecture <Behavioral> of entity <leddriver>.
 Parsing VHDL file "/edu/andry954/TSEA83/BREAKOUT-DUAL/cpu_embryo/breakout-synthdir/xst/synth/../../../VGA_MOTOR.vhd" into library work
 Parsing entity <VGA_MOTOR>.
 Parsing architecture <Behavioral> of entity <vga_motor>.
 Parsing VHDL file "/edu/andry954/TSEA83/BREAKOUT-DUAL/cpu_embryo/breakout-synthdir/xst/synth/../../../PICT_MEM.vhd" into library work
 Parsing entity <PICT_MEM>.
 Parsing architecture <Behavioral> of entity <pict_mem>.
-Parsing VHDL file "/edu/andry954/TSEA83/BREAKOUT-DUAL/cpu_embryo/breakout-synthdir/xst/synth/../../../KBD_ENC.vhd" into library work
-Parsing entity <KBD_ENC>.
-Parsing architecture <behavioral> of entity <kbd_enc>.
 Parsing VHDL file "/edu/andry954/TSEA83/BREAKOUT-DUAL/cpu_embryo/breakout-synthdir/xst/synth/../../../grx.vhd" into library work
 Parsing entity <grx>.
 Parsing architecture <Behavioral> of entity <grx>.
@@ -108,8 +102,7 @@ Elaborating entity <ultra> (architecture <ultra_behavior>) from library <work>.
 Elaborating entity <PICT_MEM> (architecture <Behavioral>) from library <work>.
 
 Elaborating entity <VGA_MOTOR> (architecture <Behavioral>) from library <work>.
-WARNING:HDLCompiler:871 - "/edu/andry954/TSEA83/BREAKOUT-DUAL/cpu_embryo/breakout-synthdir/xst/synth/../../../VGA_MOTOR.vhd" Line 540: Using initial value ("000011111111","000011111111","000011111111","000011111111") for paddlesprite since it is never assigned
-WARNING:HDLCompiler:1127 - "/edu/andry954/TSEA83/BREAKOUT-DUAL/cpu_embryo/breakout-synthdir/xst/synth/../../../VGA_MOTOR.vhd" Line 655: Assignment to temp_addr ignored, since the identifier is never used
+WARNING:HDLCompiler:871 - "/edu/andry954/TSEA83/BREAKOUT-DUAL/cpu_embryo/breakout-synthdir/xst/synth/../../../VGA_MOTOR.vhd" Line 466: Using initial value ("000011111111","000011111111","000011111111","000011111111") for paddlesprite since it is never assigned
 
 Elaborating entity <alu> (architecture <Behavioral>) from library <work>.
 
@@ -119,8 +112,6 @@ Elaborating entity <alu> (architecture <Behavioral>) from library <work>.
 
 Synthesizing Unit <breakout>.
     Related source file is "/edu/andry954/TSEA83/BREAKOUT-DUAL/cpu_embryo/breakout.vhd".
-WARNING:Xst:647 - Input <PS2KeyboardCLK> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
-WARNING:Xst:647 - Input <PS2KeyboardData> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
     Found 32-bit register for signal <PMin>.
     Found 1-bit register for signal <PMrw>.
     Found 8-bit register for signal <data_s>.
@@ -128,7 +119,7 @@ WARNING:Xst:647 - Input <PS2KeyboardData> is never used. This port will be prese
     Found 32-bit register for signal <PC>.
     Found 1-bit register for signal <spaceSelect>.
     Found 32-bit register for signal <ASR>.
-    Found 11-bit register for signal <addr_s>.
+    Found 11-bit register for signal <ASR_PICT>.
     Found 32-bit register for signal <grxDataIn>.
     Found 1-bit register for signal <grxRW>.
     Found 7-bit register for signal <uPC>.
@@ -138,12 +129,12 @@ WARNING:Xst:647 - Input <PS2KeyboardData> is never used. This port will be prese
     Found 1-bit register for signal <collision_reset_s>.
     Found 1-bit register for signal <coll_s>.
     Found 32-bit register for signal <IR>.
-    Found 32-bit adder for signal <PC[31]_GND_4_o_add_16_OUT> created at line 1241.
-    Found 7-bit adder for signal <uPC[6]_GND_4_o_add_55_OUT> created at line 1241.
-    Found 32-bit adder for signal <tick_counter_s[31]_GND_4_o_add_65_OUT> created at line 1241.
-    Found 11-bit subtractor for signal <GND_4_o_GND_4_o_sub_25_OUT<10:0>> created at line 329.
-    Found 7-bit 8-to-1 multiplexer for signal <uPC[6]_uAddr[6]_mux_62_OUT> created at line 359.
-    Found 32-bit comparator greater for signal <DATA_BUS[31]_GND_4_o_LessThan_23_o> created at line 325
+    Found 32-bit adder for signal <PC[31]_GND_4_o_add_15_OUT> created at line 1241.
+    Found 7-bit adder for signal <uPC[6]_GND_4_o_add_54_OUT> created at line 1241.
+    Found 32-bit adder for signal <tick_counter_s[31]_GND_4_o_add_64_OUT> created at line 1241.
+    Found 11-bit subtractor for signal <GND_4_o_GND_4_o_sub_24_OUT<10:0>> created at line 302.
+    Found 7-bit 8-to-1 multiplexer for signal <uPC[6]_uAddr[6]_mux_61_OUT> created at line 332.
+    Found 32-bit comparator greater for signal <DATA_BUS[31]_GND_4_o_LessThan_22_o> created at line 298
     Summary:
 	inferred   4 Adder/Subtractor(s).
 	inferred 226 D-type flip-flop(s).
@@ -287,41 +278,41 @@ INFO:Xst:3019 - HDL ADVISOR - 2048 flip-flops were inferred for signal <tileMem>
     Found 2-bit adder for signal <ClkDiv[1]_GND_20_o_add_0_OUT> created at line 1241.
     Found 10-bit adder for signal <Xpixel[9]_GND_20_o_add_5_OUT> created at line 1241.
     Found 10-bit adder for signal <Ypixel[9]_GND_20_o_add_14_OUT> created at line 1241.
-    Found 11-bit adder for signal <addr> created at line 653.
+    Found 11-bit adder for signal <addr> created at line 579.
     Found 10-bit adder for signal <paddle_one_pos_end> created at line 1241.
     Found 10-bit adder for signal <paddle_two_pos_end> created at line 1241.
     Found 10-bit adder for signal <ball_one_posX_end> created at line 1241.
     Found 10-bit adder for signal <ball_one_posY_end> created at line 1241.
     Found 10-bit adder for signal <ball_two_posX_end> created at line 1241.
     Found 10-bit adder for signal <ball_two_posY_end> created at line 1241.
-    Found 3-bit subtractor for signal <sub_oneY<2:0>> created at line 75.
-    Found 3-bit subtractor for signal <sub_oneX<2:0>> created at line 76.
-    Found 3-bit subtractor for signal <sub_twoY<2:0>> created at line 77.
-    Found 3-bit subtractor for signal <sub_twoX<2:0>> created at line 78.
-    Found 5x4-bit multiplier for signal <PWR_14_o_Ypixel[8]_MuLt_25_OUT> created at line 653.
-    Found 32768x1-bit Read Only RAM for signal <tileAddr[10]_read_port_59_OUT<0>>
+    Found 3-bit subtractor for signal <sub_oneY<2:0>> created at line 69.
+    Found 3-bit subtractor for signal <sub_oneX<2:0>> created at line 70.
+    Found 3-bit subtractor for signal <sub_twoY<2:0>> created at line 71.
+    Found 3-bit subtractor for signal <sub_twoX<2:0>> created at line 72.
+    Found 5x4-bit multiplier for signal <PWR_14_o_Ypixel[8]_MuLt_25_OUT> created at line 579.
+    Found 32768x1-bit Read Only RAM for signal <tileAddr[10]_read_port_58_OUT<0>>
     Found 2048x12-bit Read Only RAM for signal <n0188>
-    Found 10-bit comparator lessequal for signal <n0010> created at line 599
-    Found 10-bit comparator greater for signal <Xpixel[9]_PWR_14_o_LessThan_12_o> created at line 599
-    Found 10-bit comparator lessequal for signal <n0021> created at line 634
-    Found 10-bit comparator greater for signal <Ypixel[9]_GND_20_o_LessThan_22_o> created at line 634
-    Found 10-bit comparator lessequal for signal <n0026> created at line 646
-    Found 10-bit comparator lessequal for signal <n0028> created at line 646
-    Found 10-bit comparator lessequal for signal <n0044> created at line 679
-    Found 10-bit comparator lessequal for signal <n0046> created at line 679
-    Found 10-bit comparator lessequal for signal <n0048> created at line 679
-    Found 10-bit comparator lessequal for signal <n0053> created at line 687
-    Found 10-bit comparator lessequal for signal <n0055> created at line 687
-    Found 10-bit comparator lessequal for signal <n0057> created at line 687
-    Found 10-bit comparator lessequal for signal <n0059> created at line 687
-    Found 10-bit comparator lessequal for signal <n0066> created at line 692
-    Found 10-bit comparator lessequal for signal <n0068> created at line 692
-    Found 10-bit comparator lessequal for signal <n0070> created at line 692
-    Found 10-bit comparator lessequal for signal <n0072> created at line 692
-    Found 10-bit comparator lessequal for signal <n0079> created at line 697
-    Found 10-bit comparator lessequal for signal <n0081> created at line 697
-    Found 10-bit comparator lessequal for signal <n0083> created at line 697
-    Found 10-bit comparator lessequal for signal <n0085> created at line 697
+    Found 10-bit comparator lessequal for signal <n0010> created at line 525
+    Found 10-bit comparator greater for signal <Xpixel[9]_PWR_14_o_LessThan_12_o> created at line 525
+    Found 10-bit comparator lessequal for signal <n0022> created at line 560
+    Found 10-bit comparator greater for signal <Ypixel[9]_GND_20_o_LessThan_22_o> created at line 560
+    Found 10-bit comparator lessequal for signal <n0027> created at line 572
+    Found 10-bit comparator lessequal for signal <n0029> created at line 572
+    Found 10-bit comparator lessequal for signal <n0044> created at line 598
+    Found 10-bit comparator lessequal for signal <n0046> created at line 598
+    Found 10-bit comparator lessequal for signal <n0048> created at line 598
+    Found 10-bit comparator lessequal for signal <n0053> created at line 602
+    Found 10-bit comparator lessequal for signal <n0055> created at line 602
+    Found 10-bit comparator lessequal for signal <n0057> created at line 602
+    Found 10-bit comparator lessequal for signal <n0059> created at line 602
+    Found 10-bit comparator lessequal for signal <n0066> created at line 607
+    Found 10-bit comparator lessequal for signal <n0068> created at line 607
+    Found 10-bit comparator lessequal for signal <n0070> created at line 607
+    Found 10-bit comparator lessequal for signal <n0072> created at line 607
+    Found 10-bit comparator lessequal for signal <n0079> created at line 612
+    Found 10-bit comparator lessequal for signal <n0081> created at line 612
+    Found 10-bit comparator lessequal for signal <n0083> created at line 612
+    Found 10-bit comparator lessequal for signal <n0085> created at line 612
     Summary:
 	inferred   3 RAM(s).
 	inferred   1 Multiplier(s).
@@ -356,9 +347,9 @@ WARNING:Xst:653 - Signal <status<6:2>> is used but never assigned. This sourcele
 	inferred  22 Multiplexer(s).
 Unit <alu> synthesized.
 RTL-Simplification CPUSTAT: 0.31 
-RTL-BasicInf CPUSTAT: 2.55 
-RTL-BasicOpt CPUSTAT: 0.00 
-RTL-Remain-Bus CPUSTAT: 0.02 
+RTL-BasicInf CPUSTAT: 2.57 
+RTL-BasicOpt CPUSTAT: 0.01 
+RTL-Remain-Bus CPUSTAT: 0.01 
 
 =========================================================================
 HDL Synthesis Report
@@ -455,7 +446,7 @@ INFO:Xst:3040 - The RAM <U3/Mram_pictMem> will be implemented as a BLOCK RAM, ab
     |     mode           | read-first                          |          |
     |     clkA           | connected to signal <clk>           | rise     |
     |     weA            | connected to signal <we_s>          | high     |
-    |     addrA          | connected to signal <addr_s>        |          |
+    |     addrA          | connected to signal <ASR_PICT>      |          |
     |     diA            | connected to signal <data_s>        |          |
     |     doA            | connected to signal <data_out_s>    |          |
     -----------------------------------------------------------------------
@@ -524,7 +515,7 @@ INFO:Xst:3031 - HDL ADVISOR - The RAM <U4/Mram_n0188> will be implemented on LUT
     |     diA            | connected to signal <GND>           |          |
     |     doA            | connected to internal node          |          |
     -----------------------------------------------------------------------
-INFO:Xst:3031 - HDL ADVISOR - The RAM <U4/Mram_tileAddr[10]_read_port_59_OUT<0>> will be implemented on LUTs either because you have described an asynchronous read or because of currently unsupported block RAM features. If you have described an asynchronous read, making it synchronous would allow you to take advantage of available block RAM resources, for optimized device usage and improved timings. Please refer to your documentation for coding guidelines.
+INFO:Xst:3031 - HDL ADVISOR - The RAM <U4/Mram_tileAddr[10]_read_port_58_OUT<0>> will be implemented on LUTs either because you have described an asynchronous read or because of currently unsupported block RAM features. If you have described an asynchronous read, making it synchronous would allow you to take advantage of available block RAM resources, for optimized device usage and improved timings. Please refer to your documentation for coding guidelines.
     -----------------------------------------------------------------------
     | ram_type           | Distributed                         |          |
     -----------------------------------------------------------------------
@@ -581,8 +572,8 @@ The following registers are absorbed into counter <us>: 1 register on signal <us
 	The following adders/subtractors are grouped into adder tree <Madd_avg1[11]_avg8[11]_add_44_OUT1> :
  	<Madd_n0177> in block <ultra>, 	<Madd_n0180> in block <ultra>, 	<Madd_n0183> in block <ultra>, 	<Madd_n0186> in block <ultra>, 	<Madd_n0189> in block <ultra>, 	<Madd_n0192> in block <ultra>, 	<Madd_avg1[11]_avg8[11]_add_44_OUT> in block <ultra>.
 Unit <ultra> synthesized (advanced).
-WARNING:Xst:2677 - Node <addr_s_9> of sequential type is unconnected in block <breakout>.
-WARNING:Xst:2677 - Node <addr_s_10> of sequential type is unconnected in block <breakout>.
+WARNING:Xst:2677 - Node <ASR_PICT_9> of sequential type is unconnected in block <breakout>.
+WARNING:Xst:2677 - Node <ASR_PICT_10> of sequential type is unconnected in block <breakout>.
 WARNING:Xst:2677 - Node <UL2/us_time_0> of sequential type is unconnected in block <breakout>.
 WARNING:Xst:2677 - Node <UL2/us_time_1> of sequential type is unconnected in block <breakout>.
 WARNING:Xst:2677 - Node <UL2/us_time_11> of sequential type is unconnected in block <breakout>.
@@ -782,9 +773,9 @@ Primitive and Black Box Usage:
 #      RAMB8BWER                   : 1
 # Clock Buffers                    : 1
 #      BUFGP                       : 1
-# IO Buffers                       : 25
+# IO Buffers                       : 17
 #      IBUF                        : 5
-#      OBUF                        : 20
+#      OBUF                        : 12
 
 Device utilization summary:
 ---------------------------
@@ -805,8 +796,8 @@ Slice Logic Distribution:
    Number of unique control sets:        33
 
 IO Utilization: 
- Number of IOs:                          28
- Number of bonded IOBs:                  26  out of    232    11%  
+ Number of IOs:                          18
+ Number of bonded IOBs:                  18  out of    232     7%  
 
 Specific Feature Utilization:
  Number of Block RAM/FIFO:                3  out of     32     9%  
@@ -875,13 +866,13 @@ Delay:               10.985ns (Levels of Logic = 13)
      LUT6:I5->O            1   0.205   0.808  mux1012516 (mux1012515)
      LUT6:I3->O            4   0.205   0.684  mux1012518 (mux1012517)
      LUT6:I5->O           18   0.205   1.278  mux10125110 (DATA_BUS<5>)
-     LUT5:I2->O            1   0.205   0.000  Mcompar_DATA_BUS[31]_GND_4_o_LessThan_23_o_lut<0> (Mcompar_DATA_BUS[31]_GND_4_o_LessThan_23_o_lut<0>)
-     MUXCY:S->O            1   0.172   0.000  Mcompar_DATA_BUS[31]_GND_4_o_LessThan_23_o_cy<0> (Mcompar_DATA_BUS[31]_GND_4_o_LessThan_23_o_cy<0>)
-     MUXCY:CI->O           1   0.019   0.000  Mcompar_DATA_BUS[31]_GND_4_o_LessThan_23_o_cy<1> (Mcompar_DATA_BUS[31]_GND_4_o_LessThan_23_o_cy<1>)
-     MUXCY:CI->O           1   0.019   0.000  Mcompar_DATA_BUS[31]_GND_4_o_LessThan_23_o_cy<2> (Mcompar_DATA_BUS[31]_GND_4_o_LessThan_23_o_cy<2>)
-     MUXCY:CI->O           1   0.019   0.000  Mcompar_DATA_BUS[31]_GND_4_o_LessThan_23_o_cy<3> (Mcompar_DATA_BUS[31]_GND_4_o_LessThan_23_o_cy<3>)
-     MUXCY:CI->O           1   0.019   0.000  Mcompar_DATA_BUS[31]_GND_4_o_LessThan_23_o_cy<4> (Mcompar_DATA_BUS[31]_GND_4_o_LessThan_23_o_cy<4>)
-     MUXCY:CI->O          52   0.019   1.561  Mcompar_DATA_BUS[31]_GND_4_o_LessThan_23_o_cy<5> (Mcompar_DATA_BUS[31]_GND_4_o_LessThan_23_o_cy<5>)
+     LUT5:I2->O            1   0.205   0.000  Mcompar_DATA_BUS[31]_GND_4_o_LessThan_22_o_lut<0> (Mcompar_DATA_BUS[31]_GND_4_o_LessThan_22_o_lut<0>)
+     MUXCY:S->O            1   0.172   0.000  Mcompar_DATA_BUS[31]_GND_4_o_LessThan_22_o_cy<0> (Mcompar_DATA_BUS[31]_GND_4_o_LessThan_22_o_cy<0>)
+     MUXCY:CI->O           1   0.019   0.000  Mcompar_DATA_BUS[31]_GND_4_o_LessThan_22_o_cy<1> (Mcompar_DATA_BUS[31]_GND_4_o_LessThan_22_o_cy<1>)
+     MUXCY:CI->O           1   0.019   0.000  Mcompar_DATA_BUS[31]_GND_4_o_LessThan_22_o_cy<2> (Mcompar_DATA_BUS[31]_GND_4_o_LessThan_22_o_cy<2>)
+     MUXCY:CI->O           1   0.019   0.000  Mcompar_DATA_BUS[31]_GND_4_o_LessThan_22_o_cy<3> (Mcompar_DATA_BUS[31]_GND_4_o_LessThan_22_o_cy<3>)
+     MUXCY:CI->O           1   0.019   0.000  Mcompar_DATA_BUS[31]_GND_4_o_LessThan_22_o_cy<4> (Mcompar_DATA_BUS[31]_GND_4_o_LessThan_22_o_cy<4>)
+     MUXCY:CI->O          52   0.019   1.561  Mcompar_DATA_BUS[31]_GND_4_o_LessThan_22_o_cy<5> (Mcompar_DATA_BUS[31]_GND_4_o_LessThan_22_o_cy<5>)
      LUT6:I5->O            2   0.205   0.616  DATA_BUS<0>_01 (DATA_BUS<0>_0_0)
      RAMB16BWER:ADDRB4         0.350          U1/Mram_p_mem1
     ----------------------------------------
@@ -947,14 +938,14 @@ clk            |   10.985|         |         |         |
 
 
 Total REAL time to Xst completion: 42.00 secs
-Total CPU time to Xst completion: 40.10 secs
+Total CPU time to Xst completion: 41.06 secs
  
 --> 
 
 
-Total memory usage is 487904 kilobytes
+Total memory usage is 487796 kilobytes
 
 Number of errors   :    0 (   0 filtered)
-Number of warnings :   75 (   0 filtered)
+Number of warnings :   72 (   0 filtered)
 Number of infos    :   11 (   0 filtered)
 
